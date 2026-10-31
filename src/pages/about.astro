@@ -18,13 +18,14 @@ const Content = entry ? (await render(entry)).Content : null;
     <ul class="actions">
       <li><a class="btn primary" href="/cv.pdf">Download my CV</a></li>
       {SITE.calLink && <li><a class="btn ghost" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
-      <li><a class="btn ghost" href={SITE.linkedin} rel="me">LinkedIn</a></li>
-      <li><a class="btn ghost" href="/contact/">Contact</a></li>
     </ul>
   </div>
   <article class="paper">
     <div class="prose">
-      {Content ? <Content /> : <p>More about me soon. Meanwhile, see my <a href={SITE.linkedin}>LinkedIn</a>.</p>}
+      {Content ? <Content /> : <p>More about me soon.</p>}
+      <p class="more">
+        More on <a href={SITE.linkedin} rel="me">LinkedIn</a>, or <a href="/contact/">get in touch</a>.
+      </p>
     </div>
   </article>
 </Base>

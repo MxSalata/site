@@ -14,10 +14,10 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 );
 ---
 
-<Base title={`${SITE.name}: tools for hospital integration`} description={SITE.description}>
+<Base title={`${SITE.name}: interoperability solutions for NHS hospitals`} description={SITE.description}>
   <section class="hero">
     <p class="eyebrow">Projects and writing on healthcare integration</p>
-    <h1>Tools for hospital integration, built in the open.</h1>
+    <h1>Interoperability solutions for NHS hospitals.</h1>
     <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
@@ -28,8 +28,8 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
           </li>
         )
       }
-      <li><a class="btn ghost" href="/about/">About me</a></li>
-      <li><a class="btn ghost" href="/cv.pdf">CV (PDF)</a></li>
+      <li class="text-link"><a href="/about/">About me</a></li>
+      <li class="text-link"><a href="/cv.pdf">CV (PDF)</a></li>
     </ul>
   </section>
 
@@ -49,7 +49,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
     </li>
     <li class="tile tint-b span-2">
       <div class="glyph"><Icon name="game" /></div>
-      <h2><a href={gamesHref()}>Games (members)</a></h2>
+      <h2><a href={gamesHref()}>Game servers (members)</a></h2>
       <p>For friends: the servers, how to get in and game nights. Members sign in.</p>
     </li>
   </ul>
@@ -61,6 +61,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
       {SITE.calLink && <li><a href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
       <li><a href="/cv.pdf">CV (PDF)</a></li>
       <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
+      <li><a href={SITE.github} rel="me">GitHub</a></li>
     </ul>
   </section>
 </Base>

@@ -28,7 +28,14 @@
       frame.title = 'Cal.com booking calendar';
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox');
       frame.referrerPolicy = 'strict-origin-when-cross-origin';
-      dialog.append(bar, frame);
+      // A loading line sits behind the frame, so a slow connection shows it until Cal.com's page draws over it.
+      var wrap = document.createElement('div');
+      wrap.className = 'frame-wrap';
+      var loading = document.createElement('p');
+      loading.className = 'loading';
+      loading.textContent = 'Loading the calendar…';
+      wrap.append(loading, frame);
+      dialog.append(bar, wrap);
       // A click on the backdrop (outside the dialog's box) closes it too.
       dialog.addEventListener('click', function (event) {
         if (event.target === dialog) dialog.close();
@@ -39,6 +46,7 @@
     if (frame.getAttribute('src') !== href) frame.setAttribute('src', href);
     dialog.querySelector('.booking-bar a').href = href;
     dialog.showModal();
+    dialog.querySelector('.booking-bar button').focus();
   }
   document.addEventListener('click', function (event) {
     var link = event.target.closest && event.target.closest('a[data-cal-link]');

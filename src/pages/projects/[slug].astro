@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
+import Icon from '../../components/Icon.astro';
 import { formatDate, projectOrder } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry, others } = Astro.props;
 const { Content } = await render(entry);
-const { title, summary, date, tags, links, award } = entry.data;
+const { title, summary, date, tags, links, award, contest } = entry.data;
 ---
 
 <Base title={title} description={summary}>
@@ -25,6 +26,13 @@ const { title, summary, date, tags, links, award } = entry.data;
     </div>
     <h1>{title}</h1>
     <p class="lead">{summary}</p>
+    {
+      contest && (
+        <p class="contest">
+          <Icon name="star" /> <a href={contest.href}>{contest.name}</a>
+        </p>
+      )
+    }
     <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>
     {
       links && (
