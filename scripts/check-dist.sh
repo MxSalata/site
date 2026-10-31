@@ -43,5 +43,7 @@ for b in bad:
     print(b)
 sys.exit(1 if bad else 0)
 PY
+else
+	echo "note: PDF and image metadata not checked (no ~/.venvs/html-tools here; House runs them)"
 fi
 echo OK
