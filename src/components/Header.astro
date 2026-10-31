@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { gamesHref } from '../lib/site';
 
 const path = Astro.url.pathname;
 const nav = [
@@ -8,6 +9,7 @@ const nav = [
   { href: '/reviews/', label: 'Reviews' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
+  { href: gamesHref(), label: 'Game servers' },
 ];
 const themes = [
   { value: 'light', label: 'Light' },

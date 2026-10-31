@@ -338,7 +338,8 @@ pre {
   justify-self: start;
 }
 
-@media (max-width: 44rem) {
+/* Six links and the switch need about 64rem; below that, the menu button. */
+@media (max-width: 63.99rem) {
   .nav-wide,
   .js .themes.nav-wide {
     display: none;

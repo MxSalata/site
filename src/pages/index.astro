@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProjectTile from '../components/ProjectTile.astro';
-import { SITE, gamesHref, projectOrder, bookingHref } from '../lib/site';
+import { SITE, projectOrder, bookingHref } from '../lib/site';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 const featured = projects.filter((p) => p.data.featured);
@@ -36,21 +36,16 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
   <ul class="bento">
     {lead && <ProjectTile project={lead} span={4} tint="a" wide />}
     {rest.map((p, i) => <ProjectTile project={p} span={2} tint={i % 2 ? 'a' : 'b'} />)}
-    <li class="tile tint-c span-2">
+    <li class="tile tint-c span-3">
       <div class="glyph"><Icon name="book" /></div>
       <h2><a href="/knowledge/">Knowledge</a></h2>
       <p>The standards, platforms and NHS services I work with, and the notes behind the projects.</p>
     </li>
-    <li class="tile tint-a span-2">
+    <li class="tile tint-a span-3">
       <div class="glyph"><Icon name="star" /></div>
       <h2><a href="/reviews/">Reviews</a></h2>
       {reviews.length ? <p>Latest: {reviews[0].data.title}</p> : <p>Places and products I'd recommend, or wouldn't.</p>}
       {!reviews.length && <ul class="tags"><li>Coming soon</li></ul>}
-    </li>
-    <li class="tile tint-b span-2">
-      <div class="glyph"><Icon name="game" /></div>
-      <h2><a href={gamesHref()}>Game servers (members)</a></h2>
-      <p>For friends: the servers, how to get in and game nights. Members sign in.</p>
     </li>
   </ul>
 
