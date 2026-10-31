@@ -472,7 +472,7 @@ pre {
 .bento {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
   list-style: none;
   margin: 0 0 3rem;
   padding: 0;
@@ -483,10 +483,11 @@ pre {
   border: 1px solid var(--tint-edge, var(--line));
   border-radius: 14px;
   box-shadow: var(--shadow);
-  padding: 1.35rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.9rem;
+  min-height: 15rem;
   position: relative;
   min-width: 0;
 }
@@ -520,7 +521,7 @@ pre {
 
 .tile h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
 }
 
@@ -1073,4 +1074,12 @@ dialog.booking .frame-wrap iframe {
   display: block;
   font-size: 0.9rem;
   color: var(--soft);
+}
+
+/* Phones: cards keep their size from their content, with a little less padding. */
+@media (max-width: 44rem) {
+  .tile {
+    min-height: 0;
+    padding: 1.4rem;
+  }
 }
