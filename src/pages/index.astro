@@ -8,16 +8,15 @@ import { SITE, projectOrder, bookingHref } from '../lib/site';
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 const featured = projects.filter((p) => p.data.featured);
 const shown = featured.length ? featured : projects.slice(0, 3);
-const [lead, ...rest] = shown;
 const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
 
-<Base title={`${SITE.name}: interoperability solutions for NHS hospitals`} description={SITE.description}>
+<Base title={`${SITE.name}: interoperability solutions for NHS hospitals, councils and clinics`} description={SITE.description}>
   <section class="hero">
     <p class="eyebrow">Projects and writing on healthcare integration</p>
-    <h1>Interoperability solutions for NHS hospitals.</h1>
+    <h1>Interoperability solutions for NHS hospitals, councils and clinics.</h1>
     <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
@@ -34,8 +33,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
   </section>
 
   <ul class="bento">
-    {lead && <ProjectTile project={lead} span={4} tint="a" wide />}
-    {rest.map((p, i) => <ProjectTile project={p} span={2} tint={i % 2 ? 'a' : 'b'} />)}
+    {shown.map((p, i) => <ProjectTile project={p} span={3} tint={i % 2 ? 'b' : 'a'} />)}
     <li class="tile tint-c span-3">
       <div class="glyph"><Icon name="book" /></div>
       <h2><a href="/knowledge/">Knowledge</a></h2>
@@ -51,7 +49,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 
   <section class="who" aria-label="Who made this site">
     <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
-    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
+    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals, councils and clinics.</p>
     <ul class="links">
       {SITE.calLink && <li><a href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
       <li><a href="/cv.pdf">CV (PDF)</a></li>

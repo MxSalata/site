@@ -1084,3 +1084,10 @@ dialog.booking .frame-wrap iframe {
     padding: 1.4rem;
   }
 }
+
+/* Side-by-side project tiles: both pictures the same shape, from their top left. */
+.bento .tile.span-3 .shot.under {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top left;
+}
