@@ -16,7 +16,12 @@ test -f dist/_redirects
 test -f dist/robots.txt
 test -f dist/rss.xml
 test -f dist/sitemap-index.xml
-! grep -q '/minecraft/' dist/sitemap-0.xml
+test -s dist/sitemap-0.xml
+if grep -q 'mxsalata.com/minecraft/' dist/sitemap-0.xml; then echo "the Minecraft page is in the sitemap"; exit 1; fi
+# The Writing page is in the sitemap exactly when it's indexable.
+if grep -q 'mxsalata.com/writing/<' dist/sitemap-0.xml; then w=listed; else w=unlisted; fi
+if grep -q '<meta name="robots" content="noindex"' dist/writing/index.html; then n=noindex; else n=indexable; fi
+case "$w:$n" in listed:noindex | unlisted:indexable) echo "Writing: $w in the sitemap but $n"; exit 1 ;; esac
 test -f dist/404.html
 test -f package-lock.json
 grep -o 'rel="canonical" href="[^"]*"' dist/about/index.html | grep -q '/"$'

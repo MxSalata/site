@@ -16,7 +16,7 @@ const projects = defineCollection({
 });
 
 const writing = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing' }),
+  loader: glob({ pattern: '*.{md,mdx}', base: './src/content/writing' }), // top level only: /writing/[slug]/ takes no slash
   schema: z.object({
     title: z.string(),
     summary: z.string(),
