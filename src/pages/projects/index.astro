@@ -7,11 +7,11 @@ import { projectOrder } from '../../lib/site';
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 ---
 
-<Base title="Projects" description="Projects by Mikolaj Salata: tools for InterSystems IRIS and healthcare integration.">
+<Base title="Open-sourced projects for InterSystems IRIS" description="Open-sourced projects by Mikolaj Salata for InterSystems IRIS and healthcare integration.">
   <div class="page-head">
     <p class="eyebrow">Projects</p>
-    <h1>Things I've built</h1>
-    <p class="lead">Tools for InterSystems IRIS and healthcare integration, most of them open source.</p>
+    <h1>Open-sourced projects for InterSystems IRIS</h1>
+    <p class="lead">Portals and fixers for healthcare integration, and the stories behind them.</p>
   </div>
   {
     projects.length === 0 ? (

@@ -39,9 +39,16 @@ const { title, summary, date, tags, links, award, contest } = entry.data;
         <ul class="actions">
           {links.map((l, i) => (
             <li>
-              <a class={i === 0 ? 'btn primary' : 'btn ghost'} href={l.href}>
-                {l.label}
-              </a>
+              {l.href ? (
+                <a class={i === 0 ? 'btn primary' : 'btn ghost'} href={l.href}>
+                  {l.label}
+                </a>
+              ) : (
+                <span class="btn soon">
+                  {l.label}
+                  <span class="soon-tag">Coming soon</span>
+                </span>
+              )}
             </li>
           ))}
         </ul>

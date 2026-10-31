@@ -15,7 +15,8 @@ const projects = defineCollection({
     award: z.string().optional(),
     // The contest's full name and page, shown on the project page (the tile keeps the short award).
     contest: z.object({ name: z.string(), href: z.string().url() }).optional(),
-    links: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+    // A link without an href is a placeholder: shown as an inactive button marked "Coming soon".
+    links: z.array(z.object({ label: z.string(), href: z.string().optional() })).optional(),
     draft: z.boolean().default(false),
   }),
 });

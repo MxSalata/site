@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro';
-import { gamesHref } from '../lib/site';
 
 const path = Astro.url.pathname;
 const nav = [
@@ -9,7 +8,7 @@ const nav = [
   { href: '/reviews/', label: 'Reviews' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
-  { href: gamesHref(), label: 'Game servers' },
+  { href: '/everything-else/', label: 'Everything else', also: ['/minecraft/'] },
 ];
 const themes = [
   { value: 'light', label: 'Light' },
@@ -17,27 +16,34 @@ const themes = [
   { value: 'dark', label: 'Dark' },
   { value: 'auto', label: 'Auto' },
 ];
-const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
+const current = (item: { href: string; also?: string[] }) =>
+  [item.href, ...(item.also ?? [])].some((href) => path.startsWith(href)) ? 'page' : undefined;
 ---
 
 <header class="site-header">
   <div class="wrap bar">
     <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}><Icon name="mark" class="" />mxsalata</a>
     <nav class="nav-wide" aria-label="Main">
-      <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}</ul>
+      <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item)}>{item.label}</a></li>)}</ul>
     </nav>
-    <div class="themes nav-wide" role="group" aria-label="Theme">
-      {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+    <div class="theme-pick nav-wide">
+      <span class="theme-label" id="theme-label">UI Themes</span>
+      <div class="themes" role="group" aria-labelledby="theme-label">
+        {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+      </div>
     </div>
     <!-- Phones: the same links and switch behind a menu button, which works without any script. -->
     <details class="menu">
       <summary><Icon name="menu" /><span>Menu</span></summary>
       <div class="menu-panel">
         <nav aria-label="Main">
-          <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}</ul>
+          <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item)}>{item.label}</a></li>)}</ul>
         </nav>
-        <div class="themes" role="group" aria-label="Theme">
-          {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+        <div class="theme-pick">
+          <span class="theme-label" id="theme-label-menu">UI Themes</span>
+          <div class="themes" role="group" aria-labelledby="theme-label-menu">
+            {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+          </div>
         </div>
       </div>
     </details>

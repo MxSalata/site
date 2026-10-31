@@ -44,6 +44,7 @@
   --ok: light-dark(#257835, #69db7c);
   --ok-soft: light-dark(#e6f4ea, rgb(105 219 124 / 12%));
   --shadow: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
+  --shadow-lift: 0 10px 24px rgb(16 24 40 / 12%), 0 2px 6px rgb(16 24 40 / 8%);
   /* Tints for tiles (tint-a, tint-b, tint-c); in Light and Dark all three are the plain card. */
   --tint-a: var(--raised);
   --edge-a: var(--line);
@@ -117,8 +118,10 @@ main {
   flex: 1;
 }
 
+/* Wider screens, and zooming out (which widens the viewport in CSS pixels), give the page more room instead of leaving
+   a narrow column in the middle; text blocks keep their own reading widths. */
 .wrap {
-  max-width: 72rem;
+  max-width: max(72rem, 82vw);
   margin: 0 auto;
   padding: 0 1.25rem;
 }
@@ -255,6 +258,29 @@ pre {
   display: inline-flex;
 }
 
+/* The switch with its "UI Themes" label; both appear only when theme.js runs, as the switch needs it. */
+.theme-pick {
+  display: none;
+  margin-left: auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.js .theme-pick {
+  display: inline-flex;
+}
+
+.theme-pick .themes {
+  margin-left: 0;
+}
+
+.theme-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--soft);
+  white-space: nowrap;
+}
+
 .themes button {
   font: inherit;
   font-size: 0.8125rem;
@@ -333,15 +359,20 @@ pre {
   font-size: 1rem;
 }
 
+.menu-panel .theme-pick {
+  margin-left: 0;
+  justify-self: start;
+}
+
 .menu-panel .themes {
   margin-left: 0;
   justify-self: start;
 }
 
-/* Six links and the switch need about 64rem; below that, the menu button. */
-@media (max-width: 63.99rem) {
+/* Six links, the "UI Themes" label and the switch need about 68rem; below that, the menu button. */
+@media (max-width: 67.99rem) {
   .nav-wide,
-  .js .themes.nav-wide {
+  .js .theme-pick.nav-wide {
     display: none;
   }
   .menu {
@@ -1090,4 +1121,140 @@ dialog.booking .frame-wrap iframe {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: top left;
+}
+
+/* A project link that isn't live yet: shaped like its button, clearly inactive. */
+.btn.soon {
+  border: 1px dashed var(--control);
+  color: var(--muted);
+  cursor: default;
+}
+
+.btn.soon .soon-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+/* Motion: small and quick, on screens only, and none at all for visitors whose device asks for less. Keyframes give
+   only their start, and fill backwards, so nothing holds a transform after it ends and the hover lift still works. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* Colours ease when the theme changes. */
+  body,
+  .site-header,
+  .site-footer,
+  .paper,
+  .badge,
+  .tags li,
+  .themes button {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .tile {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .btn {
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  /* The page arrives: its heading first, then the first row of tiles. */
+  .hero,
+  .page-head {
+    animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+
+  .bento > li {
+    animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation-delay: 0.1s;
+  }
+
+  .bento > li:nth-child(2) {
+    animation-delay: 0.18s;
+  }
+
+  .bento > li:nth-child(n + 3) {
+    animation-delay: 0.26s;
+  }
+
+  /* Further down, tiles, pictures and the foot strip rise into view as they scroll in, where the browser can. */
+  @supports (animation-timeline: view()) {
+    .bento > li:nth-child(n + 3),
+    .prose figure,
+    .who {
+      animation: rise linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+      animation-delay: 0s;
+    }
+  }
+
+  /* Tiles lift a little under the pointer, or when their link has keyboard focus; buttons nudge up. */
+  .tile:hover,
+  .tile:has(h2 a:focus-visible) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .btn:not(.soon):hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  /* The phone menu and the booking dialog open with a short fade. */
+  .menu[open] .menu-panel {
+    animation: drop 0.2s ease-out;
+  }
+
+  dialog.booking[open] {
+    animation: pop 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  dialog.booking[open]::backdrop {
+    animation: fade 0.22s ease-out;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
 }

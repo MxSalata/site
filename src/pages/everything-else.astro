@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { gamesHref } from '../lib/site';
+---
+
+<Base title="Everything else" description="The smaller corners of mxsalata.com: the game servers for friends, and how the site itself is built.">
+  <div class="page-head">
+    <p class="eyebrow">Everything else</p>
+    <h1>Everything else</h1>
+    <p class="lead">The smaller corners of the site: the game servers for friends, and how the site itself is built.</p>
+  </div>
+  <ul class="bento">
+    <li class="tile tint-b span-3">
+      <div class="glyph"><Icon name="game" /></div>
+      <h2><a href={gamesHref()}>Game servers (members)</a></h2>
+      <p>For friends: the servers, how to get in and game nights. Members sign in.</p>
+    </li>
+    <li class="tile tint-c span-3">
+      <div class="glyph"><Icon name="stack" /></div>
+      <h2><a href="/how-its-built/">How this site is built</a></h2>
+      <p>Static pages, no trackers or cookies, nothing at home open to the internet.</p>
+    </li>
+  </ul>
+</Base>
