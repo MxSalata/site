@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { KNOWLEDGE } from '../data/knowledge';
+import { formatDate } from '../lib/site';
+
+const tints = ['a', 'b', 'c'] as const;
+const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Base title="Knowledge" description="The standards, integration platforms, NHS services and systems Mikolaj Salata works with.">
+  <div class="page-head">
+    <p class="eyebrow">Knowledge</p>
+    <h1>What I work with</h1>
+    <p class="lead">
+      Standards, platforms, NHS services and the systems on the other end of the interfaces. <strong>Deep</strong> means
+      years of daily use; <strong>Working</strong> means I've used it on real projects.
+    </p>
+  </div>
+  <ul class="bento">
+    {
+      KNOWLEDGE.map((g, i) => (
+        <li class={`tile tint-${tints[i % 3]} span-3`}>
+          <h2>{g.title}</h2>
+          <p>{g.intro}</p>
+          <ul class="kb-list">
+            {g.items.map((item) => (
+              <li>
+                <span class="name">
+                  {item.name}
+                  {item.note && <span class="note">{item.note}</span>}
+                </span>
+                {item.level && <span class={item.level === 'Deep' ? 'badge' : 'badge quiet'}>{item.level}</span>}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+  {
+    posts.length > 0 && (
+      <section>
+        <h2 class="section-title">Articles</h2>
+        <ul class="bento">
+          {posts.map((w, i) => (
+            <li class={`tile tint-${tints[i % 3]} span-3`}>
+              <p class="meta">{formatDate(w.data.date)}</p>
+              <h2>
+                <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+              </h2>
+              <p>{w.data.summary}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Base>

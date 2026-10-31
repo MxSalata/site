@@ -1,13 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname;
-const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
 const nav = [
   { href: '/projects/', label: 'Projects' },
-  ...(hasWriting ? [{ href: '/writing/', label: 'Writing' }] : []),
-  { href: '/minecraft/', label: 'Games', lock: true },
+  { href: '/knowledge/', label: 'Knowledge' },
+  { href: '/reviews/', label: 'Reviews' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
 ];
@@ -17,27 +15,29 @@ const themes = [
   { value: 'dark', label: 'Dark' },
   { value: 'auto', label: 'Auto' },
 ];
+const current = (href: string) => (path.startsWith(href) ? 'page' : undefined);
 ---
 
 <header class="site-header">
   <div class="wrap bar">
     <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}><Icon name="mark" class="" />mxsalata</a>
-    <nav aria-label="Main">
-      <ul>
-        {
-          nav.map((item) => (
-            <li>
-              <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
-                {item.lock && <Icon name="lock" label="for friends" />}
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <nav class="nav-wide" aria-label="Main">
+      <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}</ul>
     </nav>
-    <div class="themes" role="group" aria-label="Theme">
+    <div class="themes nav-wide" role="group" aria-label="Theme">
       {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
     </div>
+    <!-- Phones: the same links and switch behind a menu button, which works without any script. -->
+    <details class="menu">
+      <summary><Icon name="menu" /><span>Menu</span></summary>
+      <div class="menu-panel">
+        <nav aria-label="Main">
+          <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item.href)}>{item.label}</a></li>)}</ul>
+        </nav>
+        <div class="themes" role="group" aria-label="Theme">
+          {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+        </div>
+      </div>
+    </details>
   </div>
 </header>

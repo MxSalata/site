@@ -2,12 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
-import { formatDate } from '../../lib/site';
+import { formatDate, projectOrder } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-  );
+  const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
   return projects.map((entry) => ({
     params: { slug: entry.id },
     props: { entry, others: projects.filter((p) => p.id !== entry.id).slice(0, 2) },
@@ -22,7 +20,7 @@ const { title, summary, date, tags, links, award } = entry.data;
 <Base title={title} description={summary}>
   <div class="page-head">
     <div class="kicker">
-      {award && <span class={award.toLowerCase().includes('place') ? 'badge ok' : 'badge'}>{award}</span>}
+      {award && <span class={/place/i.test(award) ? 'badge ok' : 'badge'}>{award}</span>}
       <span class="meta">{formatDate(date)}</span>
     </div>
     <h1>{title}</h1>
@@ -50,8 +48,8 @@ const { title, summary, date, tags, links, award } = entry.data;
       <section>
         <h2 class="section-title">More projects</h2>
         <ul class="bento">
-          {others.map((p) => (
-            <ProjectTile project={p} span={3} />
+          {others.map((p, i) => (
+            <ProjectTile project={p} span={3} tint={i % 2 ? 'c' : 'b'} />
           ))}
         </ul>
       </section>

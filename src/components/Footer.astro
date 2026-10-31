@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE } from '../lib/site';
+import { SITE, gamesHref } from '../lib/site';
 
 const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
 const year = new Date().getFullYear();
@@ -12,8 +12,8 @@ const year = new Date().getFullYear();
     <ul>
       <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
       <li><a href={SITE.github} rel="me">GitHub</a></li>
+      <li><a href={gamesHref()}>Games (members)</a></li>
       <li><a href="/how-its-built/">How it's built</a></li>
-      <li><a href="/contact/">Contact</a></li>
       {hasWriting && <li><a href="/rss.xml">RSS</a></li>}
     </ul>
   </div>

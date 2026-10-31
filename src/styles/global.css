@@ -1,39 +1,46 @@
-/* Themes, as Aperture's: Light (ocean teal on cool grey), Pastel (lavender page, periwinkle accent, each card its own
-   pastel) and Dark (slate). <html data-theme> holds a choice made with the switch; with none, the device decides. */
-:root,
-:root[data-theme='light'] {
-  color-scheme: light;
-  --page: #ebeef2;
-  --surface: #f9fafb;
-  --raised: #ffffff;
-  --header: #f9fafb;
-  --text: #1a1f27;
-  --muted: #495057;
-  --soft: #626a73;
-  --line: #d5dbe2;
-  --line-strong: #adb5bd;
+/* Themes, as Aperture's: Light (ocean teal on cool grey), Pastel (lavender page, periwinkle accent, three calm tints)
+   and Dark (slate). Each colour is defined once, as light-dark(light, dark): with no choice made, color-scheme follows
+   the device; <html data-theme> holds a choice made with the switch. Pastel replaces the colours outright. */
+:root {
+  color-scheme: light dark;
+  --page: light-dark(#ebeef2, #181e26);
+  --surface: light-dark(#f9fafb, #1f2630);
+  --raised: light-dark(#ffffff, #232b36);
+  --header: light-dark(#f9fafb, #1f2630);
+  --text: light-dark(#1a1f27, #e3e8ee);
+  --muted: light-dark(#495057, #b3bcc8);
+  --soft: light-dark(#626a73, #9aa5b3);
+  --line: light-dark(#d5dbe2, #363f4c);
+  /* Borders that are the only outline of a control: 3:1 or more on --surface and --raised. */
+  --control: light-dark(#7b838c, #6b7686);
+  /* Filled buttons and the pressed switch carry white text: 5.4:1 or more in both. */
   --accent: #0e7299;
-  --accent-hover: #095c7c;
-  --accent-text: #095c7c;
-  --accent-soft: #e7f5fa;
+  --accent-hover: light-dark(#095c7c, #095c7c);
+  --accent-text: light-dark(#095c7c, #6fc0dc);
+  --accent-soft: light-dark(#e7f5fa, rgb(69 172 209 / 14%));
   --on-accent: #ffffff;
-  --ok: #257835;
-  --ok-soft: #e6f4ea;
-  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 1px 3px rgb(16 24 40 / 8%);
-  --fill-1: var(--raised);
-  --edge-1: var(--line);
-  --fill-2: var(--raised);
-  --edge-2: var(--line);
-  --fill-3: var(--raised);
-  --edge-3: var(--line);
-  --fill-4: var(--raised);
-  --edge-4: var(--line);
-  --fill-5: var(--raised);
-  --edge-5: var(--line);
-  --fill-6: var(--raised);
-  --edge-6: var(--line);
+  /* Focus rings and the hovered tile's edge: 3:1 or more on every surface. */
+  --focus: light-dark(#0e7299, #45acd1);
+  --ok: light-dark(#257835, #69db7c);
+  --ok-soft: light-dark(#e6f4ea, rgb(105 219 124 / 12%));
+  --shadow: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
+  /* Tints for tiles (tint-a, tint-b, tint-c); in Light and Dark all three are the plain card. */
+  --tint-a: var(--raised);
+  --edge-a: var(--line);
+  --tint-b: var(--raised);
+  --edge-b: var(--line);
+  --tint-c: var(--raised);
+  --edge-c: var(--line);
   --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 :root[data-theme='pastel'] {
@@ -46,67 +53,21 @@
   --muted: #5a5577;
   --soft: #69638a;
   --line: #cfc9e2;
-  --line-strong: #9a93b6;
+  --control: #736d90;
   --accent: #6050b3;
   --accent-hover: #51439e;
   --accent-text: #4f4199;
   --accent-soft: #e3dcf8;
-  --on-accent: #ffffff;
+  --focus: #6050b3;
   --ok: #257835;
   --ok-soft: #dff2e6;
   --shadow: 0 1px 2px rgb(40 36 66 / 6%), 0 1px 3px rgb(40 36 66 / 8%);
-  --fill-1: #f3f0fc;
-  --edge-1: #cfc3f2;
-  --fill-2: #ecf8f1;
-  --edge-2: #b6e1ca;
-  --fill-3: #fdf2eb;
-  --edge-3: #f2c6ad;
-  --fill-4: #fdf8e8;
-  --edge-4: #ecd994;
-  --fill-5: #ecf5fc;
-  --edge-5: #b4d3ef;
-  --fill-6: #fdeff4;
-  --edge-6: #efbccd;
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --page: #181e26;
-  --surface: #1f2630;
-  --raised: #232b36;
-  --header: #1f2630;
-  --text: #e3e8ee;
-  --muted: #b3bcc8;
-  --soft: #9aa5b3;
-  --line: #363f4c;
-  --line-strong: #4a5463;
-  --accent-hover: #1788b3;
-  --accent-text: #6fc0dc;
-  --accent-soft: rgb(69 172 209 / 14%);
-  --ok: #69db7c;
-  --ok-soft: rgb(105 219 124 / 12%);
-  --shadow: 0 1px 2px rgb(0 0 0 / 30%);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-    --page: #181e26;
-    --surface: #1f2630;
-    --raised: #232b36;
-    --header: #1f2630;
-    --text: #e3e8ee;
-    --muted: #b3bcc8;
-    --soft: #9aa5b3;
-    --line: #363f4c;
-    --line-strong: #4a5463;
-    --accent-hover: #1788b3;
-    --accent-text: #6fc0dc;
-    --accent-soft: rgb(69 172 209 / 14%);
-    --ok: #69db7c;
-    --ok-soft: rgb(105 219 124 / 12%);
-    --shadow: 0 1px 2px rgb(0 0 0 / 30%);
-  }
+  --tint-a: #f3f0fc;
+  --edge-a: #cfc3f2;
+  --tint-b: #ecf8f1;
+  --edge-b: #b6e1ca;
+  --tint-c: #ecf5fc;
+  --edge-c: #b4d3ef;
 }
 
 *,
@@ -151,7 +112,7 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -193,13 +154,14 @@ pre {
   z-index: 10;
   padding: 0.5rem 0.75rem;
   background: var(--raised);
-  border: 1px solid var(--accent);
+  border: 1px solid var(--focus);
 }
 
 /* The header: the mark, the navigation and the theme switch */
 .site-header {
   background: var(--header);
   border-bottom: 1px solid var(--line);
+  position: relative;
 }
 
 .site-header .bar {
@@ -226,7 +188,7 @@ pre {
 .mark svg {
   width: 1.6rem;
   height: 1.6rem;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .site-header nav ul {
@@ -259,7 +221,7 @@ pre {
 .themes {
   display: none;
   margin-left: auto;
-  border: 1px solid var(--line);
+  border: 1px solid var(--control);
   border-radius: 8px;
   padding: 2px;
   background: var(--surface);
@@ -291,6 +253,81 @@ pre {
   background: var(--accent-soft);
 }
 
+@media (forced-colors: active) {
+  .themes button[aria-pressed='true'] {
+    outline: 2px solid CanvasText;
+  }
+}
+
+/* The phone menu: a details element, so it opens with no script. Hidden on wider screens, where the links show. */
+.menu {
+  display: none;
+  margin-left: auto;
+}
+
+.menu summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.9375rem;
+}
+
+.menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu[open] summary {
+  background: var(--accent-soft);
+}
+
+.menu-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin-top: 0.6rem;
+  padding: 0.75rem 1.25rem 1rem;
+  background: var(--header);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.menu-panel nav ul {
+  flex-direction: column;
+}
+
+.menu-panel nav a {
+  display: flex;
+  padding: 0.55rem 0.65rem;
+  font-size: 1rem;
+}
+
+.menu-panel .themes {
+  margin-left: 0;
+  justify-self: start;
+}
+
+@media (max-width: 44rem) {
+  .nav-wide,
+  .js .themes.nav-wide {
+    display: none;
+  }
+  .menu {
+    display: block;
+  }
+  .site-header .bar {
+    flex-wrap: nowrap;
+  }
+}
+
 /* Buttons, badges and tags */
 .btn {
   display: inline-flex;
@@ -315,13 +352,13 @@ pre {
 }
 
 .btn.ghost {
-  border-color: var(--line-strong);
+  border-color: var(--control);
   color: var(--text);
   background: var(--surface);
 }
 
 .btn.ghost:hover {
-  border-color: var(--accent);
+  border-color: var(--focus);
 }
 
 .actions {
@@ -379,7 +416,7 @@ pre {
 
 /* The landing page */
 .hero {
-  padding: 4rem 0 2.5rem;
+  padding: 2.75rem 0 2rem;
   display: grid;
   gap: 1.25rem;
   max-width: 46rem;
@@ -430,14 +467,37 @@ pre {
   min-width: 0;
 }
 
-.tile:has(h2 a:hover),
+.tint-a {
+  --tint: var(--tint-a);
+  --tint-edge: var(--edge-a);
+}
+.tint-b {
+  --tint: var(--tint-b);
+  --tint-edge: var(--edge-b);
+}
+.tint-c {
+  --tint: var(--tint-c);
+  --tint-edge: var(--edge-c);
+}
+
+.tile:has(h2 a:hover) {
+  border-color: var(--focus);
+}
+
+/* The heading's link covers the tile, so the ring goes round the whole tile. */
 .tile:has(h2 a:focus-visible) {
-  border-color: var(--accent);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tile h2 a:focus-visible {
+  outline: none;
 }
 
 .tile h2 {
   margin: 0;
   font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .tile h2 a {
@@ -445,12 +505,17 @@ pre {
   text-decoration: none;
 }
 
-/* The whole tile is the link's target; other links inside sit above it. */
+/* The whole tile is the link's target; any other link inside sits above it. */
 .tile h2 a::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 14px;
+}
+
+.tile a:not(h2 a) {
+  position: relative;
+  z-index: 1;
 }
 
 .tile p {
@@ -468,10 +533,6 @@ pre {
   width: 100%;
   object-fit: cover;
   object-position: left top;
-}
-
-.tile.span-2 .shot {
-  aspect-ratio: 4 / 3;
 }
 
 .tile .glyph {
@@ -496,31 +557,6 @@ pre {
   color: var(--accent-text);
 }
 
-.tinted:nth-child(6n + 1) {
-  --tint: var(--fill-1);
-  --tint-edge: var(--edge-1);
-}
-.tinted:nth-child(6n + 2) {
-  --tint: var(--fill-2);
-  --tint-edge: var(--edge-2);
-}
-.tinted:nth-child(6n + 3) {
-  --tint: var(--fill-3);
-  --tint-edge: var(--edge-3);
-}
-.tinted:nth-child(6n + 4) {
-  --tint: var(--fill-4);
-  --tint-edge: var(--edge-4);
-}
-.tinted:nth-child(6n + 5) {
-  --tint: var(--fill-5);
-  --tint-edge: var(--edge-5);
-}
-.tinted:nth-child(6n + 6) {
-  --tint: var(--fill-6);
-  --tint-edge: var(--edge-6);
-}
-
 .span-6 {
   grid-column: span 6;
 }
@@ -534,12 +570,15 @@ pre {
   grid-column: span 2;
 }
 
-/* The strip about the person behind the site */
+/* The strip about the person behind the site: under a thin line, not a box, so it doesn't compete with the tiles */
 .who {
   display: flex;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 0 0.5rem;
+  margin: 0 0 2.5rem;
 }
 
 .who img {
@@ -548,16 +587,18 @@ pre {
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 30%;
-  border: 2px solid var(--tint-edge, var(--line));
+  border: 2px solid var(--edge-a);
 }
 
 .who .text {
   flex: 1 1 16rem;
   margin: 0;
+  color: var(--muted);
 }
 
 .who .text strong {
   display: block;
+  color: var(--text);
 }
 
 .who .links {
@@ -568,6 +609,30 @@ pre {
   margin: 0;
   padding: 0;
   font-size: 0.9375rem;
+}
+
+/* A wide tile: text beside its picture (the landing page's lead project) */
+.tile.wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.tile .body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tile.wide .shot {
+  margin-top: 0;
+}
+
+/* Under the text, straight after it, rather than pushed to the foot */
+.tile .shot.under {
+  margin-top: 0;
+  aspect-ratio: auto;
 }
 
 /* Inner pages: a heading block, then the text on a card */
@@ -653,12 +718,19 @@ figcaption {
   color: var(--muted);
 }
 
-.portrait {
-  float: right;
-  width: 13rem;
-  margin: 0.3rem 0 1rem 1.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--line);
+.page-head .person {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page-head .person img {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 2px solid var(--line);
 }
 
 table {
@@ -740,6 +812,9 @@ th {
 }
 
 @media (max-width: 52rem) {
+  .tile.wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .span-4,
   .span-3,
   .span-2 {
@@ -753,19 +828,83 @@ th {
   }
 }
 
+/* On phones a table becomes stacked entries: the second column (a role) first and bold, the rest beneath. */
 @media (max-width: 34rem) {
-  .portrait {
-    float: none;
-    display: block;
-    width: 11rem;
-    margin: 0 0 1.25rem;
+  .prose thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
-  td:first-child {
-    white-space: nowrap;
+  .prose tr {
+    display: flex;
+    flex-direction: column;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .prose td {
+    border: 0;
+    padding: 0;
+  }
+  .prose td:nth-child(2) {
+    order: -1;
+    font-weight: 600;
+  }
+  .prose td:not(:nth-child(2)) {
+    color: var(--muted);
+    font-size: 0.9375rem;
   }
 }
 
 .section-title {
   font-size: 1.25rem;
   margin: 0 0 1rem;
+}
+
+/* The knowledge base: groups of names, each with its level */
+.kb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.kb-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  border-top: 1px solid var(--tint-edge, var(--line));
+  padding-top: 0.45rem;
+}
+
+.kb-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.kb-list .name {
+  color: var(--text);
+}
+
+.kb-list .note {
+  display: block;
+  color: var(--soft);
+  font-size: 0.8125rem;
+}
+
+.badge.quiet {
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+/* Reviews */
+.rating {
+  color: var(--accent-text);
+  font-weight: 600;
+  font-size: 0.9375rem;
 }

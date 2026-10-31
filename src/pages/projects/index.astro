@@ -2,10 +2,9 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
+import { projectOrder } from '../../lib/site';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 ---
 
 <Base title="Projects" description="Projects by Mikolaj Salata: tools for InterSystems IRIS and hospital integration.">
@@ -19,7 +18,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
       <p class="muted">Projects are on their way.</p>
     ) : (
       <ul class="bento">
-        {projects.map((p) => <ProjectTile project={p} span={3} />)}
+        {projects.map((p, i) => <ProjectTile project={p} span={3} tint={(['a', 'b', 'c'] as const)[i % 3]} />)}
       </ul>
     )
   }

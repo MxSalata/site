@@ -3,69 +3,64 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProjectTile from '../components/ProjectTile.astro';
-import { SITE } from '../lib/site';
+import { SITE, gamesHref, projectOrder } from '../lib/site';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 const featured = projects.filter((p) => p.data.featured);
-// The highest honour leads, large; the rest follow at a third of the width.
-const shown = (featured.length ? featured : projects.slice(0, 3)).sort(
-  (a, b) => Number(Boolean(b.data.award?.includes('place'))) - Number(Boolean(a.data.award?.includes('place'))),
-);
-const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+const shown = featured.length ? featured : projects.slice(0, 3);
+const [lead, ...rest] = shown;
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
 
 <Base title={`${SITE.name}: tools for hospital integration`} description={SITE.description}>
   <section class="hero">
-    <p class="eyebrow">Projects &middot; writing &middot; a home lab</p>
+    <p class="eyebrow">Projects and writing on healthcare integration</p>
     <h1>Tools for hospital integration, built in the open.</h1>
-    <p>Portals and fixers for InterSystems IRIS, the notes behind them, and the small servers that run them at home.</p>
+    <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
-      <li><a class="btn ghost" href={SITE.github} rel="me">Source on GitHub</a></li>
+      <li>
+        {
+          SITE.booking ? (
+            <a class="btn ghost" href={SITE.booking}>Book a meeting</a>
+          ) : (
+            <a class="btn ghost" href="/about/">About me and CV</a>
+          )
+        }
+      </li>
     </ul>
   </section>
 
   <ul class="bento">
-    {shown.map((p, i) => <ProjectTile project={p} span={i === 0 ? 4 : 2} />)}
-    <li class="tile tinted span-2">
+    {lead && <ProjectTile project={lead} span={4} tint="a" wide />}
+    {rest.map((p, i) => <ProjectTile project={p} span={2} tint={i % 2 ? 'a' : 'b'} />)}
+    <li class="tile tint-c span-2">
+      <div class="glyph"><Icon name="book" /></div>
+      <h2><a href="/knowledge/">Knowledge</a></h2>
+      <p>The standards, platforms and NHS services I work with, and the notes behind the projects.</p>
+    </li>
+    <li class="tile tint-a span-2">
+      <div class="glyph"><Icon name="star" /></div>
+      <h2><a href="/reviews/">Reviews</a></h2>
+      {reviews.length ? <p>Latest: {reviews[0].data.title}</p> : <p>Places and products I'd recommend, or wouldn't.</p>}
+      {!reviews.length && <ul class="tags"><li>Coming soon</li></ul>}
+    </li>
+    <li class="tile tint-b span-2">
       <div class="glyph"><Icon name="game" /></div>
-      <h2><a href="/minecraft/">Games</a></h2>
-      <p>For friends: the servers and how to join. A members' portal with sign-in is on the way.</p>
-      <ul class="tags"><li>Minecraft</li><li>Don't Starve Together</li></ul>
-    </li>
-    <li class="tile tinted span-2">
-      <div class="glyph"><Icon name="pen" /></div>
-      <h2><a href="/writing/">Writing</a></h2>
-      {
-        writing.length ? (
-          <p>Latest: {writing[0].data.title}</p>
-        ) : (
-          <p>The thinking behind the contest entries: design notes, trade-offs and what went wrong.</p>
-        )
-      }
-      {!writing.length && <ul class="tags"><li>Coming soon</li></ul>}
-    </li>
-    <li class="tile tinted span-2">
-      <div class="glyph"><Icon name="stack" /></div>
-      <h2><a href="/how-its-built/">How this site is built</a></h2>
-      <p>Static pages at the edge, no trackers or cookies, and nothing at home open to the internet.</p>
-      <ul class="tags"><li>Astro</li><li>Cloudflare</li></ul>
-    </li>
-    <li class="tile tinted span-6">
-      <div class="who">
-        <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
-        <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
-        <ul class="links">
-          <li><a href="/about/">About</a></li>
-          <li><a href="/cv.pdf">CV (PDF)</a></li>
-          <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
-          <li><a href="/contact/">Contact</a></li>
-        </ul>
-      </div>
+      <h2><a href={gamesHref()}>Games (members)</a></h2>
+      <p>For friends: the servers, how to get in and game nights. Members sign in.</p>
     </li>
   </ul>
+
+  <section class="who" aria-label="Who made this site">
+    <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
+    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
+    <ul class="links">
+      {SITE.booking && <li><a href={SITE.booking}>Book a meeting</a></li>}
+      <li><a href="/cv.pdf">CV (PDF)</a></li>
+      <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
+    </ul>
+  </section>
 </Base>

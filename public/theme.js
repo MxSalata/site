@@ -10,9 +10,20 @@
       return 'auto';
     }
   }
+  // The browser bar's colour: the chosen theme's header, or the device's own (the page's two meta tags) on Auto.
+  var BAR = { light: '#f9fafb', pastel: '#fbeee3', dark: '#1f2630' };
+  function bar(value) {
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    for (var i = 0; i < metas.length; i++) {
+      var m = metas[i];
+      if (!m.hasAttribute('data-content')) m.setAttribute('data-content', m.getAttribute('content'));
+      m.setAttribute('content', BAR[value] || m.getAttribute('data-content'));
+    }
+  }
   function apply(value) {
     if (value === 'light' || value === 'pastel' || value === 'dark') root.setAttribute('data-theme', value);
     else root.removeAttribute('data-theme');
+    bar(value);
     var buttons = document.querySelectorAll('.themes button');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].setAttribute('aria-pressed', String(buttons[i].getAttribute('data-value') === value));
