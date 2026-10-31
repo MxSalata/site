@@ -4,48 +4,33 @@ import { SITE } from '../lib/site';
 ---
 
 <Base title="Contact" description="How to get in touch with Mikolaj Salata.">
-  <h1>Contact</h1>
-  <p class="lead">For work, projects or anything on this site.</p>
-  <ul class="contact">
-    {
-      SITE.booking && (
-        <li>
-          <a class="button" href={SITE.booking}>Book a meeting</a>
-          <span class="muted">Pick a time that suits you.</span>
-        </li>
-      )
-    }
-    <li>
-      <span class="label">Email</span>
-      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-    </li>
-    <li>
-      <span class="label">LinkedIn</span>
-      <a href={SITE.linkedin} rel="me">linkedin.com/in/msalata</a>
-    </li>
-    <li>
-      <span class="label">GitHub</span>
-      <a href={SITE.github} rel="me">github.com/MxSalata</a>
-    </li>
-  </ul>
+  <div class="page-head">
+    <p class="eyebrow">Contact</p>
+    <h1>Get in touch</h1>
+    <p class="lead">For work, projects or anything on this site.</p>
+  </div>
+  <div class="paper">
+    <ul class="contact">
+      {
+        SITE.booking && (
+          <li>
+            <a class="btn primary" href={SITE.booking}>Book a meeting</a>
+            <span class="muted">Pick a time that suits you.</span>
+          </li>
+        )
+      }
+      <li>
+        <span class="label">Email</span>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </li>
+      <li>
+        <span class="label">LinkedIn</span>
+        <a href={SITE.linkedin} rel="me">linkedin.com/in/msalata</a>
+      </li>
+      <li>
+        <span class="label">GitHub</span>
+        <a href={SITE.github} rel="me">github.com/MxSalata</a>
+      </li>
+    </ul>
+  </div>
 </Base>
-
-<style>
-  .contact {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0 0;
-    display: grid;
-    gap: 0.9rem;
-  }
-  .contact li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem 1rem;
-  }
-  .label {
-    min-width: 6rem;
-    color: var(--muted);
-  }
-</style>

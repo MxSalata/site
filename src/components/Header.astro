@@ -1,27 +1,34 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE } from '../lib/site';
+import Icon from './Icon.astro';
 
 const path = Astro.url.pathname;
 const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
 const nav = [
   { href: '/projects/', label: 'Projects' },
   ...(hasWriting ? [{ href: '/writing/', label: 'Writing' }] : []),
+  { href: '/minecraft/', label: 'Games', lock: true },
   { href: '/about/', label: 'About' },
-  { href: '/cv.pdf', label: 'CV (PDF)' },
   { href: '/contact/', label: 'Contact' },
+];
+const themes = [
+  { value: 'light', label: 'Light' },
+  { value: 'pastel', label: 'Pastel' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'auto', label: 'Auto' },
 ];
 ---
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="home" href="/" aria-current={path === '/' ? 'page' : undefined}>{SITE.name}</a>
+    <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}><Icon name="mark" class="" />mxsalata</a>
     <nav aria-label="Main">
       <ul>
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} aria-current={item.href.endsWith('/') && path.startsWith(item.href) ? 'page' : undefined}>
+              <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+                {item.lock && <Icon name="lock" label="for friends" />}
                 {item.label}
               </a>
             </li>
@@ -29,43 +36,8 @@ const nav = [
         }
       </ul>
     </nav>
+    <div class="themes" role="group" aria-label="Theme">
+      {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+    </div>
   </div>
 </header>
-
-<style>
-  .site-header {
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 2.5rem;
-  }
-  .bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem 1.5rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-  .home {
-    font-weight: 650;
-    color: var(--fg);
-    text-decoration: none;
-  }
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 1.1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  nav a {
-    color: var(--muted);
-    text-decoration: none;
-  }
-  nav a:hover,
-  nav a[aria-current='page'] {
-    color: var(--fg);
-    text-decoration: underline;
-  }
-</style>

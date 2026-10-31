@@ -1,74 +1,71 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SITE, formatDate } from '../lib/site';
+import Icon from '../components/Icon.astro';
+import ProjectTile from '../components/ProjectTile.astro';
+import { SITE } from '../lib/site';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const featured = projects.filter((p) => p.data.featured);
-const shown = featured.length ? featured : projects.slice(0, 3);
-const writing = (await getCollection('writing', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+// The highest honour leads, large; the rest follow at a third of the width.
+const shown = (featured.length ? featured : projects.slice(0, 3)).sort(
+  (a, b) => Number(Boolean(b.data.award?.includes('place'))) - Number(Boolean(a.data.award?.includes('place'))),
+);
+const writing = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
 ---
 
-<Base title={`${SITE.name}, healthcare integration engineer`} description={SITE.description}>
-  <div class="hero">
-    <img class="avatar" src="/images/mikolaj-salata.jpg" alt="Photo of Mikolaj Salata" width="120" height="120" />
-    <div>
-      <h1>{SITE.name}</h1>
-      <p class="role">Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals</p>
-      <p class="lead">I connect hospital systems so that the people caring for patients have the information they need.</p>
-      <ul class="links actions">
-        <li><a class="button" href="/cv.pdf">Download my CV</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/about/">About me</a></li>
-        <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
-        <li><a href={SITE.github} rel="me">GitHub</a></li>
-      </ul>
-    </div>
-  </div>
+<Base title={`${SITE.name}: tools for hospital integration`} description={SITE.description}>
+  <section class="hero">
+    <p class="eyebrow">Projects &middot; writing &middot; a home lab</p>
+    <h1>Tools for hospital integration, built in the open.</h1>
+    <p>Portals and fixers for InterSystems IRIS, the notes behind them, and the small servers that run them at home.</p>
+    <ul class="actions">
+      <li><a class="btn primary" href="/projects/">See the projects</a></li>
+      <li><a class="btn ghost" href={SITE.github} rel="me">Source on GitHub</a></li>
+    </ul>
+  </section>
 
-  {
-    shown.length > 0 && (
-      <section>
-        <h2>Projects</h2>
-        <ul class="list">
-          {shown.map((p) => (
-            <li>
-              <a class="card" href={`/projects/${p.id}/`}>
-                <h3>{p.data.title}</h3>
-                <p>{p.data.summary}</p>
-              </a>
-            </li>
-          ))}
+  <ul class="bento">
+    {shown.map((p, i) => <ProjectTile project={p} span={i === 0 ? 4 : 2} />)}
+    <li class="tile tinted span-2">
+      <div class="glyph"><Icon name="game" /></div>
+      <h2><a href="/minecraft/">Games</a></h2>
+      <p>For friends: the servers and how to join. A members' portal with sign-in is on the way.</p>
+      <ul class="tags"><li>Minecraft</li><li>Don't Starve Together</li></ul>
+    </li>
+    <li class="tile tinted span-2">
+      <div class="glyph"><Icon name="pen" /></div>
+      <h2><a href="/writing/">Writing</a></h2>
+      {
+        writing.length ? (
+          <p>Latest: {writing[0].data.title}</p>
+        ) : (
+          <p>The thinking behind the contest entries: design notes, trade-offs and what went wrong.</p>
+        )
+      }
+      {!writing.length && <ul class="tags"><li>Coming soon</li></ul>}
+    </li>
+    <li class="tile tinted span-2">
+      <div class="glyph"><Icon name="stack" /></div>
+      <h2><a href="/how-its-built/">How this site is built</a></h2>
+      <p>Static pages at the edge, no trackers or cookies, and nothing at home open to the internet.</p>
+      <ul class="tags"><li>Astro</li><li>Cloudflare</li></ul>
+    </li>
+    <li class="tile tinted span-6">
+      <div class="who">
+        <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
+        <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
+        <ul class="links">
+          <li><a href="/about/">About</a></li>
+          <li><a href="/cv.pdf">CV (PDF)</a></li>
+          <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
+          <li><a href="/contact/">Contact</a></li>
         </ul>
-        <p>
-          <a href="/projects/">All projects</a>
-        </p>
-      </section>
-    )
-  }
-
-  {
-    writing.length > 0 && (
-      <section>
-        <h2>Writing</h2>
-        <ul class="list">
-          {writing.map((w) => (
-            <li>
-              <a class="card" href={`/writing/${w.id}/`}>
-                <h3>{w.data.title}</h3>
-                <p class="meta">{formatDate(w.data.date)}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p>
-          <a href="/writing/">All writing</a>
-        </p>
-      </section>
-    )
-  }
+      </div>
+    </li>
+  </ul>
 </Base>

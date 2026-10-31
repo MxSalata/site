@@ -3,10 +3,13 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Page not found" description="This page doesn't exist." noindex>
-  <h1>This page doesn't exist</h1>
-  <p class="lead">The link may be wrong, or the page may have moved.</p>
-  <ul class="links">
-    <li><a href="/">Home page</a></li>
-    <li><a href="/projects/">Projects</a></li>
-  </ul>
+  <div class="page-head">
+    <p class="eyebrow">404</p>
+    <h1>This page doesn't exist</h1>
+    <p class="lead">The link may be wrong, or the page may have moved.</p>
+    <ul class="actions">
+      <li><a class="btn primary" href="/">Home page</a></li>
+      <li><a class="btn ghost" href="/projects/">Projects</a></li>
+    </ul>
+  </div>
 </Base>

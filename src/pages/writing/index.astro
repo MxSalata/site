@@ -9,19 +9,25 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
 ---
 
 <Base title="Writing" description="Articles by Mikolaj Salata." noindex={posts.length === 0}>
-  <h1>Writing</h1>
+  <div class="page-head">
+    <p class="eyebrow">Writing</p>
+    <h1>Notes and articles</h1>
+    <p class="lead">The thinking behind the projects: design notes, trade-offs and what went wrong.</p>
+  </div>
   {
     posts.length === 0 ? (
-      <p class="muted">Nothing here yet.</p>
+      <div class="paper">
+        <p class="muted">Nothing here yet.</p>
+      </div>
     ) : (
-      <ul class="list">
+      <ul class="bento">
         {posts.map((w) => (
-          <li>
-            <a class="card" href={`/writing/${w.id}/`}>
-              <h3>{w.data.title}</h3>
-              <p>{w.data.summary}</p>
-              <p class="meta">{formatDate(w.data.date)}</p>
-            </a>
+          <li class="tile tinted span-3">
+            <p class="meta">{formatDate(w.data.date)}</p>
+            <h2>
+              <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+            </h2>
+            <p>{w.data.summary}</p>
           </li>
         ))}
       </ul>

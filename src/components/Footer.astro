@@ -3,30 +3,18 @@ import { getCollection } from 'astro:content';
 import { SITE } from '../lib/site';
 
 const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
-
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="wrap">
-    <ul class="links">
+    <p>&copy; {year} {SITE.name} &middot; No trackers, no cookies.</p>
+    <ul>
       <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
       <li><a href={SITE.github} rel="me">GitHub</a></li>
+      <li><a href="/how-its-built/">How it's built</a></li>
       <li><a href="/contact/">Contact</a></li>
       {hasWriting && <li><a href="/rss.xml">RSS</a></li>}
     </ul>
-    <p class="muted">&copy; {year} {SITE.name}</p>
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    border-top: 1px solid var(--line);
-    margin-top: 4rem;
-    padding: 1.5rem 0 2rem;
-    font-size: 0.95rem;
-  }
-  p {
-    margin: 0.5rem 0 0;
-  }
-</style>

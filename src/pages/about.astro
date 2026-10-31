@@ -8,8 +8,19 @@ const Content = entry ? (await render(entry)).Content : null;
 ---
 
 <Base title={entry?.data.title ?? 'About'} description={entry?.data.description ?? SITE.description}>
-  <h1>{entry?.data.title ?? 'About'}</h1>
-  <div class="prose">
-    {Content ? <Content /> : <p>More about me soon. Meanwhile, see my <a href={SITE.linkedin}>LinkedIn</a>.</p>}
+  <div class="page-head">
+    <p class="eyebrow">About</p>
+    <h1>{SITE.name}</h1>
+    <p class="lead">Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
+    <ul class="actions">
+      <li><a class="btn primary" href="/cv.pdf">Download my CV</a></li>
+      <li><a class="btn ghost" href={SITE.linkedin} rel="me">LinkedIn</a></li>
+      <li><a class="btn ghost" href="/contact/">Contact</a></li>
+    </ul>
   </div>
+  <article class="paper">
+    <div class="prose">
+      {Content ? <Content /> : <p>More about me soon. Meanwhile, see my <a href={SITE.linkedin}>LinkedIn</a>.</p>}
+    </div>
+  </article>
 </Base>

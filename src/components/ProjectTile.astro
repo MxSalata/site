@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  span: 2 | 3 | 4 | 6;
+}
+const { project, span } = Astro.props;
+const { title, summary, award, cover, tags } = project.data;
+---
+
+<li class={`tile tinted span-${span}`}>
+  {award && <div class="kicker"><span class={award.toLowerCase().includes('place') ? 'badge ok' : 'badge'}>{award}</span></div>}
+  <h2><a href={`/projects/${project.id}/`}>{title}</a></h2>
+  <p>{summary}</p>
+  {span >= 4 && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
+  {cover && <img class="shot" src={cover.src} alt={cover.alt} width="1440" height="900" loading="lazy" />}
+</li>

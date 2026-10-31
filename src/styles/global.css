@@ -1,25 +1,111 @@
-:root {
-  color-scheme: light dark;
-  --bg: #fbfbfa;
-  --fg: #1c1d21;
-  --muted: #5b5f6b;
-  --line: #e3e3e0;
-  --card: #ffffff;
-  --accent: #2457c5;
-  --accent-soft: #e8eefb;
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+/* Themes, as Aperture's: Light (ocean teal on cool grey), Pastel (lavender page, periwinkle accent, each card its own
+   pastel) and Dark (slate). <html data-theme> holds a choice made with the switch; with none, the device decides. */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #ebeef2;
+  --surface: #f9fafb;
+  --raised: #ffffff;
+  --header: #f9fafb;
+  --text: #1a1f27;
+  --muted: #495057;
+  --soft: #626a73;
+  --line: #d5dbe2;
+  --line-strong: #adb5bd;
+  --accent: #0e7299;
+  --accent-hover: #095c7c;
+  --accent-text: #095c7c;
+  --accent-soft: #e7f5fa;
+  --on-accent: #ffffff;
+  --ok: #257835;
+  --ok-soft: #e6f4ea;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 1px 3px rgb(16 24 40 / 8%);
+  --fill-1: var(--raised);
+  --edge-1: var(--line);
+  --fill-2: var(--raised);
+  --edge-2: var(--line);
+  --fill-3: var(--raised);
+  --edge-3: var(--line);
+  --fill-4: var(--raised);
+  --edge-4: var(--line);
+  --fill-5: var(--raised);
+  --edge-5: var(--line);
+  --fill-6: var(--raised);
+  --edge-6: var(--line);
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+:root[data-theme='pastel'] {
+  color-scheme: light;
+  --page: #f0ecf9;
+  --surface: #faf8fe;
+  --raised: #faf8fe;
+  --header: #fbeee3;
+  --text: #282442;
+  --muted: #5a5577;
+  --soft: #69638a;
+  --line: #cfc9e2;
+  --line-strong: #9a93b6;
+  --accent: #6050b3;
+  --accent-hover: #51439e;
+  --accent-text: #4f4199;
+  --accent-soft: #e3dcf8;
+  --on-accent: #ffffff;
+  --ok: #257835;
+  --ok-soft: #dff2e6;
+  --shadow: 0 1px 2px rgb(40 36 66 / 6%), 0 1px 3px rgb(40 36 66 / 8%);
+  --fill-1: #f3f0fc;
+  --edge-1: #cfc3f2;
+  --fill-2: #ecf8f1;
+  --edge-2: #b6e1ca;
+  --fill-3: #fdf2eb;
+  --edge-3: #f2c6ad;
+  --fill-4: #fdf8e8;
+  --edge-4: #ecd994;
+  --fill-5: #ecf5fc;
+  --edge-5: #b4d3ef;
+  --fill-6: #fdeff4;
+  --edge-6: #efbccd;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page: #181e26;
+  --surface: #1f2630;
+  --raised: #232b36;
+  --header: #1f2630;
+  --text: #e3e8ee;
+  --muted: #b3bcc8;
+  --soft: #9aa5b3;
+  --line: #363f4c;
+  --line-strong: #4a5463;
+  --accent-hover: #1788b3;
+  --accent-text: #6fc0dc;
+  --accent-soft: rgb(69 172 209 / 14%);
+  --ok: #69db7c;
+  --ok-soft: rgb(105 219 124 / 12%);
+  --shadow: 0 1px 2px rgb(0 0 0 / 30%);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111317;
-    --fg: #e7e8ea;
-    --muted: #a1a6b3;
-    --line: #262a31;
-    --card: #171a1f;
-    --accent: #8ab4ff;
-    --accent-soft: #1b2638;
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --page: #181e26;
+    --surface: #1f2630;
+    --raised: #232b36;
+    --header: #1f2630;
+    --text: #e3e8ee;
+    --muted: #b3bcc8;
+    --soft: #9aa5b3;
+    --line: #363f4c;
+    --line-strong: #4a5463;
+    --accent-hover: #1788b3;
+    --accent-text: #6fc0dc;
+    --accent-soft: rgb(69 172 209 / 14%);
+    --ok: #69db7c;
+    --ok-soft: rgb(105 219 124 / 12%);
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%);
   }
 }
 
@@ -35,21 +121,28 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--page);
+  color: var(--text);
   font-family: var(--font);
   font-size: 1.0625rem;
   line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
 }
 
 .wrap {
-  max-width: 44rem;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-underline-offset: 0.18em;
 }
 
@@ -60,24 +153,15 @@ a:hover {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 h1,
 h2,
 h3 {
   font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-}
-
-h1 {
-  font-size: 2rem;
-  margin: 0 0 0.5rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin: 2.5rem 0 0.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 img {
@@ -91,65 +175,188 @@ pre {
   font-size: 0.92em;
 }
 
-pre {
-  overflow-x: auto;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card);
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  vertical-align: -0.15em;
 }
 
-.muted {
-  color: var(--muted);
+.skip {
+  position: absolute;
+  left: -999px;
 }
 
-.lead {
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--raised);
+  border: 1px solid var(--accent);
+}
+
+/* The header: the mark, the navigation and the theme switch */
+.site-header {
+  background: var(--header);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  min-height: 3.75rem;
+  flex-wrap: wrap;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.mark {
+  font-weight: 750;
   font-size: 1.15rem;
-  color: var(--muted);
-  margin-top: 0;
-}
-
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0.75rem;
-}
-
-.card {
-  display: block;
-  padding: 1rem 1.1rem;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--card);
-  color: inherit;
+  letter-spacing: -0.02em;
+  color: var(--text);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-a.card:hover,
-a.card:focus-visible {
-  border-color: var(--accent);
-}
-
-a.card:hover h3,
-a.card:focus-visible h3 {
-  text-decoration: underline;
-}
-
-.card h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1.08rem;
+.mark svg {
+  width: 1.6rem;
+  height: 1.6rem;
   color: var(--accent);
 }
 
-.card p {
+.site-header nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
-.meta {
-  font-size: 0.9rem;
+.site-header nav a {
   color: var(--muted);
+  text-decoration: none;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.site-header nav a:hover,
+.site-header nav a[aria-current='page'] {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+/* The switch is hidden until theme.js runs, since it does nothing without it. */
+.themes {
+  display: none;
+  margin-left: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 2px;
+  background: var(--surface);
+  gap: 2px;
+}
+
+.js .themes {
+  display: inline-flex;
+}
+
+.themes button {
+  font: inherit;
+  font-size: 0.8125rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.themes button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.themes button:hover:not([aria-pressed='true']) {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+/* Buttons, badges and tags */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn.primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn.ghost {
+  border-color: var(--line-strong);
+  color: var(--text);
+  background: var(--surface);
+}
+
+.btn.ghost:hover {
+  border-color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--accent-text);
+  background: var(--accent-soft);
+}
+
+.badge.ok {
+  color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
 }
 
 .tags {
@@ -158,27 +365,276 @@ a.card:focus-visible h3 {
   gap: 0.35rem;
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0;
 }
 
 .tags li {
-  font-size: 0.8rem;
-  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--fg);
+  padding: 0.05rem 0.5rem;
+  background: var(--surface);
 }
 
-.links {
+/* The landing page */
+.hero {
+  padding: 4rem 0 2.5rem;
+  display: grid;
+  gap: 1.25rem;
+  max-width: 46rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  letter-spacing: -0.025em;
+}
+
+.hero p:not(.eyebrow) {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--muted);
+  max-width: 38rem;
+}
+
+/* Tiles: the grid of the landing and projects pages. In Pastel each takes the next tint. */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0 0 3rem;
+  padding: 0;
+}
+
+.tile {
+  background: var(--tint, var(--raised));
+  border: 1px solid var(--tint-edge, var(--line));
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  min-width: 0;
+}
+
+.tile:has(h2 a:hover),
+.tile:has(h2 a:focus-visible) {
+  border-color: var(--accent);
+}
+
+.tile h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.tile h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* The whole tile is the link's target; other links inside sit above it. */
+.tile h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+
+.tile p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.tile .shot {
+  display: block;
+  margin-top: auto;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.tile.span-2 .shot {
+  aspect-ratio: 4 / 3;
+}
+
+.tile .glyph {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.tile .glyph svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.tile .more {
+  margin-top: auto;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.tinted:nth-child(6n + 1) {
+  --tint: var(--fill-1);
+  --tint-edge: var(--edge-1);
+}
+.tinted:nth-child(6n + 2) {
+  --tint: var(--fill-2);
+  --tint-edge: var(--edge-2);
+}
+.tinted:nth-child(6n + 3) {
+  --tint: var(--fill-3);
+  --tint-edge: var(--edge-3);
+}
+.tinted:nth-child(6n + 4) {
+  --tint: var(--fill-4);
+  --tint-edge: var(--edge-4);
+}
+.tinted:nth-child(6n + 5) {
+  --tint: var(--fill-5);
+  --tint-edge: var(--edge-5);
+}
+.tinted:nth-child(6n + 6) {
+  --tint: var(--fill-6);
+  --tint-edge: var(--edge-6);
+}
+
+.span-6 {
+  grid-column: span 6;
+}
+.span-4 {
+  grid-column: span 4;
+}
+.span-3 {
+  grid-column: span 3;
+}
+.span-2 {
+  grid-column: span 2;
+}
+
+/* The strip about the person behind the site */
+.who {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.who img {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 2px solid var(--tint-edge, var(--line));
+}
+
+.who .text {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.who .text strong {
+  display: block;
+}
+
+.who .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  padding: 0;
+  gap: 0.4rem 1rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9375rem;
+}
+
+/* Inner pages: a heading block, then the text on a card */
+.page-head {
+  padding: 3rem 0 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 50rem;
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  letter-spacing: -0.025em;
+}
+
+.page-head .lead {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--muted);
+}
+
+.paper {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  margin-bottom: 3rem;
 }
 
 .prose {
+  max-width: 46rem;
   overflow-wrap: anywhere;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose h2 {
+  font-size: 1.4rem;
+  margin: 2.25rem 0 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.15rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose :not(pre) > code {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.05rem 0.35rem;
 }
 
 figure {
@@ -197,61 +653,12 @@ figcaption {
   color: var(--muted);
 }
 
-.role {
-  margin: 0 0 0.6rem;
-  font-weight: 600;
-}
-
-.actions {
-  align-items: center;
-}
-
-.hero {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.avatar {
-  flex: none;
-  width: 7.5rem;
-  height: 7.5rem;
-  object-fit: cover;
-  object-position: 50% 30%;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-}
-
 .portrait {
   float: right;
   width: 13rem;
   margin: 0.3rem 0 1rem 1.5rem;
   border-radius: 10px;
   border: 1px solid var(--line);
-}
-
-.button {
-  display: inline-block;
-  padding: 0.55rem 1rem;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--bg);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-@media (max-width: 34rem) {
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .portrait {
-    float: none;
-    display: block;
-    width: 11rem;
-    margin: 0 0 1.25rem;
-  }
 }
 
 table {
@@ -273,8 +680,92 @@ th {
   color: var(--muted);
 }
 
+.meta {
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Contact */
+.contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.contact li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.contact .label {
+  min-width: 6rem;
+  color: var(--soft);
+}
+
+/* The footer */
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--soft);
+  font-size: 0.875rem;
+  padding: 1.5rem 0 2.5rem;
+}
+
+.site-footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+@media (max-width: 52rem) {
+  .span-4,
+  .span-3,
+  .span-2 {
+    grid-column: span 6;
+  }
+  .hero {
+    padding-top: 2.5rem;
+  }
+  .themes {
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 34rem) {
+  .portrait {
+    float: none;
+    display: block;
+    width: 11rem;
+    margin: 0 0 1.25rem;
+  }
   td:first-child {
     white-space: nowrap;
   }
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
 }

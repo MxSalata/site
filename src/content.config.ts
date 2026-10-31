@@ -10,6 +10,9 @@ const projects = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     featured: z.boolean().optional(),
+    // A screenshot for the tiles (a path under public/), and a short honour shown as a badge.
+    cover: z.object({ src: z.string(), alt: z.string() }).optional(),
+    award: z.string().optional(),
     links: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
     draft: z.boolean().default(false),
   }),
