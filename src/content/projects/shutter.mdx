@@ -1,0 +1,30 @@
+---
+title: Shutter
+summary: Failed hospital messages put right safely. AI agents propose a fix, a deterministic gate checks it, a person approves it, and Shutter proves it landed.
+date: 2026-10-30
+tags: [InterSystems IRIS, AI Hub, HL7 v2, Interoperability, AI agents]
+featured: true
+---
+
+When an HL7 delivery fails in a hospital, the usual fix is a resend from the Message Viewer. If the patient has moved
+since, that resend moves them back. Shutter turns each failed delivery into a case instead.
+
+1. **Evidence, sealed.** One immutable snapshot of the message, the receiving system's state and history, and every
+   other operation for the encounter. Patient identifiers become per-case tokens before anything reaches a model.
+2. **A board of agents proposes.** Three specialists (conformance, encounter, impact) review the evidence in parallel
+   on IRIS AI Hub, and a coordinator writes one plan, recording every specialist it overruled and why.
+3. **A deterministic gate checks.** Identity, ordering, state transition, authorisation, concurrency, freshness of the
+   evidence and the receiver's capabilities. An unknown blocks a write as surely as a failed check.
+4. **A person releases it,** bound to the exact plan, or the site's written policy does for the cases it settles.
+5. **One conditional write, then verification** in the receiver's own history. "Acknowledged" and "Verified" are never
+   the same label.
+
+The agents propose; the gate disposes.
+
+<figure>
+  <img src="/images/shutter/s8-visual-trace.webp" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" loading="lazy" />
+  <figcaption>One case's trace in IRIS: every step in its own lane.</figcaption>
+</figure>
+
+Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest. An online demo opens in
+November.
