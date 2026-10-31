@@ -16,6 +16,7 @@ test -f dist/_redirects
 test -f dist/robots.txt
 test -f dist/rss.xml
 test -f dist/sitemap-index.xml
+! grep -q '/minecraft/' dist/sitemap-0.xml
 test -f dist/404.html
 test -f package-lock.json
 grep -o 'rel="canonical" href="[^"]*"' dist/about/index.html | grep -q '/"$'
