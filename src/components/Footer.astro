@@ -1,0 +1,28 @@
+---
+import { SITE } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <ul class="links">
+      <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
+      <li><a href={SITE.github} rel="me">GitHub</a></li>
+      <li><a href="/rss.xml">RSS</a></li>
+    </ul>
+    <p class="muted">&copy; {year} {SITE.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 4rem;
+    padding: 1.5rem 0 2rem;
+    font-size: 0.95rem;
+  }
+  p {
+    margin: 0.5rem 0 0;
+  }
+</style>

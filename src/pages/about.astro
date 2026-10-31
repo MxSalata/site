@@ -1,0 +1,15 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site';
+
+const entry = await getEntry('pages', 'about');
+const Content = entry ? (await render(entry)).Content : null;
+---
+
+<Base title={entry?.data.title ?? 'About'} description={entry?.data.description ?? SITE.description}>
+  <h1>{entry?.data.title ?? 'About'}</h1>
+  <div class="prose">
+    {Content ? <Content /> : <p>More about me soon. Meanwhile, see my <a href={SITE.linkedin}>LinkedIn</a>.</p>}
+  </div>
+</Base>

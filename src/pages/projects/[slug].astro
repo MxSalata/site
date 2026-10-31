@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDate } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base title={entry.data.title} description={entry.data.summary}>
+  <article class="prose">
+    <h1>{entry.data.title}</h1>
+    <p class="meta">{formatDate(entry.data.date)}</p>
+    <ul class="tags">{entry.data.tags.map((t) => <li>{t}</li>)}</ul>
+    {
+      entry.data.links && (
+        <ul class="links">
+          {entry.data.links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <Content />
+  </article>
+</Base>
