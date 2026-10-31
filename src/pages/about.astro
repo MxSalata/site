@@ -1,7 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SITE } from '../lib/site';
+import { SITE, bookingHref } from '../lib/site';
 
 const entry = await getEntry('pages', 'about');
 const Content = entry ? (await render(entry)).Content : null;
@@ -17,7 +17,7 @@ const Content = entry ? (await render(entry)).Content : null;
     <p class="lead">Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/cv.pdf">Download my CV</a></li>
-      {SITE.booking && <li><a class="btn ghost" href={SITE.booking}>Book a meeting</a></li>}
+      {SITE.calLink && <li><a class="btn ghost" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
       <li><a class="btn ghost" href={SITE.linkedin} rel="me">LinkedIn</a></li>
       <li><a class="btn ghost" href="/contact/">Contact</a></li>
     </ul>

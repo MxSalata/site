@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import ProjectTile from '../components/ProjectTile.astro';
-import { SITE, gamesHref, projectOrder } from '../lib/site';
+import { SITE, gamesHref, projectOrder, bookingHref } from '../lib/site';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 const featured = projects.filter((p) => p.data.featured);
@@ -23,8 +23,8 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
       <li>
         {
-          SITE.booking ? (
-            <a class="btn ghost" href={SITE.booking}>Book a meeting</a>
+          SITE.calLink ? (
+            <a class="btn ghost" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
           ) : (
             <a class="btn ghost" href="/about/">About me and CV</a>
           )
@@ -58,7 +58,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
     <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
     <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals.</p>
     <ul class="links">
-      {SITE.booking && <li><a href={SITE.booking}>Book a meeting</a></li>}
+      {SITE.calLink && <li><a href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
       <li><a href="/cv.pdf">CV (PDF)</a></li>
       <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
     </ul>

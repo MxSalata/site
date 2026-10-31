@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { SITE } from '../lib/site';
+import { SITE, bookingHref } from '../lib/site';
 ---
 
 <Base title="Contact" description="How to get in touch with Mikolaj Salata.">
@@ -12,10 +12,10 @@ import { SITE } from '../lib/site';
   <div class="paper">
     <ul class="contact">
       {
-        SITE.booking && (
+        SITE.calLink && (
           <li>
-            <a class="btn primary" href={SITE.booking}>Book a meeting</a>
-            <span class="muted">Pick a time that suits you.</span>
+            <a class="btn primary" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
+            <span class="muted">Pick a time that suits you. Opens Cal.com's calendar.</span>
           </li>
         )
       }
