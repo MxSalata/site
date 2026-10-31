@@ -1,25 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE } from '../lib/site';
 
 const path = Astro.url.pathname;
+const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
 const nav = [
   { href: '/projects/', label: 'Projects' },
-  { href: '/writing/', label: 'Writing' },
+  ...(hasWriting ? [{ href: '/writing/', label: 'Writing' }] : []),
   { href: '/about/', label: 'About' },
-  { href: '/cv.pdf', label: 'CV' },
+  { href: '/cv.pdf', label: 'CV (PDF)' },
   { href: '/contact/', label: 'Contact' },
 ];
 ---
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="home" href="/">{SITE.name}</a>
+    <a class="home" href="/" aria-current={path === '/' ? 'page' : undefined}>{SITE.name}</a>
     <nav aria-label="Main">
       <ul>
         {
           nav.map((item) => (
             <li>
-              <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+              <a href={item.href} aria-current={item.href.endsWith('/') && path.startsWith(item.href) ? 'page' : undefined}>
                 {item.label}
               </a>
             </li>

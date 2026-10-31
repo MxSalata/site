@@ -13,16 +13,17 @@ const writing = (await getCollection('writing', ({ data }) => !data.draft))
   .slice(0, 3);
 ---
 
-<Base title={SITE.title} description={SITE.description}>
+<Base title={`${SITE.name}, healthcare integration engineer`} description={SITE.description}>
   <div class="hero">
-    <img class="avatar" src="/images/mikolaj-salata.jpg" alt="" width="528" height="800" />
+    <img class="avatar" src="/images/mikolaj-salata.jpg" alt="Photo of Mikolaj Salata" width="120" height="120" />
     <div>
       <h1>{SITE.name}</h1>
+      <p class="role">Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals</p>
       <p class="lead">I connect hospital systems so that the people caring for patients have the information they need.</p>
-      <ul class="links">
-        <li><a href="/about/">About me</a></li>
-        <li><a href="/cv.pdf">CV (PDF)</a></li>
+      <ul class="links actions">
+        <li><a class="button" href="/cv.pdf">Download my CV</a></li>
         <li><a href="/contact/">Contact</a></li>
+        <li><a href="/about/">About me</a></li>
         <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
         <li><a href={SITE.github} rel="me">GitHub</a></li>
       </ul>
