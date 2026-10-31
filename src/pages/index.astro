@@ -21,15 +21,15 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
     <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
-      <li>
-        {
-          SITE.calLink ? (
+      {
+        SITE.calLink && (
+          <li>
             <a class="btn ghost" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
-          ) : (
-            <a class="btn ghost" href="/about/">About me and CV</a>
-          )
-        }
-      </li>
+          </li>
+        )
+      }
+      <li><a class="btn ghost" href="/about/">About me</a></li>
+      <li><a class="btn ghost" href="/cv.pdf">CV (PDF)</a></li>
     </ul>
   </section>
 
