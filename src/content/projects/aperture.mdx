@@ -1,0 +1,57 @@
+---
+title: Aperture
+summary: A management portal for InterSystems IRIS with no separate application server. 2nd place in InterSystems' "Build Your Own Management Portal" contest.
+date: 2026-10-20
+tags: [InterSystems IRIS, React, TypeScript, REST API, Vector Search]
+featured: true
+links:
+  - { label: Try the online demo, href: 'https://mxsalata.github.io/aperture/' }
+  - { label: Source on GitHub, href: 'https://github.com/MxSalata/aperture' }
+  - { label: Open Exchange, href: 'https://openexchange.intersystems.com/package/Aperture' }
+  - { label: The article, href: 'https://community.intersystems.com/post/aperture-management-portal-intersystems-iris-no-separate-application-server' }
+  - { label: The video, href: 'https://youtu.be/5U8rcPj7wJ4' }
+---
+
+Aperture is a set of static files that IRIS serves itself. The browser calls IRIS's own SysAdmin REST API directly,
+signed in as you, so IRIS checks your privileges on every call and audits your changes under your name. It also runs
+interoperability productions, SQL and the FHIR servers of IRIS for Health, through the APIs IRIS's own tools use.
+
+<figure>
+  <img src="/images/aperture/dashboard.webp" alt="Aperture's dashboard: throughput, cache efficiency, processes, licence use, the host's CPU, memory and disk, and the health check's findings" width="1440" height="900" loading="lazy" />
+  <figcaption>The dashboard of a demo instance.</figcaption>
+</figure>
+
+## What it does differently
+
+- **See who loses what before you save.** Remove a role from a user and the review lists every privilege that user
+  loses, before anything is sent.
+- **Health check.** Sixteen read-only checks run with your own access; every finding says what it means, what to do,
+  shows its evidence and opens the screen that fixes it.
+- **Similar log entries.** A small read-only log reader, written in Embedded Python, indexes the instance's messages
+  log with IRIS Vector Search, so an entry shows the others worded like it.
+- **Long jobs in one place.** Integrity checks, compactions and the like land in a Job Center with their console
+  output and progress.
+
+<figure>
+  <img src="/images/aperture/who-loses-what.webp" alt="Aperture's review of a change to a user: one field changes, and the 'Who loses what' box lists the privileges the user loses" width="1440" height="900" loading="lazy" />
+  <figcaption>Reviewing a change to a user's roles.</figcaption>
+</figure>
+
+<figure>
+  <img src="/images/aperture/health-check.webp" alt="Aperture's health check: one critical finding, nineteen warnings and three advice items, each with what to do and a link to the screen that fixes it" width="1440" height="900" loading="lazy" />
+  <figcaption>The health check, with what to do about each finding.</figcaption>
+</figure>
+
+## Try it
+
+The [online demo](https://mxsalata.github.io/aperture/) runs a simulated IRIS inside the page, so you can change
+whatever you like. On real IRIS it's one Docker command or one IPM package; the
+[README](https://github.com/MxSalata/aperture#readme) has both.
+
+While building it I wrote up
+[20 places where the SysAdmin API specification and IRIS disagree](https://community.intersystems.com/post/20-places-where-sysadmin-api-specification-and-iris-disagree).
+
+<figure>
+  <img src="/images/aperture/dark.webp" alt="Aperture's dashboard in its dark theme" width="1440" height="900" loading="lazy" />
+  <figcaption>The dark theme.</figcaption>
+</figure>
