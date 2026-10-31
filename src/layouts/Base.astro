@@ -41,8 +41,10 @@ const person = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {hasWriting && <link rel="alternate" type="application/rss+xml" title={`${SITE.title}: writing`} href="/rss.xml" />}
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111317" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1f2630" media="(prefers-color-scheme: dark)" />
+    <script is:inline src="/theme.js"></script>
+    {SITE.calLink && <script is:inline src="/booking.js" defer></script>}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.title} />
     <meta property="og:title" content={title} />
@@ -65,16 +67,3 @@ const person = {
   </body>
 </html>
 
-<style>
-  .skip {
-    position: absolute;
-    left: -999px;
-  }
-  .skip:focus {
-    left: 1rem;
-    top: 1rem;
-    padding: 0.5rem 0.75rem;
-    background: var(--card);
-    border: 1px solid var(--accent);
-  }
-</style>

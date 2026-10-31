@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDate } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews', ({ data }) => !data.draft);
+  return reviews.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, date, kind, rating, cover } = entry.data;
+---
+
+<Base title={title} description={summary}>
+  <div class="page-head">
+    <div class="kicker">
+      <span class="badge quiet">{kind === 'place' ? 'Place' : 'Product'}</span>
+      {rating && <span class="rating" aria-label={`${rating} out of 5`}>{'★'.repeat(rating)}</span>}
+      <span class="meta">{formatDate(date)}</span>
+    </div>
+    <h1>{title}</h1>
+    <p class="lead">{summary}</p>
+  </div>
+  <article class="paper">
+    {cover && <img src={cover.src} alt={cover.alt} width="1440" height="900" />}
+    <div class="prose"><Content /></div>
+  </article>
+</Base>

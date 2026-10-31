@@ -1,26 +1,95 @@
-:root {
-  color-scheme: light dark;
-  --bg: #fbfbfa;
-  --fg: #1c1d21;
-  --muted: #5b5f6b;
-  --line: #e3e3e0;
-  --card: #ffffff;
-  --accent: #2457c5;
-  --accent-soft: #e8eefb;
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+/* Fonts, served from this site (SIL Open Font License): IBM Plex Sans for headings, Manrope for text. */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url(/fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2');
+  font-weight: 500 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url(/fonts/ibm-plex-sans-latin-700-normal.woff2) format('woff2');
+  font-weight: 700 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url(/fonts/manrope-latin-wght-normal.woff2) format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111317;
-    --fg: #e7e8ea;
-    --muted: #a1a6b3;
-    --line: #262a31;
-    --card: #171a1f;
-    --accent: #8ab4ff;
-    --accent-soft: #1b2638;
-  }
+/* Themes, as Aperture's: Light (ocean teal on cool grey), Pastel (lavender page, periwinkle accent, three calm tints)
+   and Dark (slate). Each colour is defined once, as light-dark(light, dark): with no choice made, color-scheme follows
+   the device; <html data-theme> holds a choice made with the switch. Pastel replaces the colours outright. */
+:root {
+  color-scheme: light dark;
+  --page: light-dark(#ebeef2, #181e26);
+  --surface: light-dark(#f9fafb, #1f2630);
+  --raised: light-dark(#ffffff, #232b36);
+  --header: light-dark(#f9fafb, #1f2630);
+  --text: light-dark(#1a1f27, #e3e8ee);
+  --muted: light-dark(#495057, #b3bcc8);
+  --soft: light-dark(#626a73, #9aa5b3);
+  --line: light-dark(#d5dbe2, #363f4c);
+  /* Borders that are the only outline of a control: 3:1 or more on --surface and --raised. */
+  --control: light-dark(#7b838c, #6b7686);
+  /* Filled buttons and the pressed switch carry white text: 5.4:1 or more in both. */
+  --accent: #0e7299;
+  --accent-hover: light-dark(#095c7c, #095c7c);
+  --accent-text: light-dark(#095c7c, #6fc0dc);
+  --accent-soft: light-dark(#e7f5fa, rgb(69 172 209 / 14%));
+  --on-accent: #ffffff;
+  /* Focus rings and the hovered tile's edge: 3:1 or more on every surface. */
+  --focus: light-dark(#0e7299, #45acd1);
+  --ok: light-dark(#257835, #69db7c);
+  --ok-soft: light-dark(#e6f4ea, rgb(105 219 124 / 12%));
+  --shadow: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
+  --shadow-lift: 0 10px 24px rgb(16 24 40 / 12%), 0 2px 6px rgb(16 24 40 / 8%);
+  /* Tints for tiles (tint-a, tint-b, tint-c); in Light and Dark all three are the plain card. */
+  --tint-a: var(--raised);
+  --edge-a: var(--line);
+  --tint-b: var(--raised);
+  --edge-b: var(--line);
+  --tint-c: var(--raised);
+  --edge-c: var(--line);
+  --font: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-head: 'IBM Plex Sans', var(--font);
+  --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='pastel'] {
+  color-scheme: light;
+  --page: #f0ecf9;
+  --surface: #faf8fe;
+  --raised: #faf8fe;
+  --header: #fbeee3;
+  --text: #282442;
+  --muted: #5a5577;
+  --soft: #5f5980;
+  --line: #cfc9e2;
+  --control: #736d90;
+  --accent: #6050b3;
+  --accent-hover: #51439e;
+  --accent-text: #4f4199;
+  --accent-soft: #e3dcf8;
+  --focus: #6050b3;
+  --ok: #257835;
+  --ok-soft: #dff2e6;
+  --shadow: 0 1px 2px rgb(40 36 66 / 6%), 0 1px 3px rgb(40 36 66 / 8%);
+  --tint-a: #fcfbff;
+  --edge-a: #c4b6ef;
+  --tint-b: #ecf8f1;
+  --edge-b: #b6e1ca;
+  --tint-c: #ecf5fc;
+  --edge-c: #b4d3ef;
 }
 
 *,
@@ -35,21 +104,30 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--page);
+  color: var(--text);
   font-family: var(--font);
   font-size: 1.0625rem;
   line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+main {
+  flex: 1;
+}
+
+/* Wider screens, and zooming out (which widens the viewport in CSS pixels), give the page more room instead of leaving
+   a narrow column in the middle; text blocks keep their own reading widths. */
 .wrap {
-  max-width: 44rem;
+  max-width: max(72rem, 82vw);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-underline-offset: 0.18em;
 }
 
@@ -58,26 +136,18 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 h1,
 h2,
 h3 {
+  font-family: var(--font-head);
   font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-}
-
-h1 {
-  font-size: 2rem;
-  margin: 0 0 0.5rem;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin: 2.5rem 0 0.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 img {
@@ -91,65 +161,295 @@ pre {
   font-size: 0.92em;
 }
 
-pre {
-  overflow-x: auto;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card);
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  vertical-align: -0.15em;
 }
 
-.muted {
-  color: var(--muted);
+.skip {
+  position: absolute;
+  left: -999px;
 }
 
-.lead {
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  padding: 0.5rem 0.75rem;
+  background: var(--raised);
+  border: 1px solid var(--focus);
+}
+
+/* The header: the mark, the navigation and the theme switch */
+.site-header {
+  background: var(--header);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  min-height: 3.75rem;
+  flex-wrap: wrap;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.mark {
+  font-family: var(--font-head);
+  font-weight: 750;
   font-size: 1.15rem;
-  color: var(--muted);
-  margin-top: 0;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.list {
+.mark svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--accent-text);
+}
+
+.site-header nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+.site-header nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.site-header nav a:hover,
+.site-header nav a[aria-current='page'] {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+/* The switch is hidden until theme.js runs, since it does nothing without it. */
+.themes {
+  display: none;
+  margin-left: auto;
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  padding: 2px;
+  background: var(--surface);
+  gap: 2px;
+}
+
+.js .themes {
+  display: inline-flex;
+}
+
+/* The switch with its "UI Themes" label; both appear only when theme.js runs, as the switch needs it. */
+.theme-pick {
+  display: none;
+  margin-left: auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.js .theme-pick {
+  display: inline-flex;
+}
+
+.theme-pick .themes {
+  margin-left: 0;
+}
+
+.theme-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--soft);
+  white-space: nowrap;
+}
+
+.themes button {
+  font: inherit;
+  font-size: 0.8125rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.themes button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.themes button:hover:not([aria-pressed='true']) {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+@media (forced-colors: active) {
+  .themes button[aria-pressed='true'] {
+    outline: 2px solid CanvasText;
+  }
+}
+
+/* The phone menu: a details element, so it opens with no script. Hidden on wider screens, where the links show. */
+.menu {
+  display: none;
+  margin-left: auto;
+}
+
+.menu summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.9375rem;
+}
+
+.menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu[open] summary {
+  background: var(--accent-soft);
+}
+
+.menu-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin-top: 0.6rem;
+  padding: 0.75rem 1.25rem 1rem;
+  background: var(--header);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow);
   display: grid;
   gap: 0.75rem;
 }
 
-.card {
-  display: block;
-  padding: 1rem 1.1rem;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--card);
-  color: inherit;
+.menu-panel nav ul {
+  flex-direction: column;
+}
+
+.menu-panel nav a {
+  display: flex;
+  padding: 0.55rem 0.65rem;
+  font-size: 1rem;
+}
+
+.menu-panel .theme-pick {
+  margin-left: 0;
+  justify-self: start;
+}
+
+.menu-panel .themes {
+  margin-left: 0;
+  justify-self: start;
+}
+
+/* Six links, the "UI Themes" label and the switch need about 68rem; below that, the menu button. */
+@media (max-width: 67.99rem) {
+  .nav-wide,
+  .js .theme-pick.nav-wide {
+    display: none;
+  }
+  .menu {
+    display: block;
+  }
+  .site-header .bar {
+    flex-wrap: nowrap;
+  }
+}
+
+/* Buttons, badges and tags */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.3;
   text-decoration: none;
+  border: 1px solid transparent;
 }
 
-a.card:hover,
-a.card:focus-visible {
-  border-color: var(--accent);
+.btn.primary {
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
-a.card:hover h3,
-a.card:focus-visible h3 {
-  text-decoration: underline;
+.btn.primary:hover {
+  background: var(--accent-hover);
 }
 
-.card h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1.08rem;
-  color: var(--accent);
+.btn.ghost {
+  border-color: var(--control);
+  color: var(--text);
+  background: var(--surface);
 }
 
-.card p {
+.btn.ghost:hover {
+  border-color: var(--focus);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
-.meta {
-  font-size: 0.9rem;
-  color: var(--muted);
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--accent-text);
+  background: var(--accent-soft);
+}
+
+.badge.ok {
+  color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
 }
 
 .tags {
@@ -158,27 +458,305 @@ a.card:focus-visible h3 {
   gap: 0.35rem;
   list-style: none;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 0;
 }
 
 .tags li {
-  font-size: 0.8rem;
-  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--fg);
+  padding: 0.05rem 0.5rem;
+  background: var(--surface);
 }
 
-.links {
+/* The landing page */
+.hero {
+  padding: 2.75rem 0 2rem;
+  display: grid;
+  gap: 1.25rem;
+  max-width: 46rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  letter-spacing: -0.025em;
+}
+
+.hero p:not(.eyebrow) {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--muted);
+  max-width: 38rem;
+}
+
+/* Tiles: the grid of the landing and projects pages. In Pastel each takes the next tint. */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0 0 3rem;
+  padding: 0;
+}
+
+.tile {
+  background: var(--tint, var(--raised));
+  border: 1px solid var(--tint-edge, var(--line));
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-height: 15rem;
+  position: relative;
+  min-width: 0;
+}
+
+.tint-a {
+  --tint: var(--tint-a);
+  --tint-edge: var(--edge-a);
+}
+.tint-b {
+  --tint: var(--tint-b);
+  --tint-edge: var(--edge-b);
+}
+.tint-c {
+  --tint: var(--tint-c);
+  --tint-edge: var(--edge-c);
+}
+
+.tile:has(h2 a:hover) {
+  border-color: var(--focus);
+}
+
+/* The heading's link covers the tile, so the ring goes round the whole tile. */
+.tile:has(h2 a:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tile h2 a:focus-visible {
+  outline: none;
+}
+
+.tile h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.tile h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* The whole tile is the link's target; any other link inside sits above it. */
+.tile h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+
+.tile a:not(h2 a) {
+  position: relative;
+  z-index: 1;
+}
+
+.tile p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.tile .shot {
+  display: block;
+  margin-top: auto;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.tile .glyph {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.tile .glyph svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.tile .more {
+  margin-top: auto;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.span-6 {
+  grid-column: span 6;
+}
+.span-4 {
+  grid-column: span 4;
+}
+.span-3 {
+  grid-column: span 3;
+}
+.span-2 {
+  grid-column: span 2;
+}
+
+/* The strip about the person behind the site: under a thin line, not a box, so it doesn't compete with the tiles */
+.who {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 0 0.5rem;
+  margin: 0 0 2.5rem;
+}
+
+.who img {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 2px solid var(--edge-a);
+}
+
+.who .text {
+  flex: 1 1 16rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.who .text strong {
+  display: block;
+  color: var(--text);
+}
+
+.who .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  padding: 0;
+  gap: 0.4rem 1rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9375rem;
+}
+
+/* A wide tile: text beside its picture (the landing page's lead project) */
+.tile.wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.tile .body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tile.wide .shot {
+  margin-top: 0;
+}
+
+/* Under the text, straight after it, rather than pushed to the foot */
+.tile .shot.under {
+  margin-top: 0;
+  aspect-ratio: auto;
+}
+
+/* Inner pages: a heading block, then the text on a card */
+.page-head {
+  padding: 3rem 0 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 50rem;
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  letter-spacing: -0.025em;
+}
+
+.page-head .lead {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--muted);
+}
+
+.paper {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  margin-bottom: 3rem;
 }
 
 .prose {
+  max-width: 46rem;
   overflow-wrap: anywhere;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose h2 {
+  font-size: 1.4rem;
+  margin: 2.25rem 0 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.15rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.prose pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose :not(pre) > code {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.05rem 0.35rem;
 }
 
 figure {
@@ -197,61 +775,19 @@ figcaption {
   color: var(--muted);
 }
 
-.role {
-  margin: 0 0 0.6rem;
-  font-weight: 600;
-}
-
-.actions {
-  align-items: center;
-}
-
-.hero {
+.page-head .person {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
-.avatar {
-  flex: none;
-  width: 7.5rem;
-  height: 7.5rem;
+.page-head .person img {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
   object-fit: cover;
   object-position: 50% 30%;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-}
-
-.portrait {
-  float: right;
-  width: 13rem;
-  margin: 0.3rem 0 1rem 1.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-}
-
-.button {
-  display: inline-block;
-  padding: 0.55rem 1rem;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--bg);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-@media (max-width: 34rem) {
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .portrait {
-    float: none;
-    display: block;
-    width: 11rem;
-    margin: 0 0 1.25rem;
-  }
+  border: 2px solid var(--line);
 }
 
 table {
@@ -273,8 +809,452 @@ th {
   color: var(--muted);
 }
 
+.meta {
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Contact */
+.contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.contact li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+}
+
+.contact .label {
+  min-width: 6rem;
+  color: var(--soft);
+}
+
+/* The footer */
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--soft);
+  font-size: 0.875rem;
+  padding: 1.5rem 0 2.5rem;
+}
+
+.site-footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+@media (max-width: 52rem) {
+  .tile.wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .span-4,
+  .span-3,
+  .span-2 {
+    grid-column: span 6;
+  }
+  .hero {
+    padding-top: 2.5rem;
+  }
+  .themes {
+    margin-left: 0;
+  }
+}
+
+/* On phones a table becomes stacked entries: the second column (a role) first and bold, the rest beneath. */
 @media (max-width: 34rem) {
-  td:first-child {
-    white-space: nowrap;
+  .prose thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .prose tr {
+    display: flex;
+    flex-direction: column;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .prose td {
+    border: 0;
+    padding: 0;
+  }
+  .prose td:nth-child(2) {
+    order: -1;
+    font-weight: 600;
+  }
+  .prose td:not(:nth-child(2)) {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+/* The knowledge base: groups of names, each with its level */
+.kb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.kb-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  border-top: 1px solid var(--tint-edge, var(--line));
+  padding-top: 0.45rem;
+}
+
+.kb-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.kb-list .name {
+  color: var(--text);
+}
+
+.kb-list .note {
+  display: block;
+  color: var(--soft);
+  font-size: 0.8125rem;
+}
+
+.badge.quiet {
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+/* Reviews */
+.rating {
+  color: var(--accent-text);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+/* The booking dialog (/booking.js): the site's own frame around the Cal.com page. Cal.com's page is light. */
+dialog.booking {
+  width: min(64rem, 100vw - 2rem);
+  height: min(48rem, 100dvh - 2rem);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+dialog.booking[open] {
+  display: flex;
+  flex-direction: column;
+}
+dialog.booking::backdrop {
+  background: rgb(16 24 40 / 55%);
+}
+.booking-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--header);
+}
+.booking-bar span {
+  flex: 1;
+  font-weight: 600;
+}
+.booking-bar a {
+  color: var(--accent-text);
+}
+dialog.booking iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fafafa;
+}
+@media (max-width: 44rem) {
+  dialog.booking {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+/* Secondary hero links: text beside the two buttons. */
+.actions .text-link a {
+  display: inline-block;
+  padding: 0.55rem 0.4rem;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.prose .more {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* The booking dialog's loading line, under the frame until Cal.com's page covers it. */
+dialog.booking .frame-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  background: #fafafa;
+}
+dialog.booking .loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #495057;
+}
+dialog.booking .frame-wrap iframe {
+  position: relative;
+  background: transparent;
+}
+
+/* A project's contest, under its summary. */
+.page-head .contest {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+}
+.page-head .contest svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--accent-text);
+  flex: none;
+}
+
+/* "More projects" tiles: no picture, a plain way on. */
+.tile .more-link {
+  margin-top: auto;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+/* Article pictures get the same thin edge as tile pictures, so dark screenshots don't melt into a dark page. */
+.prose img {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+/* Knowledge: each card as tall as its list, not as its neighbour. */
+.bento.kb-grid {
+  align-items: start;
+}
+.kb-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+/* Contact: the booking first, then the ways to write. */
+.contact-card .book {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.contact-card .book p {
+  margin: 0;
+}
+.contact .best {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+/* Phones: cards keep their size from their content, with a little less padding. */
+@media (max-width: 44rem) {
+  .tile {
+    min-height: 0;
+    padding: 1.4rem;
+  }
+}
+
+/* Side-by-side project tiles: both pictures the same shape, from their top left. */
+.bento .tile.span-3 .shot.under {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* A project link that isn't live yet: shaped like its button, clearly inactive. */
+.btn.soon {
+  border: 1px dashed var(--control);
+  color: var(--muted);
+  cursor: default;
+}
+
+.btn.soon .soon-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+/* Motion: small and quick, on screens only, and none at all for visitors whose device asks for less. Keyframes give
+   only their start, and fill backwards, so nothing holds a transform after it ends and the hover lift still works. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* Colours ease when the theme changes. */
+  body,
+  .site-header,
+  .site-footer,
+  .paper,
+  .badge,
+  .tags li,
+  .themes button {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .tile {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .btn {
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  /* The page arrives: its heading first, then the first row of tiles. */
+  .hero,
+  .page-head {
+    animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+
+  .bento > li {
+    animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+    animation-delay: 0.1s;
+  }
+
+  .bento > li:nth-child(2) {
+    animation-delay: 0.18s;
+  }
+
+  .bento > li:nth-child(n + 3) {
+    animation-delay: 0.26s;
+  }
+
+  /* Further down, tiles, pictures and the foot strip rise into view as they scroll in, where the browser can. */
+  @supports (animation-timeline: view()) {
+    .bento > li:nth-child(n + 3),
+    .prose figure,
+    .who {
+      animation: rise linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+      animation-delay: 0s;
+    }
+  }
+
+  /* Tiles lift a little under the pointer, or when their link has keyboard focus; buttons nudge up. */
+  .tile:hover,
+  .tile:has(h2 a:focus-visible) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .btn:not(.soon):hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  /* The phone menu and the booking dialog open with a short fade. */
+  .menu[open] .menu-panel {
+    animation: drop 0.2s ease-out;
+  }
+
+  dialog.booking[open] {
+    animation: pop 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  dialog.booking[open]::backdrop {
+    animation: fade 0.22s ease-out;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
   }
 }

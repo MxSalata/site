@@ -13,9 +13,10 @@ const { Content } = await render(entry);
 ---
 
 <Base title={entry.data.title} description={entry.data.summary} canonical={entry.data.canonical}>
-  <article class="prose">
+  <div class="page-head">
+    <p class="eyebrow">Writing &middot; {formatDate(entry.data.date)}</p>
     <h1>{entry.data.title}</h1>
-    <p class="meta">{formatDate(entry.data.date)}</p>
+    <p class="lead">{entry.data.summary}</p>
     {
       entry.data.canonical && (
         <p class="meta">
@@ -23,6 +24,8 @@ const { Content } = await render(entry);
         </p>
       )
     }
-    <Content />
+  </div>
+  <article class="paper">
+    <div class="prose"><Content /></div>
   </article>
 </Base>

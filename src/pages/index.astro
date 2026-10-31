@@ -1,74 +1,60 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { SITE, formatDate } from '../lib/site';
+import Icon from '../components/Icon.astro';
+import ProjectTile from '../components/ProjectTile.astro';
+import { SITE, projectOrder, bookingHref } from '../lib/site';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
 const featured = projects.filter((p) => p.data.featured);
 const shown = featured.length ? featured : projects.slice(0, 3);
-const writing = (await getCollection('writing', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
 ---
 
-<Base title={`${SITE.name}, healthcare integration engineer`} description={SITE.description}>
-  <div class="hero">
-    <img class="avatar" src="/images/mikolaj-salata.jpg" alt="Photo of Mikolaj Salata" width="120" height="120" />
-    <div>
-      <h1>{SITE.name}</h1>
-      <p class="role">Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals</p>
-      <p class="lead">I connect hospital systems so that the people caring for patients have the information they need.</p>
-      <ul class="links actions">
-        <li><a class="button" href="/cv.pdf">Download my CV</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/about/">About me</a></li>
-        <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
-        <li><a href={SITE.github} rel="me">GitHub</a></li>
-      </ul>
-    </div>
-  </div>
+<Base title={`${SITE.name}: interoperability solutions for NHS hospitals, councils and clinics`} description={SITE.description}>
+  <section class="hero">
+    <p class="eyebrow">Projects and writing on healthcare integration</p>
+    <h1>Interoperability solutions for NHS hospitals, councils and clinics.</h1>
+    <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
+    <ul class="actions">
+      <li><a class="btn primary" href="/projects/">See the projects</a></li>
+      {
+        SITE.calLink && (
+          <li>
+            <a class="btn ghost" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
+          </li>
+        )
+      }
+      <li class="text-link"><a href="/about/">About me</a></li>
+      <li class="text-link"><a href="/cv.pdf">CV (PDF)</a></li>
+    </ul>
+  </section>
 
-  {
-    shown.length > 0 && (
-      <section>
-        <h2>Projects</h2>
-        <ul class="list">
-          {shown.map((p) => (
-            <li>
-              <a class="card" href={`/projects/${p.id}/`}>
-                <h3>{p.data.title}</h3>
-                <p>{p.data.summary}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p>
-          <a href="/projects/">All projects</a>
-        </p>
-      </section>
-    )
-  }
+  <ul class="bento">
+    {shown.map((p, i) => <ProjectTile project={p} span={3} tint={i % 2 ? 'b' : 'a'} />)}
+    <li class="tile tint-c span-3">
+      <div class="glyph"><Icon name="book" /></div>
+      <h2><a href="/knowledge/">Knowledge</a></h2>
+      <p>The standards, platforms and NHS services I work with, and the notes behind the projects.</p>
+    </li>
+    <li class="tile tint-a span-3">
+      <div class="glyph"><Icon name="star" /></div>
+      <h2><a href="/reviews/">Reviews</a></h2>
+      {reviews.length ? <p>Latest: {reviews[0].data.title}</p> : <p>Places and products I'd recommend, or wouldn't.</p>}
+      {!reviews.length && <ul class="tags"><li>Coming soon</li></ul>}
+    </li>
+  </ul>
 
-  {
-    writing.length > 0 && (
-      <section>
-        <h2>Writing</h2>
-        <ul class="list">
-          {writing.map((w) => (
-            <li>
-              <a class="card" href={`/writing/${w.id}/`}>
-                <h3>{w.data.title}</h3>
-                <p class="meta">{formatDate(w.data.date)}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p>
-          <a href="/writing/">All writing</a>
-        </p>
-      </section>
-    )
-  }
+  <section class="who" aria-label="Who made this site">
+    <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
+    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals, councils and clinics.</p>
+    <ul class="links">
+      {SITE.calLink && <li><a href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
+      <li><a href="/cv.pdf">CV (PDF)</a></li>
+      <li><a href={SITE.linkedin} rel="me">LinkedIn</a></li>
+      <li><a href={SITE.github} rel="me">GitHub</a></li>
+    </ul>
+  </section>
 </Base>

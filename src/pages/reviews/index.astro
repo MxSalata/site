@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDate } from '../../lib/site';
+
+const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const tints = ['a', 'b', 'c'] as const;
+---
+
+<Base title="Reviews" description="Places and products Mikolaj Salata recommends, or doesn't." noindex={reviews.length === 0}>
+  <div class="page-head">
+    <p class="eyebrow">Reviews</p>
+    <h1>Places and products</h1>
+    <p class="lead">Things I'd recommend, or wouldn't, from coffee machines to cafés.</p>
+  </div>
+  {
+    reviews.length === 0 ? (
+      <div class="paper">
+        <p>
+          The first reviews are on their way: places I've been and products I use, from coffee machines to cafés. Meanwhile,
+          see the <a href="/projects/">projects</a> or what I <a href="/knowledge/">work with</a>.
+        </p>
+      </div>
+    ) : (
+      <ul class="bento">
+        {reviews.map((r, i) => (
+          <li class={`tile tint-${tints[i % 3]} span-2`}>
+            <div class="kicker">
+              <span class="badge quiet">{r.data.kind === 'place' ? 'Place' : 'Product'}</span>
+              {r.data.rating && <span class="rating" aria-label={`${r.data.rating} out of 5`}>{'★'.repeat(r.data.rating)}</span>}
+            </div>
+            <h2>
+              <a href={`/reviews/${r.id}/`}>{r.data.title}</a>
+            </h2>
+            <p>{r.data.summary}</p>
+            <p class="meta">{formatDate(r.data.date)}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Base>
