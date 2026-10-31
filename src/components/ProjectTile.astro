@@ -7,12 +7,14 @@ interface Props {
   tint: 'a' | 'b' | 'c';
   /** Text beside the picture, for the lead tile. */
   wide?: boolean;
+  /** Title, summary and link only: the "More projects" tiles at the foot of a project page. */
+  compact?: boolean;
 }
-const { project, span, tint, wide = false } = Astro.props;
+const { project, span, tint, wide = false, compact = false } = Astro.props;
 const { title, summary, award, cover, tags } = project.data;
 const href = `/projects/${project.id}/`;
 // Tiles use the clean tile picture when there is one (the full-size images carry a corner credit).
-const picture = cover && { src: cover.tile ?? cover.src, alt: cover.alt, under: Boolean(cover.tile) && !wide };
+const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.alt, under: Boolean(cover.tile) && !wide };
 ---
 
 <li class={`tile tint-${tint} span-${span}${wide ? ' wide' : ''}`}>
@@ -20,7 +22,8 @@ const picture = cover && { src: cover.tile ?? cover.src, alt: cover.alt, under: 
     {award && <div class="kicker"><span class={/place/i.test(award) ? 'badge ok' : 'badge'}>{award}</span></div>}
     <h2><a href={href}>{title}</a></h2>
     <p>{summary}</p>
-    {(wide || span >= 3) && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
+    {compact && <p class="more-link">Read about {title} <span aria-hidden="true">→</span></p>}
+    {!compact && (wide || span >= 3) && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
   </div>
   {picture && <img class={picture.under ? 'shot under' : 'shot'} src={picture.src} alt={picture.alt} width="1440" height="900" loading="lazy" />}
 </li>

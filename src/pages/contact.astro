@@ -9,27 +9,36 @@ import { SITE, bookingHref } from '../lib/site';
     <h1>Get in touch</h1>
     <p class="lead">For work, projects or anything on this site.</p>
   </div>
-  <div class="paper">
+  <div class="paper contact-card">
+    {
+      SITE.calLink && (
+        <div class="book">
+          <a class="btn primary" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
+          <p class="muted">Pick a time that suits you, in Cal.com's calendar.</p>
+        </div>
+      )
+    }
     <ul class="contact">
-      {
-        SITE.calLink && (
-          <li>
-            <a class="btn primary" href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a>
-            <span class="muted">Pick a time that suits you. Opens Cal.com's calendar.</span>
-          </li>
-        )
-      }
       <li>
         <span class="label">Email</span>
-        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <span>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <span class="best">Best for work enquiries and anything longer.</span>
+        </span>
       </li>
       <li>
         <span class="label">LinkedIn</span>
-        <a href={SITE.linkedin} rel="me">linkedin.com/in/msalata</a>
+        <span>
+          <a href={SITE.linkedin} rel="me">linkedin.com/in/msalata</a>
+          <span class="best">Best for a quick professional hello.</span>
+        </span>
       </li>
       <li>
         <span class="label">GitHub</span>
-        <a href={SITE.github} rel="me">github.com/MxSalata</a>
+        <span>
+          <a href={SITE.github} rel="me">github.com/MxSalata</a>
+          <span class="best">Best for questions about Aperture or Shutter's code.</span>
+        </span>
       </li>
     </ul>
   </div>

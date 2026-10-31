@@ -19,7 +19,7 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
       years of daily use; <strong>Working</strong> means I've used it on real projects.
     </p>
   </div>
-  <ul class="bento">
+  <ul class="bento kb-grid">
     {
       KNOWLEDGE.map((g, i) => (
         <li class={`tile tint-${tints[i % 3]} span-3`}>
@@ -36,6 +36,7 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
               </li>
             ))}
           </ul>
+          {g.note && <p class="kb-note">{g.note}</p>}
         </li>
       ))
     }

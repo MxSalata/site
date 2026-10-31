@@ -640,7 +640,7 @@ pre {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
   gap: 1.25rem;
-  align-items: center;
+  align-items: start;
 }
 
 .tile .body {
@@ -1032,4 +1032,45 @@ dialog.booking .frame-wrap iframe {
   height: 1.1rem;
   color: var(--accent-text);
   flex: none;
+}
+
+/* "More projects" tiles: no picture, a plain way on. */
+.tile .more-link {
+  margin-top: auto;
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+/* Article pictures get the same thin edge as tile pictures, so dark screenshots don't melt into a dark page. */
+.prose img {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+/* Knowledge: each card as tall as its list, not as its neighbour. */
+.bento.kb-grid {
+  align-items: start;
+}
+.kb-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+/* Contact: the booking first, then the ways to write. */
+.contact-card .book {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.contact-card .book p {
+  margin: 0;
+}
+.contact .best {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--soft);
 }

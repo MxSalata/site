@@ -57,7 +57,7 @@ const { title, summary, date, tags, links, award, contest } = entry.data;
         <h2 class="section-title">More projects</h2>
         <ul class="bento">
           {others.map((p, i) => (
-            <ProjectTile project={p} span={3} tint={i % 2 ? 'c' : 'b'} />
+            <ProjectTile project={p} span={3} tint={i % 2 ? 'c' : 'b'} compact />
           ))}
         </ul>
       </section>

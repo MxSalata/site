@@ -9,6 +9,8 @@ export interface Item {
 export interface Group {
   title: string;
   intro: string;
+  /** Shown under the list, e.g. why a group has no levels. */
+  note?: string;
   items: Item[];
 }
 
@@ -48,6 +50,7 @@ export const KNOWLEDGE: Group[] = [
   {
     title: 'Systems I have integrated with',
     intro: 'On the other end of the interfaces.',
+    note: 'No levels here: these are the systems my interfaces connect to, not tools I run.',
     items: [
       { name: 'Lorenzo (Dedalus)', note: 'patient administration' },
       { name: 'MOLIS', note: 'laboratory' },
@@ -60,6 +63,7 @@ export const KNOWLEDGE: Group[] = [
   {
     title: 'Shared care records',
     intro: 'Regional records that bring care settings together.',
+    note: 'No levels here: these are the records my work fed.',
     items: [
       { name: 'Interweave (Yorkshire & Humber Care Record)', note: 'data provision over FHIR' },
       { name: 'Leicester, Leicestershire and Rutland Care Record', note: 'social care data' },
