@@ -33,7 +33,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
   </section>
 
   <ul class="bento">
-    {shown.map((p, i) => <ProjectTile project={p} span={3} tint={i % 2 ? 'b' : 'a'} />)}
+    {shown.map((p, i) => <ProjectTile project={p} span={3} tint={i % 2 ? 'b' : 'c'} />)}
     <li class={`tile tint-c ${reviews.length ? 'span-3' : 'span-6 band'}`}>
       <div class="glyph"><Icon name="book" /></div>
       <h2><a href="/knowledge/">Knowledge</a></h2>

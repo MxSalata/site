@@ -21,7 +21,7 @@ const href = `/projects/${project.id}/`;
 const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.alt, under: Boolean(cover.tile) && !wide, themed: Boolean(cover.themed) };
 ---
 
-<li class={`tile tint-${tint} span-${span}${wide ? ' wide' : ''}`}>
+<li class={`tile${compact ? ' fit' : ''} tint-${tint} span-${span}${wide ? ' wide' : ''}`}>
   <div class="body">
     {
       award && (
