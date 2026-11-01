@@ -987,40 +987,6 @@ th {
   margin: 0 0 1rem;
 }
 
-/* The knowledge base: groups of names, each with its level */
-.kb-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.kb-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
-  font-size: 0.9375rem;
-  border-top: 1px solid var(--tint-edge, var(--line));
-  padding-top: 0.45rem;
-}
-
-.kb-list li:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.kb-list .name {
-  color: var(--text);
-}
-
-.kb-list .note {
-  display: block;
-  color: var(--soft);
-  font-size: 0.8125rem;
-}
-
 .badge.quiet {
   color: var(--muted);
   background: var(--surface);
@@ -1176,16 +1142,6 @@ picture.theme-light {
   :root:not([data-theme]) picture.theme-dark {
     display: contents;
   }
-}
-
-/* Knowledge: each card as tall as its list, not as its neighbour. */
-.bento.kb-grid {
-  align-items: start;
-}
-.kb-note {
-  margin: 0.75rem 0 0;
-  font-size: 0.9rem;
-  color: var(--soft);
 }
 
 /* Contact: the booking first, then the ways to write. */
@@ -1357,4 +1313,440 @@ picture.theme-light {
   from {
     opacity: 0;
   }
+}
+
+/* Knowledge page: the Integration map. A map of six areas (systems, platforms, national services, shared care records,
+   then standards and infrastructure as bands) under an at-a-glance tile, with search and level filters that need
+   /knowledge.js. Every class is prefixed kb- (apart from the strip's w-*), and the page's <main> carries .kb. */
+
+main.kb { width: 100%; padding-bottom: 3rem; }
+.kb-sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.kb [hidden] { display: none !important; }
+
+/* ---------- Tints: no two touching tiles share one (Light and Dark: the plain raised surface) ---------- */
+.kb-glance, .kb-z1, .kb-z2, .kb-z3, .kb-z4, .kb-z5, .kb-z6 { background: var(--tint); border: 1px solid var(--tint-edge); }
+.kb-glance { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+.kb-z1 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+.kb-z2 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+.kb-z3 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+.kb-z4 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+.kb-z5 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+.kb-z6 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+
+/* ---------- Shared pieces: glyph, zone head, tally ---------- */
+.kb-glyph {
+  flex: none; display: grid; place-items: center; width: 2.25rem; height: 2.25rem;
+  border-radius: 10px; background: var(--accent-soft); color: var(--accent-text);
+}
+.kb-glyph svg { width: 1.25rem; height: 1.25rem; }
+.kb-zh { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .2rem .85rem; align-items: start; }
+.kb-zh h2 { margin: 0; font-size: 1.3rem; line-height: 1.2; }
+.kb-zt { min-width: 0; }
+.kb-intro { margin: .2rem 0 0; color: var(--muted); font-size: .9375rem; line-height: 1.4; }
+.kb-tally { display: flex; flex-wrap: wrap; gap: 0 .85rem; margin: .45rem 0 0; color: var(--muted); font-size: .875rem; font-weight: 600; line-height: 1.6; }
+.kb-count { color: var(--text); }
+.kb-lv { white-space: nowrap; }
+.kb-lv .kb-meter { margin-right: .3rem; vertical-align: -.1rem; color: var(--accent-text); }
+
+/* The level mark: three rising bars, filled by level. The word always sits beside it. */
+.kb-meter { display: inline-flex; align-items: flex-end; gap: 2px; height: .8rem; }
+.kb-meter i { display: block; width: 3px; border-radius: 1px; background: currentColor; opacity: .3; }
+.kb-meter i:nth-child(1) { height: .35rem; }
+.kb-meter i:nth-child(2) { height: .58rem; }
+.kb-meter i:nth-child(3) { height: .8rem; }
+.kb-meter.m1 i:nth-child(1), .kb-meter.m2 i:nth-child(-n+2), .kb-meter.m3 i { opacity: 1; }
+
+/* ---------- At a glance: the heading and the total on one row, then a row per level with its names ---------- */
+.kb-glance {
+  container: kg / inline-size;
+  padding: 1.5rem; margin: 0 0 1.25rem;
+  border-radius: 14px; box-shadow: var(--shadow);
+}
+/* The inner grid: a container cannot restyle itself, so the layout lives one level down. */
+.kb-gl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem 1.5rem; align-content: start; }
+.kb-glance .kb-zh { align-items: center; }
+.kb-glance-body { display: contents; }
+.kb-total { display: grid; gap: .6rem; align-content: start; min-width: 0; }
+.kb-big { display: flex; align-items: baseline; gap: .6rem; margin: 0; color: var(--text); }
+.kb-num { font-family: var(--font-head); font-weight: 700; font-size: 3rem; line-height: 1; letter-spacing: -.03em; }
+.kb-big-label { font-size: .9375rem; color: var(--muted); }
+
+/* One block per item. Deep solid, Working outlined and tinted, Overview dashed, No level a ring: shape, not colour alone. */
+.kb-waffle { display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); gap: 3px; max-width: 24rem; }
+.kb-waffle i, .kb-sw { display: block; box-sizing: border-box; height: 1.15rem; border-radius: 3px; }
+.w-deep { background: var(--accent-text); border: 2px solid var(--accent-text); }
+.w-working { background: var(--accent-soft); border: 2px solid var(--accent-text); }
+.w-overview { background: transparent; border: 2px dashed var(--accent-text); }
+.w-none {
+  border: 2px solid transparent;
+  background:
+    radial-gradient(circle, transparent 0 2px, var(--accent-text) 2.5px 4.5px, transparent 5px) no-repeat center / 100% 100%,
+    var(--accent-soft);
+}
+.kb-sw { flex: none; width: 1.1rem; height: 1.1rem; }
+
+/* The levels: hairlines between rows, no boxes. Phones: the count and meaning, then the names. */
+.kb-legend { margin: 0; padding: 0; list-style: none; }
+.kb-leg {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: .3rem;
+  padding: .7rem 0; border-top: 1px solid var(--tint-edge);
+}
+.kb-leg-row { display: flex; align-items: flex-start; gap: .65rem; min-width: 0; }
+.kb-leg-row .kb-sw { margin-top: .2rem; }
+.kb-leg-text { font-size: .9375rem; line-height: 1.4; color: var(--muted); }
+.kb-leg-text strong { color: var(--text); font-size: 1rem; margin-right: .3rem; }
+.kb-names { margin: 0; padding: 0 0 0 1.75rem; list-style: none; font-size: .9375rem; line-height: 1.6; color: var(--text); word-spacing: .85em; }
+.kb-leg:first-child .kb-names { font-weight: 600; }
+/* Each name wraps whole (an inline-block moves to the next line rather than breaking), and its separator dot follows the name's
+   last line: it is the name's own ::after, joined to the last word, so it cannot start a line or hang at the end of a line the
+   name did not finish. The dot is a zero-width box that draws past the name into the space after it (the list widens its spaces
+   to hold it; a margin on the name would narrow the room the name has), so it never counts towards the name's own width: a name
+   that fits a line on its own is never broken to make room for its dot, and at the end of a line the dot hangs, with the space,
+   into the tile's padding. A name longer than a line still wraps inside its own box. The dot has an empty text alternative, so
+   a screen reader does not read it. */
+.kb-names li { display: inline-block; max-width: 100%; word-spacing: normal; }
+.kb-names li:not(:last-child)::after {
+  content: "\2022";
+  content: "\2022" / "";
+  display: inline-block; width: 0; text-indent: .6em; white-space: nowrap;
+  font-size: .8em; font-weight: 400; color: var(--control);
+}
+
+/* A little wider: the total sits on one row (number, label, strip). */
+@container kg (min-width: 36rem) {
+  .kb-total { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 1.25rem; }
+  .kb-names { padding-left: 1.75rem; }
+}
+/* Wide enough for the heading and the total to share the first row, and for each level to be a row with its names beside it. */
+@container kg (min-width: 56rem) {
+  .kb-gl { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+  .kb-glance .kb-zh { grid-column: 1; grid-row: 1; }
+  .kb-total { grid-column: 2; grid-row: 1; justify-self: end; }
+  .kb-legend { grid-column: 1 / -1; grid-row: 2; }
+  .kb-waffle { width: 22rem; }
+  .kb-leg { grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr); column-gap: 1.5rem; align-items: start; }
+  .kb-names { padding: 0; }
+}
+/* Phone: tighter, so the tile is not much more than one screen. The names stay at full size: they are the point. */
+@container kg (max-width: 30rem) {
+  .kb-gl { gap: .6rem; }
+  .kb-total { gap: .45rem; }
+  .kb-num { font-size: 2.25rem; }
+  .kb-big { gap: .5rem; }
+  .kb-waffle i { height: .85rem; }
+  .kb-leg { padding: .4rem 0 .1rem; gap: .05rem; }
+  .kb-leg:last-child { padding-bottom: 0; }
+  .kb-leg-text { font-size: .875rem; line-height: 1.35; }
+  .kb-leg-text strong { font-size: .9375rem; }
+  .kb-names { font-size: .875rem; line-height: 1.4; }
+}
+
+/* ---------- Search and level filter (they exist only with JavaScript) ---------- */
+.kb-tools { display: none; }
+.js .kb-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .6rem .9rem;
+  align-items: center;
+  margin: 0 0 1.25rem;
+  padding: .6rem .7rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.kb-search { position: relative; display: block; min-width: 0; }
+.kb-search label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.kb-search svg { position: absolute; left: .8rem; top: 50%; width: 1.05rem; height: 1.05rem; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.kb-search input {
+  width: 100%; min-height: 2.6rem; padding: .5rem 2.6rem .5rem 2.5rem;
+  font: inherit; font-size: 1rem; color: var(--text);
+  background: var(--raised); border: 1px solid var(--control); border-radius: 8px;
+  appearance: none; -webkit-appearance: none;
+}
+.kb-search input::placeholder { color: var(--muted); opacity: 1; }
+.kb-search input:hover { border-color: var(--text); }
+.kb-search input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-color: var(--focus); }
+/* The browser's own clear button is heavy and off-palette: a 24px target with a thin cross in the muted text colour (no images, so the CSP is untouched). */
+.kb-search input::-webkit-search-cancel-button {
+  -webkit-appearance: none; appearance: none; cursor: pointer; width: 1.5rem; height: 1.5rem; margin-right: -.3rem;
+  background:
+    linear-gradient(45deg, transparent 44%, var(--muted) 44% 56%, transparent 56%) no-repeat center / 62% 62%,
+    linear-gradient(-45deg, transparent 44%, var(--muted) 44% 56%, transparent 56%) no-repeat center / 62% 62%;
+}
+.kb-seg {
+  display: flex; flex-wrap: wrap; gap: 2px; padding: 2px; max-width: 100%;
+  border: 1px solid var(--control); background: var(--raised); border-radius: 8px;
+}
+.kb-seg button {
+  flex: 1 1 auto; font: inherit; font-size: .875rem; font-weight: 600; color: var(--muted);
+  background: transparent; border: 0; border-radius: 6px; padding: .35rem .5rem; min-height: 2.25rem; cursor: pointer;
+}
+.kb-seg button:hover:not([aria-pressed="true"]) { color: var(--text); background: var(--accent-soft); }
+/* The pressed button is filled and underlined, so it does not rely on the fill alone. */
+.kb-seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .22em; }
+.kb-seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.kb-status { margin: 0; min-height: 4.2em; color: var(--muted); font-size: .875rem; line-height: 1.4; }
+/* The empty result: one line inside the map, with the way back (the status line says what was not found). */
+.kb-empty { grid-column: 1 / -1; margin: .25rem 0 0; color: var(--text); font-size: 1.0625rem; }
+.kb-link {
+  font: inherit; font-weight: 600; color: var(--accent-text); background: none; border: 0; padding: .1rem .25rem; margin-left: -.25rem;
+  border-radius: 4px; text-decoration: underline; text-underline-offset: .18em; cursor: pointer;
+}
+.kb-link:hover { text-decoration-thickness: 2px; }
+.kb-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (width >= 34rem) { .kb-status { min-height: 2.8em; } }
+@media (width >= 48rem) {
+  .js .kb-tools {
+    grid-template-columns: minmax(11rem, 22rem) max-content;
+    justify-content: start;
+    position: sticky; top: .6rem; z-index: 20;
+  }
+  .kb-seg { flex-wrap: nowrap; }
+  .kb-seg button { flex: none; padding: .35rem .85rem; }
+  .kb-status { grid-column: 1 / -1; min-height: 1.4em; }
+}
+/* Room for the status line beside the buttons: the sticky bar stays one row high. */
+@media (width >= 64rem) {
+  .js .kb-tools { grid-template-columns: minmax(11rem, 20rem) max-content minmax(0, 1fr); justify-content: stretch; }
+  .kb-status { grid-column: auto; min-height: 2.8em; align-self: center; display: flex; align-items: center; }
+}
+
+/* ---------- The map ---------- */
+.kb-map { --kb-gap: 2.25rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--kb-gap); }
+.kb-lane { display: none; }
+
+.kb-zone {
+  position: relative; min-width: 0; padding: 1.5rem;
+  border-radius: 14px; box-shadow: var(--shadow);
+  container: kz / inline-size;
+}
+.kb-z1 { z-index: 6; } .kb-z2 { z-index: 5; } .kb-z3 { z-index: 4; }
+.kb-z4 { z-index: 3; } .kb-z5 { z-index: 2; } .kb-z6 { z-index: 1; }
+.kb-zin { display: flex; flex-direction: column; gap: 1rem; height: 100%; }
+
+/* The hub: where the interfaces run. It carries the accent rule, the lift and a little more width. */
+.kb-hub { box-shadow: inset 0 3px 0 var(--accent), var(--shadow-lift); }
+.kb-hub .kb-zh {
+  margin: -1.5rem -1.5rem 0; padding: 1.5rem 1.5rem 1rem;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-radius: 13px 13px 0 0;
+}
+.kb-hub .kb-zh h2 { font-size: 1.4rem; }
+.kb-hub .kb-name { font-size: 1rem; }
+
+/* ---------- Items: rounded rows, the level pill in the same place on every row ---------- */
+/* A tile taller than its own list (its neighbour has more) lets the rows grow, but never past 4.5rem, so a short list is not stretched into airy rows. */
+.kb-items {
+  flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: .5rem; align-content: stretch; margin: 0; padding: 0; list-style: none;
+}
+.kb-item {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n l" "d d";
+  column-gap: .75rem; row-gap: .15rem; align-items: start; align-content: center;
+  min-width: 0; padding: .65rem .85rem; border-radius: 10px;
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  border: 1px solid var(--tint-edge);
+  border: 1px solid color-mix(in srgb, var(--tint-edge) 80%, transparent);
+}
+.kb-name { grid-area: n; font-weight: 600; font-size: .9375rem; line-height: 1.4; color: var(--text); overflow-wrap: anywhere; }
+.kb-itnote { grid-area: d; color: var(--muted); font-size: .875rem; line-height: 1.45; }
+.kb-level, .kb-mark { grid-area: l; align-self: start; }
+.kb-level {
+  display: inline-flex; align-items: center; gap: .4rem; padding: .12rem .65rem .12rem .5rem; margin-top: -.12rem;
+  border-radius: 999px; font-size: .8125rem; font-weight: 700; line-height: 1.5; white-space: nowrap;
+  color: var(--accent-text); background: var(--accent-soft); border: 1px solid transparent;
+}
+[data-level="Working"] .kb-level { background: transparent; border-color: var(--control); color: var(--text); font-weight: 600; }
+[data-level="Overview"] .kb-level { background: transparent; border: 1px dashed var(--control); color: var(--muted); font-weight: 600; }
+.kb-level .kb-meter { color: var(--accent-text); }
+[data-level="Overview"] .kb-level .kb-meter { color: var(--muted); }
+[data-level="Working"] .kb-level .kb-meter { color: var(--text); }
+/* Items with no level: an icon where the pill would be, so the row looks finished. */
+.kb-mark { display: grid; place-items: center; color: var(--muted); margin-top: .1rem; }
+.kb-mark svg { width: 1.1rem; height: 1.1rem; }
+
+/* A group's own note: a calm line at the foot of its tile. */
+.kb-znote {
+  display: flex; gap: .55rem; align-items: flex-start; margin: auto 0 0; padding-top: .9rem;
+  border-top: 1px solid var(--tint-edge); color: var(--muted); font-size: .875rem; line-height: 1.5;
+}
+.kb-znote svg { flex: none; width: 1.05rem; height: 1.05rem; margin-top: .15rem; color: var(--accent-text); }
+
+@media (width >= 48rem) { .kb-items { grid-auto-rows: minmax(min-content, 4.5rem); } }
+
+/* ---------- The bands (standards, infrastructure): equal columns by the tile's own width, never a cell under about 18rem (the pill
+   sits beside the name, so a narrower cell wraps long names to three lines); the heading sits beside the list once there is room ---------- */
+@container kz (min-width: 34rem) { .kb-band .kb-items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container kz (min-width: 56rem) { .kb-band .kb-items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* With the heading beside the list (19rem and a 2rem gap), the list has 21rem less: two columns until the tile is 77rem wide. */
+@container kz (min-width: 66rem) {
+  .kb-band .kb-items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kb-band .kb-zin { display: grid; grid-template-columns: 19rem minmax(0, 1fr); column-gap: 2rem; row-gap: 0; align-content: start; align-items: start; }
+  .kb-band .kb-zh { grid-column: 1; grid-row: 1; }
+  .kb-band .kb-items { grid-column: 2; grid-row: 1 / span 2; }
+  .kb-band .kb-znote { grid-column: 1; grid-row: 2; margin: 1rem 0 0; }
+}
+@container kz (min-width: 77rem) { .kb-band .kb-items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@container kz (min-width: 136rem) { .kb-band .kb-items { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+/* In a band, rows share a height but each item's text starts at the top, so the level pills line up. */
+.kb-band .kb-item { align-content: start; }
+.kb-band .kb-items { grid-auto-rows: auto; }
+
+/* ---------- Connectors: decorative lanes between the areas (empty, aria-hidden), and short stubs below tiles ---------- */
+/* A short vertical stub from the foot of a tile to the next one, a dot at each end. */
+.kb-zone::after {
+  content: ""; position: absolute; left: calc(50% - 4px); top: calc(100% - 4px);
+  width: 8px; height: calc(var(--kb-gap) + 8px); pointer-events: none;
+  background-image:
+    linear-gradient(var(--control), var(--control)),
+    radial-gradient(circle, var(--control) 0 3.5px, transparent 4px),
+    radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
+  background-size: 2px calc(100% - 8px), 8px 8px, 8px 8px;
+  background-position: center, center top, center bottom;
+  background-repeat: no-repeat;
+}
+.kb-z6::after { display: none; }
+
+/* Tablet: two columns, so the width is used. Systems beside the platforms, then the national services beside the care records,
+   with lanes only where they follow the reading order: across the first row, and down into the standards and the tools. */
+@media (width >= 48rem) {
+  .kb-map:not(.is-filtering) {
+    grid-template-columns: minmax(0, 1fr) 2.25rem minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: var(--kb-gap);
+  }
+  .kb-map:not(.is-filtering) .kb-z1 { grid-column: 1; grid-row: 1; }
+  .kb-map:not(.is-filtering) .kb-z2 { grid-column: 3; grid-row: 1; }
+  .kb-map:not(.is-filtering) .kb-z3 { grid-column: 1; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-z4 { grid-column: 3; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 3; }
+  .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 4; }
+  .kb-map:not(.is-filtering) .kb-z1::after, .kb-map:not(.is-filtering) .kb-z2::after { display: none; }
+  .kb-map:not(.is-filtering) .kb-l1 {
+    display: block; position: relative; z-index: 8; grid-column: 2; grid-row: 1;
+  }
+  .kb-map:not(.is-filtering) .kb-l1::before {
+    content: ""; position: absolute; left: -4px; right: -4px; top: calc(50% - 4px); height: 8px;
+    background-image:
+      linear-gradient(var(--control), var(--control)),
+      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px),
+      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
+    background-size: calc(100% - 8px) 2px, 8px 8px, 8px 8px;
+    background-position: center, left center, right center;
+    background-repeat: no-repeat;
+  }
+  /* tablet tints: the tile below a tile, and beside it, never share one */
+  .kb-z5 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+  .kb-z6 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+  .kb-z1 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+  .kb-z2 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+  .kb-z3 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+  .kb-z4 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+}
+
+/* Laptop and wider: the map. Systems left, the platforms hub in the middle, national services above care records on the right. */
+@media (width >= 72rem) {
+  .kb-map:not(.is-filtering) {
+    --kb-gap: 1.5rem;
+    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1.3fr) 3rem minmax(0, 1fr);
+    row-gap: var(--kb-gap);
+  }
+  .kb-map:not(.is-filtering) .kb-z1 { grid-column: 1; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-z2 { grid-column: 3; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-z3 { grid-column: 5; grid-row: 1; }
+  .kb-map:not(.is-filtering) .kb-z4 { grid-column: 5; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 3; margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 4; margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-l1 { grid-column: 2; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-l2, .kb-map:not(.is-filtering) .kb-l3 {
+    display: block; position: relative; z-index: 8; grid-column: 4;
+  }
+  .kb-map:not(.is-filtering) .kb-l2 { grid-row: 1; }
+  .kb-map:not(.is-filtering) .kb-l3 { grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-l2::before, .kb-map:not(.is-filtering) .kb-l3::before {
+    content: ""; position: absolute; left: -4px; right: -4px; top: calc(50% - 4px); height: 8px;
+    background-image:
+      linear-gradient(var(--control), var(--control)),
+      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px),
+      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
+    background-size: calc(100% - 8px) 2px, 8px 8px, 8px 8px;
+    background-position: center, left center, right center;
+    background-repeat: no-repeat;
+  }
+  /* three stubs from the columns into the standards (the national services sit above the care records, so they have none) */
+  .kb-map:not(.is-filtering) .kb-z1::after,
+  .kb-map:not(.is-filtering) .kb-z2::after,
+  .kb-map:not(.is-filtering) .kb-z4::after,
+  .kb-map:not(.is-filtering) .kb-z5::after { display: block; height: calc(var(--kb-gap) * 2 + 8px); }
+  .kb-map:not(.is-filtering) .kb-z3::after { display: none; }
+  /* wide tints */
+  .kb-z5 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+  .kb-z6 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+}
+
+/* Zoomed out: more air */
+@media (width >= 100rem) {
+  .kb-map:not(.is-filtering) { --kb-gap: 1.75rem; grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1.3fr) 3.5rem minmax(0, 1fr); }
+  .kb-zone { padding: 1.75rem; }
+  .kb-hub .kb-zh { margin: -1.75rem -1.75rem 0; padding: 1.75rem 1.75rem 1.1rem; }
+  .kb-glance { padding: 1.75rem; }
+}
+
+/* ---------- Filtering: the map relaxes into a flowing set of the tiles that match, with no connectors ---------- */
+/* The tiles that match flow down newspaper columns (reading order, no gaps between rows), each only as tall as its own items. The search bar is kept where it
+   is by page.js (it adds just enough height to the map when the visitor is scrolled down), so nothing here reserves space. */
+.kb-map.is-filtering { display: block; columns: 24rem; column-gap: 1.25rem; }
+.kb-map.is-filtering .kb-zone { break-inside: avoid; margin: 0 0 1.25rem; }
+.kb-map.is-filtering .kb-empty { column-span: all; }
+.kb-map.is-filtering .kb-zone::after, .kb-map.is-filtering .kb-lane { display: none; }
+.kb-map.is-filtering .kb-lvs { display: none; }
+.kb-map.is-filtering .kb-items { grid-auto-rows: auto; }
+.kb-map.is-filtering .kb-z5, .kb-map.is-filtering .kb-z6 { z-index: auto; }
+.kb-zone { scroll-margin-top: 6rem; }
+
+/* ---------- Phones: one vertical flow, same order, short connectors ---------- */
+@media (width < 34rem) {
+  .kb-zone { padding: 1.15rem; }
+  .kb-hub .kb-zh { margin: -1.15rem -1.15rem 0; padding: 1.15rem 1.15rem .9rem; }
+  .kb-glance { padding: 1rem 1.1rem; }
+  .kb-map { --kb-gap: 1.5rem; }
+  .kb-zh { gap: .2rem .7rem; }
+  .kb-zh h2 { font-size: 1.2rem; }
+  .kb-item { padding: .55rem .75rem; }
+  .kb-items { gap: .4rem; }
+  .kb .page-head { padding-top: 2rem; }
+}
+
+/* ---------- Motion: one entrance, never leaving anything hidden ---------- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .kb-glance, .kb-tools { animation: .55s cubic-bezier(.2, .7, .2, 1) .1s backwards rise; }
+  .kb-zone { animation: .55s cubic-bezier(.2, .7, .2, 1) .18s backwards rise; }
+  .kb-z2 { animation-delay: .24s; }
+  .kb-z3, .kb-z4 { animation-delay: .3s; }
+  .kb-z5 { animation-delay: .36s; }
+  .kb-z6 { animation-delay: .42s; }
+}
+
+/* ---------- Forced colours: the system palette replaces ours, so the shapes and lines are redrawn in it ---------- */
+@media (forced-colors: active) {
+  .kb-level, .kb-item, .kb-zone, .kb-glance { border: 1px solid CanvasText; }
+  .kb-hub { border-top: 4px solid CanvasText; }
+  .kb-map { --control: CanvasText; }
+  .kb-zone::after, .kb-lane::before { forced-color-adjust: none; }
+  .kb-waffle i, .kb-sw, .kb-meter i { forced-color-adjust: none; }
+  .w-deep { background: CanvasText; border-color: CanvasText; }
+  .w-working { background: Canvas; border: 2px solid CanvasText; }
+  .w-overview { background: Canvas; border: 2px dashed CanvasText; }
+  .w-none { background: Canvas; border: 2px dotted CanvasText; }
+  .kb-meter i { background: CanvasText; }
+  .kb-names li:not(:last-child)::after { color: CanvasText; }
+  .kb-leg { border-top-color: CanvasText; }
+  .kb-search input::placeholder { color: CanvasText; }
+  .kb-seg button[aria-pressed="true"] { outline: 2px solid CanvasText; }
 }

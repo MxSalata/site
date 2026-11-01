@@ -11,9 +11,11 @@ interface Props {
   canonical?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** An extra class for <main>, for a page that styles it. */
+  mainClass?: string;
 }
 
-const { title, description, canonical, ogImage = '/og-default.png', noindex = false } = Astro.props;
+const { title, description, canonical, ogImage = '/og-default.png', noindex = false, mainClass } = Astro.props;
 
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalUrl = canonical ?? new URL(path, Astro.site).href;
@@ -60,7 +62,7 @@ const person = {
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <Header />
-    <main id="main" class="wrap">
+    <main id="main" class={mainClass ? `wrap ${mainClass}` : 'wrap'}>
       <slot />
     </main>
     <Footer />
