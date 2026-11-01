@@ -26,9 +26,16 @@ const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.
     {
       award && (
         <div class="kicker">
-          <span class={isPlaced(award) ? 'badge ok' : 'badge'}>{award}</span>
+          {isPlaced(award) ? (
+            <span class="badge award">
+              <Icon name="medal" />
+              {award}
+            </span>
+          ) : (
+            <span class="badge">{award}</span>
+          )}
           {pins?.map((pin) => (
-            <span class="badge ok pin">
+            <span class="badge award pin">
               <Icon name="medal" />
               {pin}
             </span>
