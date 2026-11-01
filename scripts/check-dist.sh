@@ -17,6 +17,10 @@ grep -q 'Strict-Transport-Security' dist/_headers
 grep -q "Content-Security-Policy: .*object-src 'none'.*base-uri 'none'" dist/_headers
 test -f dist/_redirects
 test -f dist/robots.txt
+# security.txt (RFC 9116) must exist and not be near its Expires date: renew it (a year ahead) when this fails.
+test -f dist/.well-known/security.txt
+exp=$(sed -n 's/^Expires: \([0-9-]*\)T.*/\1/p' dist/.well-known/security.txt)
+if [ -z "$exp" ] || [ "$(date -u -d "$exp" +%s)" -lt "$(( $(date -u +%s) + 60 * 86400 ))" ]; then echo "security.txt expires within 60 days ($exp): renew it"; exit 1; fi
 if test -e dist/rss.xml; then echo "an RSS feed is built (the site has none since 1 Nov 2026)"; exit 1; fi
 test -f dist/sitemap-index.xml
 test -s dist/sitemap-0.xml
