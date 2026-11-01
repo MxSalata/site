@@ -670,6 +670,21 @@ pre {
   height: 1.25rem;
 }
 
+/* A tile across the whole row with only a heading and a line (Knowledge on the home page while there are no reviews):
+   a slim band with the icon beside the text, rather than a tall box that is half empty. */
+.tile.band {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 1.1rem;
+  row-gap: 0.3rem;
+  min-height: 0;
+}
+
+.tile.band .glyph {
+  grid-row: span 2;
+}
+
 .tile .more {
   margin-top: auto;
   font-size: 0.875rem;
