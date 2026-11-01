@@ -1,0 +1,22 @@
+---
+// A project screenshot in the app's own theme that matches the site's: Light, Pastel or Dark. All three are in the
+// page and CSS shows one (global.css, "Themed screenshots"), so it follows the switch with no script; the hidden two
+// are lazy and never load. The Light file keeps the plain name, the others add -pastel or -dark before the extension.
+interface Props {
+  src: string;
+  alt: string;
+  width: number | string;
+  height: number | string;
+  class?: string;
+  /** Off for a picture with no theme of its own, such as IRIS's visual trace. */
+  themed?: boolean;
+}
+const { src, alt, width, height, class: extra, themed = true } = Astro.props;
+const themes = themed ? (['light', 'pastel', 'dark'] as const) : [];
+const variant = (theme: string) => (theme === 'light' ? src : src.replace(/(\.\w+)$/, `-${theme}$1`));
+const cls = (theme?: string) => [extra, theme && `theme-${theme}`].filter(Boolean).join(' ') || undefined;
+---
+
+{themed
+  ? themes.map((t) => <img class={cls(t)} src={variant(t)} alt={alt} width={width} height={height} loading="lazy" />)
+  : <img class={cls()} src={src} alt={alt} width={width} height={height} loading="lazy" />}

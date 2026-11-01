@@ -1080,6 +1080,30 @@ dialog.booking .frame-wrap iframe {
   border-radius: 8px;
 }
 
+/* Themed screenshots (Shot.astro): each comes in the app's Light, Pastel and Dark themes, and the one matching the
+   site's theme shows; Auto follows the device. :root keeps these above .tile .shot's display. */
+:root img.theme-pastel,
+:root img.theme-dark,
+:root[data-theme='pastel'] img.theme-light,
+:root[data-theme='dark'] img.theme-light {
+  display: none;
+}
+
+:root[data-theme='pastel'] img.theme-pastel,
+:root[data-theme='dark'] img.theme-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) img.theme-light {
+    display: none;
+  }
+
+  :root:not([data-theme]) img.theme-dark {
+    display: block;
+  }
+}
+
 /* Knowledge: each card as tall as its list, not as its neighbour. */
 .bento.kb-grid {
   align-items: start;

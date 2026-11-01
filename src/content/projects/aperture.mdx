@@ -4,7 +4,7 @@ summary: A management portal for InterSystems IRIS with no separate application 
 date: 2026-10-20
 tags: [InterSystems IRIS, React, TypeScript, IRIS REST API, IRIS Vector Search]
 featured: true
-cover: { src: /images/aperture/dashboard.webp, tile: /images/aperture/dashboard-tile.webp, alt: "Aperture's dashboard" }
+cover: { src: /images/aperture/dashboard.webp, tile: /images/aperture/dashboard-tile.webp, alt: "Aperture's dashboard", themed: true }
 award: Second place, InterSystems contest
 contest: { name: 'InterSystems Programming Contest: Build Your Own Management Portal', href: 'https://openexchange.intersystems.com/contest/48' }
 links:
@@ -15,13 +15,15 @@ links:
   - { label: The video, href: 'https://youtu.be/5U8rcPj7wJ4' }
 ---
 
+import Shot from '../../components/Shot.astro';
+
 Aperture is a set of static files that IRIS serves itself. The browser calls IRIS's own SysAdmin REST API directly,
 signed in as you, so IRIS checks your privileges on every call and audits your changes under your name. It also runs
 interoperability productions, SQL and the FHIR servers of IRIS for Health, through the APIs IRIS's own tools use.
 
 <figure>
-  <img src="/images/aperture/dashboard.webp" alt="Aperture's dashboard: throughput, cache efficiency, processes, licence use, the host's CPU, memory and disk, and the health check's findings" width="1440" height="900" loading="lazy" />
-  <figcaption>The dashboard of a demo instance.</figcaption>
+  <Shot src="/images/aperture/dashboard.webp" alt="Aperture's dashboard: throughput, cache efficiency, processes, licence use, the host's CPU, memory and disk, and the health check's findings" width="1440" height="900" />
+  <figcaption>The dashboard of a demo instance, in the theme you picked for this site.</figcaption>
 </figure>
 
 ## What it does differently
@@ -36,12 +38,12 @@ interoperability productions, SQL and the FHIR servers of IRIS for Health, throu
   output and progress.
 
 <figure>
-  <img src="/images/aperture/who-loses-what.webp" alt="Aperture's review of a change to a user: one field changes, and the 'Who loses what' box lists the privileges the user loses" width="1440" height="900" loading="lazy" />
+  <Shot src="/images/aperture/who-loses-what.webp" alt="Aperture's review of a change to a user: one field changes, and the 'Who loses what' box lists the privileges the user loses" width="1440" height="900" />
   <figcaption>Reviewing a change to a user's roles.</figcaption>
 </figure>
 
 <figure>
-  <img src="/images/aperture/health-check.webp" alt="Aperture's health check: one critical finding, nineteen warnings and three advice items, each with what to do and a link to the screen that fixes it" width="1440" height="900" loading="lazy" />
+  <Shot src="/images/aperture/health-check.webp" alt="Aperture's health check: one critical finding, nine warnings and three advice items, each with what to do and a link to the screen that fixes it" width="1440" height="900" />
   <figcaption>The health check, with what to do about each finding.</figcaption>
 </figure>
 
@@ -53,8 +55,3 @@ whatever you like. On real IRIS it's one Docker command or one IPM package; the
 
 While building it I wrote up
 [20 places where the SysAdmin API specification and IRIS disagree](https://community.intersystems.com/post/20-places-where-sysadmin-api-specification-and-iris-disagree).
-
-<figure>
-  <img src="/images/aperture/dark.webp" alt="Aperture's dashboard in its dark theme" width="1440" height="900" loading="lazy" />
-  <figcaption>The dark theme.</figcaption>
-</figure>
