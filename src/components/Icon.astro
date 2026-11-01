@@ -1,7 +1,7 @@
 ---
 // Line icons drawn inline (the CSP allows no external resources). Decorative unless given a label.
 interface Props {
-  name: 'mark' | 'theme' | 'lock' | 'pen' | 'stack' | 'game' | 'arrow' | 'menu' | 'book' | 'star';
+  name: 'mark' | 'theme' | 'lock' | 'pen' | 'stack' | 'game' | 'arrow' | 'menu' | 'book' | 'star' | 'medal';
   label?: string;
   class?: string;
 }
@@ -18,6 +18,7 @@ const paths: Record<Props['name'], string> = {
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z"/><path d="M4 19a2 2 0 0 1 2-2h13"/>',
   star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  medal: '<circle cx="12" cy="8" r="6"/><path d="M15.5 12.9L17 22l-5-3-5 3 1.5-9.1"/>',
 };
 ---
 

@@ -500,6 +500,14 @@ pre {
   background: var(--ok-soft);
 }
 
+/* A pin: a further honour beside the award, with a small medal. */
+.badge.pin .icon {
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.3em;
+  vertical-align: 0;
+}
+
 .kicker {
   display: flex;
   flex-wrap: wrap;

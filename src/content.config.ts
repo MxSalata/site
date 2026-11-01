@@ -13,6 +13,8 @@ const projects = defineCollection({
     // A screenshot for the tiles (a path under public/), and a short honour shown as a badge.
     cover: z.object({ src: z.string(), tile: z.string().optional(), alt: z.string(), themed: z.boolean().optional() }).optional(),
     award: z.string().optional(),
+    // Further honours from the same contest, shown as small pins beside the award (for example "1st in Freshmen").
+    pins: z.array(z.string()).optional(),
     // The contest's full name and page, shown on the project page (the tile keeps the short award).
     contest: z.object({ name: z.string(), href: z.string().url() }).optional(),
     // A link without an href is a placeholder: shown as an inactive button marked "Coming soon".

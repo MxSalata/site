@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
 import Shot from './Shot.astro';
+import { isPlaced } from '../lib/site';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -12,7 +14,7 @@ interface Props {
   compact?: boolean;
 }
 const { project, span, tint, wide = false, compact = false } = Astro.props;
-const { title, summary, award, cover, tags } = project.data;
+const { title, summary, award, pins, cover, tags } = project.data;
 const href = `/projects/${project.id}/`;
 // Tiles use the clean tile picture when there is one (the full-size images carry a corner credit).
 // With themed set, the tile picture also comes in -pastel and -dark (Shot.astro).
@@ -21,7 +23,19 @@ const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.
 
 <li class={`tile tint-${tint} span-${span}${wide ? ' wide' : ''}`}>
   <div class="body">
-    {award && <div class="kicker"><span class={/place/i.test(award) ? 'badge ok' : 'badge'}>{award}</span></div>}
+    {
+      award && (
+        <div class="kicker">
+          <span class={isPlaced(award) ? 'badge ok' : 'badge'}>{award}</span>
+          {pins?.map((pin) => (
+            <span class="badge ok pin">
+              <Icon name="medal" />
+              {pin}
+            </span>
+          ))}
+        </div>
+      )
+    }
     {compact ? <h3><a href={href}>{title}</a></h3> : <h2><a href={href}>{title}</a></h2>}
     <p>{summary}</p>
     {compact && <p class="more-link">Read about {title} <span aria-hidden="true">→</span></p>}
