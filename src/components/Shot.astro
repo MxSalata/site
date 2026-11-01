@@ -2,21 +2,51 @@
 // A project screenshot in the app's own theme that matches the site's: Light, Pastel or Dark. All three are in the
 // page and CSS shows one (global.css, "Themed screenshots"), so it follows the switch with no script; the hidden two
 // are lazy and never load. The Light file keeps the plain name, the others add -pastel or -dark before the extension.
+// Each is built as AVIF and WebP at a few widths with a content hash in its name, so browsers fetch the size they need
+// and may cache it for good. `src` is the picture's path under src/assets, written as /images/<project>/<file>.
+import type { ImageMetadata } from 'astro';
+import { Picture } from 'astro:assets';
+
 interface Props {
   src: string;
   alt: string;
-  width: number | string;
-  height: number | string;
+  /** Kept for the layout before the picture loads; the built picture's own size wins where it differs. */
+  width?: number | string;
+  height?: number | string;
   class?: string;
   /** Off for a picture with no theme of its own, such as IRIS's visual trace. */
   themed?: boolean;
+  /** How wide the picture shows: a full-width figure in an article by default, or a tile. */
+  sizes?: string;
 }
-const { src, alt, width, height, class: extra, themed = true } = Astro.props;
-const themes = themed ? (['light', 'pastel', 'dark'] as const) : [];
+const { src, alt, class: extra, themed = true, sizes = '(max-width: 50rem) 100vw, 46rem' } = Astro.props;
+
+const files = import.meta.glob<ImageMetadata>('../assets/images/**/*.{webp,png,jpg}', { eager: true, import: 'default' });
+const load = (path: string) => {
+  const image = files[`../assets${path}`];
+  if (!image) throw new Error(`Shot: no picture at src/assets${path}`);
+  return image;
+};
 const variant = (theme: string) => (theme === 'light' ? src : src.replace(/(\.\w+)$/, `-${theme}$1`));
-const cls = (theme?: string) => [extra, theme && `theme-${theme}`].filter(Boolean).join(' ') || undefined;
+const shots = (themed ? ['light', 'pastel', 'dark'] : [undefined]).map((theme) => ({
+  theme,
+  image: load(theme ? variant(theme) : src),
+}));
+const widths = (image: ImageMetadata) => [480, 800, 1200, 1600].filter((w) => w < image.width).concat(image.width);
 ---
 
-{themed
-  ? themes.map((t) => <img class={cls(t)} src={variant(t)} alt={alt} width={width} height={height} loading="lazy" />)
-  : <img class={cls()} src={src} alt={alt} width={width} height={height} loading="lazy" />}
+{
+  shots.map(({ theme, image }) => (
+    <Picture
+      src={image}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={widths(image)}
+      sizes={sizes}
+      loading="lazy"
+      decoding="async"
+      class={extra}
+      pictureAttributes={{ class: theme ? `theme-${theme}` : 'shot-picture' }}
+    />
+  ))
+}

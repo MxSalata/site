@@ -1,11 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname;
+// Reviews joins the navigation with its first published review (Mikolaj, 1 Nov 2026: an empty section waits).
+const hasReviews = (await getCollection('reviews', ({ data }) => !data.draft)).length > 0;
 const nav = [
   { href: '/projects/', label: 'Projects' },
   { href: '/knowledge/', label: 'Knowledge' },
-  { href: '/reviews/', label: 'Reviews' },
+  ...(hasReviews ? [{ href: '/reviews/', label: 'Reviews' }] : []),
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
   { href: '/everything-else/', label: 'Everything else', also: ['/minecraft/'] },
@@ -26,12 +29,15 @@ const current = (item: { href: string; also?: string[] }) =>
     <nav class="nav-wide" aria-label="Main">
       <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item)}>{item.label}</a></li>)}</ul>
     </nav>
-    <div class="theme-pick nav-wide">
-      <span class="theme-label" id="theme-label">UI Themes</span>
-      <div class="themes" role="group" aria-labelledby="theme-label">
-        {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+    <!-- Wider screens: one "UI Themes" button that opens the four choices, so the links keep their room. -->
+    <details class="theme-menu nav-wide">
+      <summary><Icon name="theme" /><span id="theme-label">UI Themes</span></summary>
+      <div class="theme-panel">
+        <div class="themes" role="group" aria-labelledby="theme-label">
+          {themes.map((t) => <button type="button" data-value={t.value} aria-pressed="false">{t.label}</button>)}
+        </div>
       </div>
-    </div>
+    </details>
     <!-- Phones: the same links and switch behind a menu button, which works without any script. -->
     <details class="menu">
       <summary><Icon name="menu" /><span>Menu</span></summary>

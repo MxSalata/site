@@ -17,7 +17,7 @@ const { title, summary, date, kind, rating, cover } = entry.data;
   <div class="page-head">
     <div class="kicker">
       <span class="badge quiet">{kind === 'place' ? 'Place' : 'Product'}</span>
-      {rating && <span class="rating" aria-label={`${rating} out of 5`}>{'★'.repeat(rating)}</span>}
+      {rating && <span class="rating" role="img" aria-label={`${rating} out of 5`}>{'★'.repeat(rating)}</span>}
       <span class="meta">{formatDate(date)}</span>
     </div>
     <h1>{title}</h1>
