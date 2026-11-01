@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { formatDate } from '../../lib/site';
+import { formatDate, writingHref } from '../../lib/site';
 
 const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -23,9 +23,9 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
       <ul class="bento">
         {posts.map((w) => (
           <li class="tile tinted span-3">
-            <p class="meta">{formatDate(w.data.date)}</p>
+            <p class="meta">{formatDate(w.data.date)}{w.data.url && <Fragment> &middot; {new URL(w.data.url).hostname}</Fragment>}</p>
             <h2>
-              <a href={`/writing/${w.id}/`}>{w.data.title}</a>
+              <a href={writingHref(w)}>{w.data.title}</a>
             </h2>
             <p>{w.data.summary}</p>
           </li>

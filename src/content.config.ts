@@ -31,6 +31,9 @@ const writing = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()),
     canonical: z.string().optional(),
+    // An article published elsewhere (for example on the InterSystems Developer Community): the lists link straight to it,
+    // and no page is made for it here.
+    url: z.string().url().optional(),
     draft: z.boolean().default(false),
   }),
 });

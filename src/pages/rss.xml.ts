@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../lib/site';
+import { SITE, writingHref } from '../lib/site';
 
 export async function GET(context: APIContext) {
   const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
@@ -15,7 +15,7 @@ export async function GET(context: APIContext) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.summary,
-      link: `/writing/${post.id}/`,
+      link: writingHref(post),
     })),
   });
 }

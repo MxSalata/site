@@ -4,7 +4,8 @@ import Base from '../../layouts/Base.astro';
 import { formatDate } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('writing', ({ data }) => !data.draft);
+  // Articles published elsewhere (url) have no page here.
+  const posts = await getCollection('writing', ({ data }) => !data.draft && !data.url);
   return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
