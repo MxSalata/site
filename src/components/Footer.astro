@@ -1,8 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
 import { SITE } from '../lib/site';
 
-const hasWriting = (await getCollection('writing', ({ data }) => !data.draft)).length > 0;
 const year = new Date().getFullYear();
 ---
 
@@ -11,7 +9,6 @@ const year = new Date().getFullYear();
     <p>&copy; {year} {SITE.name} &middot; No trackers, no cookies.</p>
     <ul>
       <li><a href="/how-its-built/">How it's built</a></li>
-      {hasWriting && <li><a href="/rss.xml">RSS</a></li>}
     </ul>
   </div>
 </footer>

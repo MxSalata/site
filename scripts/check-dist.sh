@@ -17,7 +17,7 @@ grep -q 'Strict-Transport-Security' dist/_headers
 grep -q "Content-Security-Policy: .*object-src 'none'.*base-uri 'none'" dist/_headers
 test -f dist/_redirects
 test -f dist/robots.txt
-test -f dist/rss.xml
+if test -e dist/rss.xml; then echo "an RSS feed is built (the site has none since 1 Nov 2026)"; exit 1; fi
 test -f dist/sitemap-index.xml
 test -s dist/sitemap-0.xml
 if grep -q 'mxsalata.com/minecraft/' dist/sitemap-0.xml; then echo "the Minecraft page is in the sitemap"; exit 1; fi
