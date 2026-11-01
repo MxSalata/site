@@ -29,7 +29,7 @@ const tints = ['a', 'b', 'c'] as const;
           <li class={`tile tint-${tints[i % 3]} span-2`}>
             <div class="kicker">
               <span class="badge quiet">{r.data.kind === 'place' ? 'Place' : 'Product'}</span>
-              {r.data.rating && <span class="rating" aria-label={`${r.data.rating} out of 5`}>{'★'.repeat(r.data.rating)}</span>}
+              {r.data.rating && <span class="rating" role="img" aria-label={`${r.data.rating} out of 5`}>{'★'.repeat(r.data.rating)}</span>}
             </div>
             <h2>
               <a href={`/reviews/${r.id}/`}>{r.data.title}</a>

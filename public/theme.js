@@ -33,9 +33,23 @@
   apply(stored());
   document.addEventListener('DOMContentLoaded', function () {
     apply(stored());
+    // The wide screens' "UI Themes" menu closes after a pick, on Escape, and on a click anywhere else.
+    function closeMenus(except) {
+      var open = document.querySelectorAll('details.theme-menu[open]');
+      for (var i = 0; i < open.length; i++) if (open[i] !== except) open[i].removeAttribute('open');
+    }
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      var menu = document.querySelector('details.theme-menu[open]');
+      if (!menu) return;
+      menu.removeAttribute('open');
+      menu.querySelector('summary').focus();
+    });
     document.addEventListener('click', function (event) {
+      closeMenus(event.target.closest && event.target.closest('details.theme-menu'));
       var button = event.target.closest && event.target.closest('.themes button');
       if (!button) return;
+      closeMenus(null);
       var value = button.getAttribute('data-value');
       try {
         localStorage.setItem(KEY, value);

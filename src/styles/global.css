@@ -308,6 +308,60 @@ pre {
   }
 }
 
+/* Wider screens: one "UI Themes" button opens the switch below it (a details element; theme.js closes it after a pick,
+   on Escape and on a click elsewhere). Hidden until theme.js runs, like the switch. */
+.theme-menu {
+  display: none;
+  margin-left: auto;
+  position: relative;
+}
+
+.js .theme-menu {
+  display: block;
+}
+
+.theme-menu summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.theme-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.theme-menu summary:hover,
+.theme-menu[open] summary {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.theme-menu summary svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--accent-text);
+}
+
+.theme-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 6;
+}
+
+.theme-panel .themes {
+  margin-left: 0;
+  box-shadow: var(--shadow);
+}
+
 /* The phone menu: a details element, so it opens with no script. Hidden on wider screens, where the links show. */
 .menu {
   display: none;
@@ -369,10 +423,11 @@ pre {
   justify-self: start;
 }
 
-/* Six links, the "UI Themes" label and the switch need about 68rem; below that, the menu button. */
-@media (max-width: 67.99rem) {
+/* The links and the "UI Themes" button need about 49rem (measured 1 Nov 2026), and a Reviews link about 5 more; below
+   56rem, the menu button. */
+@media (max-width: 55.99rem) {
   .nav-wide,
-  .js .theme-pick.nav-wide {
+  .js .theme-menu.nav-wide {
     display: none;
   }
   .menu {
@@ -537,40 +592,40 @@ pre {
   --tint-edge: var(--edge-c);
 }
 
-.tile:has(h2 a:hover) {
+.tile:has(:is(h2, h3) a:hover) {
   border-color: var(--focus);
 }
 
 /* The heading's link covers the tile, so the ring goes round the whole tile. */
-.tile:has(h2 a:focus-visible) {
+.tile:has(:is(h2, h3) a:focus-visible) {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
-.tile h2 a:focus-visible {
+.tile :is(h2, h3) a:focus-visible {
   outline: none;
 }
 
-.tile h2 {
+.tile :is(h2, h3) {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 700;
 }
 
-.tile h2 a {
+.tile :is(h2, h3) a {
   color: var(--text);
   text-decoration: none;
 }
 
 /* The whole tile is the link's target; any other link inside sits above it. */
-.tile h2 a::after {
+.tile :is(h2, h3) a::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 14px;
 }
 
-.tile a:not(h2 a) {
+.tile a:not(:is(h2, h3) a) {
   position: relative;
   z-index: 1;
 }
@@ -724,6 +779,11 @@ pre {
 .prose {
   max-width: 46rem;
   overflow-wrap: anywhere;
+}
+
+/* A card that holds only text is as wide as the text, so wide screens don't show an empty band beside it. */
+.paper:has(> .prose:only-child) {
+  max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px);
 }
 
 .prose > :first-child {
@@ -1080,6 +1140,36 @@ dialog.booking .frame-wrap iframe {
   border-radius: 8px;
 }
 
+/* Themed screenshots (Shot.astro): each comes in the app's Light, Pastel and Dark themes, and the one matching the
+   site's theme shows; Auto follows the device. The <picture> steps aside for layout (display: contents), so its <img>
+   sits in the tile or figure as before; a hidden one takes its lazy <img> with it, which then never loads. */
+picture.shot-picture,
+picture.theme-light {
+  display: contents;
+}
+
+:root picture.theme-pastel,
+:root picture.theme-dark,
+:root[data-theme='pastel'] picture.theme-light,
+:root[data-theme='dark'] picture.theme-light {
+  display: none;
+}
+
+:root[data-theme='pastel'] picture.theme-pastel,
+:root[data-theme='dark'] picture.theme-dark {
+  display: contents;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) picture.theme-light {
+    display: none;
+  }
+
+  :root:not([data-theme]) picture.theme-dark {
+    display: contents;
+  }
+}
+
 /* Knowledge: each card as tall as its list, not as its neighbour. */
 .bento.kb-grid {
   align-items: start;
@@ -1123,17 +1213,18 @@ dialog.booking .frame-wrap iframe {
   object-position: top left;
 }
 
-/* A project link that isn't live yet: shaped like its button, clearly inactive. */
-.btn.soon {
-  border: 1px dashed var(--control);
+/* Project links that aren't live yet: one quiet line under the live buttons. */
+.soon-line {
+  margin: 0;
   color: var(--muted);
-  cursor: default;
+  font-size: 0.9375rem;
 }
 
-.btn.soon .soon-tag {
+.soon-line .soon-tag {
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.05rem 0.45rem;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.35rem;
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent-text);
@@ -1205,7 +1296,7 @@ dialog.booking .frame-wrap iframe {
 
   /* Tiles lift a little under the pointer, or when their link has keyboard focus; buttons nudge up. */
   .tile:hover,
-  .tile:has(h2 a:focus-visible) {
+  .tile:has(:is(h2, h3) a:focus-visible) {
     transform: translateY(-3px);
     box-shadow: var(--shadow-lift);
   }
@@ -1219,7 +1310,8 @@ dialog.booking .frame-wrap iframe {
   }
 
   /* The phone menu and the booking dialog open with a short fade. */
-  .menu[open] .menu-panel {
+  .menu[open] .menu-panel,
+  .theme-menu[open] .theme-panel {
     animation: drop 0.2s ease-out;
   }
 

@@ -4,7 +4,7 @@ summary: Failed hospital messages put right safely. AI agents propose a fix, a d
 date: 2026-10-30
 tags: [InterSystems IRIS for Health, InterSystems AI Hub, HL7 v2, IRIS Interoperability, AI agents]
 featured: true
-cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/approval-tile.webp, alt: "Shutter's approval step: a person releases exactly this plan, or rejects it" }
+cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/approval-tile.webp, themed: true, alt: "Shutter's approval step: a person releases exactly this plan, or rejects it" }
 award: In development
 links:
   - { label: Try the online demo }
@@ -15,12 +15,14 @@ links:
 contest: { name: 'InterSystems Programming Contest: AI Agents in Interoperability Workflows', href: 'https://openexchange.intersystems.com/contest/49' }
 ---
 
+import Shot from '../../components/Shot.astro';
+
 When an HL7 delivery fails in a hospital, the usual fix is a resend from the Message Viewer. If the patient has moved
 since, that resend moves them back. Shutter turns each failed delivery into a case instead.
 
 <figure>
-  <img src="/images/shutter/s8-visual-trace.webp" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" loading="lazy" />
-  <figcaption>One case's trace in IRIS: every step in its own lane.</figcaption>
+  <Shot src="/images/shutter/approval.webp" alt="Shutter's approval step: the plan waits for an approver, who approves or rejects exactly this plan, and can first ask what a blind resend would do" width="1060" height="688" />
+  <figcaption>The approval step: a person releases exactly this plan, or rejects it.</figcaption>
 </figure>
 
 ## How a case runs
@@ -38,11 +40,11 @@ since, that resend moves them back. Shutter turns each failed delivery into a ca
 The agents propose; the gate disposes.
 
 <figure>
-  <img src="/images/shutter/approval.webp" alt="Shutter's approval step: the plan waits for an approver, who approves or rejects exactly this plan, and can first ask what a blind resend would do" width="988" height="744" loading="lazy" />
-  <figcaption>The approval step: a person releases exactly this plan, or rejects it.</figcaption>
+  <Shot src="/images/shutter/s8-visual-trace.webp" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" themed={false} />
+  <figcaption>One case's trace in IRIS: every step in its own lane.</figcaption>
 </figure>
 
 ## Try it
 
 Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest, and it's still in development.
-An online demo opens in November; the buttons above go live as each part is published.
+An online demo opens in November; the links above appear as each part is published.

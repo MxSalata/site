@@ -17,7 +17,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
   <section class="hero">
     <p class="eyebrow">Projects and writing on healthcare integration</p>
     <h1>Interoperability solutions for NHS hospitals, councils and clinics.</h1>
-    <p>Portals and fixers for InterSystems IRIS, and the notes behind them.</p>
+    <p>Tools for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
       <li><a class="btn primary" href="/projects/">See the projects</a></li>
       {
@@ -34,17 +34,20 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 
   <ul class="bento">
     {shown.map((p, i) => <ProjectTile project={p} span={3} tint={i % 2 ? 'b' : 'a'} />)}
-    <li class="tile tint-c span-3">
+    <li class={`tile tint-c ${reviews.length ? 'span-3' : 'span-6'}`}>
       <div class="glyph"><Icon name="book" /></div>
       <h2><a href="/knowledge/">Knowledge</a></h2>
       <p>The standards, platforms and NHS services I work with, and the notes behind the projects.</p>
     </li>
-    <li class="tile tint-a span-3">
-      <div class="glyph"><Icon name="star" /></div>
-      <h2><a href="/reviews/">Reviews</a></h2>
-      {reviews.length ? <p>Latest: {reviews[0].data.title}</p> : <p>Places and products I'd recommend, or wouldn't.</p>}
-      {!reviews.length && <ul class="tags"><li>Coming soon</li></ul>}
-    </li>
+    {
+      reviews.length > 0 && (
+        <li class="tile tint-a span-3">
+          <div class="glyph"><Icon name="star" /></div>
+          <h2><a href="/reviews/">Reviews</a></h2>
+          <p>Latest: {reviews[0].data.title}</p>
+        </li>
+      )
+    }
   </ul>
 
   <section class="who" aria-label="Who made this site">

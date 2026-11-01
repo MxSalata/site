@@ -1,6 +1,17 @@
 /*
-  Strict-Transport-Security: max-age=31536000
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; frame-src https://cal.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; frame-src https://cal.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+
+# Astro's built files carry a content hash in their names, so a browser may keep them for good.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts and pictures keep their names when they change: a day, then served from cache while the browser checks again.
+/fonts/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

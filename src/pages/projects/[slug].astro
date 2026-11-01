@@ -16,6 +16,9 @@ export async function getStaticPaths() {
 const { entry, others } = Astro.props;
 const { Content } = await render(entry);
 const { title, summary, date, tags, links, award, contest } = entry.data;
+// Links without an address aren't live yet: one quiet line names them, and each becomes a button once it has one.
+const live = (links ?? []).filter((l) => l.href);
+const soon = (links ?? []).filter((l) => !l.href);
 ---
 
 <Base title={title} description={summary}>
@@ -35,23 +38,23 @@ const { title, summary, date, tags, links, award, contest } = entry.data;
     }
     <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>
     {
-      links && (
+      live.length > 0 && (
         <ul class="actions">
-          {links.map((l, i) => (
+          {live.map((l, i) => (
             <li>
-              {l.href ? (
-                <a class={i === 0 ? 'btn primary' : 'btn ghost'} href={l.href}>
-                  {l.label}
-                </a>
-              ) : (
-                <span class="btn soon">
-                  {l.label}
-                  <span class="soon-tag">Coming soon</span>
-                </span>
-              )}
+              <a class={i === 0 ? 'btn primary' : 'btn ghost'} href={l.href}>
+                {l.label}
+              </a>
             </li>
           ))}
         </ul>
+      )
+    }
+    {
+      soon.length > 0 && (
+        <p class="soon-line">
+          <span class="soon-tag">Coming soon</span> {soon.map((l) => l.label).join(' · ')}
+        </p>
       )
     }
   </div>
