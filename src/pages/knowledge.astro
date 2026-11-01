@@ -2,45 +2,209 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { KNOWLEDGE } from '../data/knowledge';
+import type { Group, Item, Level } from '../data/knowledge';
 import { formatDate } from '../lib/site';
 
 const tints = ['a', 'b', 'c'] as const;
 const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+// The page's wording that is not in the data. Mikolaj has not confirmed the meaning of Overview or of No level: change them here.
+const MEANINGS: Record<Level | 'none', string> = {
+  Deep: 'Years of daily use.',
+  Working: 'Used on real projects.',
+  Overview: 'Studied, used lightly.',
+  none: 'Systems my interfaces connect to, and records my work fed or connected to.',
+};
+const LEVELS: Level[] = ['Deep', 'Working', 'Overview'];
+const METER: Record<Level, string> = { Deep: 'm3', Working: 'm2', Overview: 'm1' };
+const WAFFLE: Record<Level | 'none', string> = { Deep: 'w-deep', Working: 'w-working', Overview: 'w-overview', none: 'w-none' };
+
+// The map's six areas in reading order: systems, platforms, national services, care records, then the two bands.
+// Each group takes the position class kb-z1 to kb-z6 by its place in this order, never by its title in the CSS. A group that
+// is not named here goes last.
+const ORDER = [
+  'Systems I have integrated with',
+  'Integration platforms',
+  'NHS national services',
+  'Shared care records',
+  'Standards',
+  'Infrastructure and tools',
+];
+const rank = (g: Group) => {
+  const at = ORDER.indexOf(g.title);
+  return at === -1 ? ORDER.length : at;
+};
+const groups = [...KNOWLEDGE].sort((a, b) => rank(a) - rank(b));
+const HUB = 1; // the platforms, where the interfaces run
+const BANDS = [4, 5]; // standards, then infrastructure and tools: full-width bands under the map
+
+// One icon per position (the inside of a 24 by 24 outline icon).
+const ICONS = [
+  '<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/>',
+  '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 6.5l3 3M17.5 6.5l-3 3M6.5 17.5l3-3M17.5 17.5l-3-3"/>',
+  '<path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M2 10l10-6 10 6z"/>',
+  '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h6"/>',
+  '<path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/>',
+  '<path d="M4 17l6-6-6-6"/><path d="M12 19h8"/>',
+];
+const ICON_CHART = '<path d="M3 3v18h18"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-3"/>';
+const ICON_INFO = '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>';
+// Where a row has no level, an icon takes the pill's place: a link for the systems, layers for the records.
+const ICON_LINK = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
+const ICON_LAYERS = '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>';
+const MARKS = [ICON_LINK, ICON_LINK, ICON_LINK, ICON_LAYERS, ICON_LINK, ICON_LINK];
+
+// Everything below is computed from the data, so the page is complete with scripts off.
+const allItems: Item[] = groups.flatMap((g) => g.items);
+const total = allItems.length;
+const byLevel = (l: Level | 'none') => allItems.filter((i) => (i.level ?? 'none') === l);
+const legend = [...LEVELS, 'none' as const]
+  .map((key) => ({ key, label: key === 'none' ? 'No level' : key, items: byLevel(key) }))
+  .filter((l) => l.items.length > 0);
+const plural = (n: number) => (n === 1 ? 'item' : 'items');
+// The strip is decoration (aria-hidden), so one sentence says the same for a screen reader.
+const summary = legend.map((l) => `${l.items.length} ${l.key === 'none' ? 'with no level' : l.label}`).join(', ').replace(/, ([^,]*)$/, ' and $1') + '.';
 ---
 
-<Base title="Knowledge" description="The standards, integration platforms, NHS services and systems Mikolaj Salata works with.">
+<Base
+  title="Knowledge"
+  description="The standards, integration platforms, NHS services and systems Mikolaj Salata works with."
+  mainClass="kb"
+>
   <div class="page-head">
     <p class="eyebrow">Knowledge</p>
     <h1>What I work with</h1>
-    <p class="lead">
-      Standards, platforms, NHS services and the systems on the other end of the interfaces. <strong>Deep</strong> means
-      years of daily use; <strong>Working</strong> means I've used it on real projects.
-    </p>
+    <p class="lead">Standards, platforms, NHS services and the systems on the other end of the interfaces.</p>
   </div>
-  <ul class="bento kb-grid">
-    {
-      KNOWLEDGE.map((g, i) => (
-        <li class={`tile tint-${tints[i % 3]} span-3`}>
-          <h2>{g.title}</h2>
-          <p>{g.intro}</p>
-          <ul class="kb-list">
-            {g.items.map((item) => (
-              <li>
-                <span class="name">
-                  {item.name}
-                  {item.note && <span class="note">{item.note}</span>}
-                </span>
-                {item.level && <span class={item.level === 'Deep' ? 'badge' : 'badge quiet'}>{item.level}</span>}
+  <section class="kb-glance" aria-labelledby="kb-h0">
+    <div class="kb-gl">
+      <div class="kb-zh">
+        <span class="kb-glyph"
+          ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={ICON_CHART} /></span
+        >
+        <div><h2 id="kb-h0">At a glance</h2></div>
+      </div>
+      <div class="kb-glance-body">
+        <div class="kb-total">
+          <p class="kb-big"><span class="kb-num">{total}</span> <span class="kb-big-label">items in {groups.length} areas</span></p>
+          <div class="kb-waffle" aria-hidden="true">
+            {legend.map((l) => l.items.map(() => <i class={WAFFLE[l.key]} />))}
+          </div>
+          <p class="kb-sr">{summary}</p>
+        </div>
+        <ul class="kb-legend" role="list">
+          {
+            legend.map((l) => (
+              <li class="kb-leg">
+                <div class="kb-leg-row">
+                  <i class={`kb-sw ${WAFFLE[l.key]}`} aria-hidden="true" />
+                  <span class="kb-leg-text">
+                    <strong>{l.items.length} {l.label}</strong> <span>{MEANINGS[l.key]}</span>
+                  </span>
+                </div>
+                <ul class="kb-names" role="list" aria-label={l.key === 'none' ? 'Items with no level' : `${l.label} items`}>
+                  {l.items.map((item, n) => (
+                    <Fragment>
+                      <li>{item.name}</li>
+                      {n < l.items.length - 1 && ' '}
+                    </Fragment>
+                  ))}
+                </ul>
               </li>
-            ))}
-          </ul>
-          {g.note && <p class="kb-note">{g.note}</p>}
-        </li>
-      ))
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+  <form class="kb-tools" role="search" aria-label="Find an item">
+    <div class="kb-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+      <label for="kb-q">Search</label>
+      <input id="kb-q" type="search" placeholder="Try FHIR, Docker or Spine" autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="kb-seg" role="group" aria-label="Level">
+      <button type="button" data-level="all" aria-pressed="true">All</button>
+      <button type="button" data-level="Deep" aria-pressed="false">Deep</button>
+      <button type="button" data-level="Working" aria-pressed="false">Working</button>
+      <button type="button" data-level="Overview" aria-pressed="false">Overview</button>
+      <button type="button" data-level="none" aria-pressed="false">No level</button>
+    </div>
+    <p class="kb-status" role="status" aria-live="polite" id="kb-status">{total} {plural(total)}</p>
+  </form>
+  <div class="kb-map" id="kb-map">
+    {
+      groups.map((g, i) => {
+        const levelsHere = LEVELS.filter((l) => g.items.some((item) => item.level === l));
+        return (
+          <Fragment>
+            <section class={`kb-zone kb-z${i + 1}${i === HUB ? ' kb-hub' : ''}${BANDS.includes(i) ? ' kb-band' : ''}`} data-group={g.title}>
+              <div class="kb-zin">
+                <div class="kb-zh">
+                  <span class="kb-glyph"
+                    ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={ICONS[i] ?? ICONS[0]} /></span
+                  >
+                  <div class="kb-zt">
+                    <h2 id={`kb-h${i + 1}`}>{g.title}</h2>
+                    <p class="kb-intro">{g.intro}</p>
+                    <p class="kb-tally">
+                      <span class="kb-count">{g.items.length} {plural(g.items.length)}</span>
+                      {
+                        levelsHere.length > 0 && (
+                          <span class="kb-lvs">
+                            {levelsHere.map((l, n) => (
+                              <Fragment>
+                                <span class="kb-lv">
+                                  <span class={`kb-meter ${METER[l]}`} aria-hidden="true"><i /><i /><i /></span>
+                                  {l} {g.items.filter((item) => item.level === l).length}
+                                </span>
+                                {n < levelsHere.length - 1 && ', '}
+                              </Fragment>
+                            ))}
+                          </span>
+                        )
+                      }
+                    </p>
+                  </div>
+                </div>
+                <ul class="kb-items" role="list" aria-labelledby={`kb-h${i + 1}`}>
+                  {g.items.map((item) => (
+                    <li class="kb-item" data-item={item.name} data-level={item.level}>
+                      <span class="kb-name">{item.name}</span>
+                      {item.level ? (
+                        <span class="kb-level">
+                          <span class="kb-sr">Level: </span>
+                          <span class={`kb-meter ${METER[item.level]}`} aria-hidden="true"><i /><i /><i /></span>
+                          {item.level}
+                        </span>
+                      ) : (
+                        <span class="kb-mark" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={MARKS[i] ?? ICON_LINK} />
+                        </span>
+                      )}
+                      {item.note && <span class="kb-itnote">{item.note}</span>}
+                    </li>
+                  ))}
+                </ul>
+                {
+                  g.note && (
+                    <p class="kb-znote">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={ICON_INFO} />
+                      <span>{g.note}</span>
+                    </p>
+                  )
+                }
+              </div>
+            </section>
+            {i < 3 && <div class={`kb-lane kb-l${i + 1}`} aria-hidden="true" />}
+          </Fragment>
+        );
+      })
     }
-  </ul>
+    <p class="kb-empty" id="kb-empty" hidden><button type="button" class="kb-link" id="kb-reset">Show all {total} items</button></p>
+  </div>
   {
     posts.length > 0 && (
       <section>
@@ -59,4 +223,5 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
       </section>
     )
   }
+  <script is:inline src="/knowledge.js" defer></script>
 </Base>

@@ -3,10 +3,11 @@ set -e
 # One check per line: set -e ignores a failure inside an && chain, and `sh script` ignores a -e on the #! line.
 if grep -rlE '<(script|iframe|img|source|video|audio)[^>]*src="(https?:)?//' dist --include='*.html'; then echo "external resource found"; exit 1; fi
 if grep -rhoE '<link[^>]*>' dist --include='*.html' | grep -E 'rel="(stylesheet|preload|modulepreload|icon)"' | grep -qE 'href="(https?:)?//'; then echo "external stylesheet or icon found"; exit 1; fi
-# Scripts allowed: the JSON-LD block, which the CSP doesn't run, the theme switch (/theme.js) and the booking link (/booking.js).
-if grep -rhoE '<script[^>]*>' dist --include='*.html' | grep -v 'application/ld+json' | grep -vxF -e '<script src="/theme.js">' -e '<script src="/booking.js" defer>' | grep -q .; then echo "inline or unexpected script found"; exit 1; fi
-if grep -rhE '<script src="/(theme|booking).js"( defer)?>[^<]' dist --include='*.html' | grep -q .; then echo "a script tag has inline content"; exit 1; fi
+# Scripts allowed: the JSON-LD block, which the CSP doesn't run, the theme switch (/theme.js), the booking link (/booking.js) and the Knowledge page's search (/knowledge.js).
+if grep -rhoE '<script[^>]*>' dist --include='*.html' | grep -v 'application/ld+json' | grep -vxF -e '<script src="/theme.js">' -e '<script src="/booking.js" defer>' -e '<script src="/knowledge.js" defer>' | grep -q .; then echo "inline or unexpected script found"; exit 1; fi
+if grep -rhE '<script src="/(theme|booking|knowledge).js"( defer)?>[^<]' dist --include='*.html' | grep -q .; then echo "a script tag has inline content"; exit 1; fi
 test -f dist/theme.js
+test -f dist/knowledge.js
 if grep -rlE ' style="' dist --include='*.html'; then echo "inline style attribute found (CSP has no unsafe-inline)"; exit 1; fi
 if grep -rl '<style' dist --include='*.html'; then echo "inline style element found (CSP has no unsafe-inline)"; exit 1; fi
 grep -q 'application/ld+json' dist/index.html
