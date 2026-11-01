@@ -63,9 +63,12 @@ export const KNOWLEDGE: Group[] = [
   {
     title: 'Shared care records',
     intro: 'Regional records that bring care settings together.',
-    note: 'No levels here: these are the records my work fed.',
+    note: 'No levels here: these are the records my work fed or connected to.',
     items: [
-      { name: 'Interweave (Yorkshire & Humber Care Record)', note: 'data provision over FHIR' },
+      {
+        name: 'Interweave (Yorkshire & Humber Care Record)',
+        note: 'Yorkshire Ambulance Service’s PAS integrated with Interweave authentication via JWT',
+      },
       { name: 'Leicester, Leicestershire and Rutland Care Record', note: 'social care data' },
     ],
   },

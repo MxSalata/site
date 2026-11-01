@@ -13,9 +13,12 @@ export const SITE = {
 
 export const gamesHref = () => SITE.games || '/minecraft/';
 
+/** Whether an award is a contest placing ("Second place", "2nd of 37 entries"): shown in the success colour. */
+export const isPlaced = (award?: string) => /\bplace\b|\b\d+(st|nd|rd|th)\b/i.test(award ?? '');
+
 /** One order for projects everywhere: placed contest entries first, then the newest. */
 export function projectOrder<T extends { data: { date: Date; award?: string } }>(a: T, b: T): number {
-  const placed = (p: T) => Number(/place/i.test(p.data.award ?? ''));
+  const placed = (p: T) => Number(isPlaced(p.data.award));
   return placed(b) - placed(a) || b.data.date.valueOf() - a.data.date.valueOf();
 }
 

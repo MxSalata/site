@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
 import Icon from '../../components/Icon.astro';
-import { formatDate, projectOrder } from '../../lib/site';
+import { formatDate, isPlaced, projectOrder } from '../../lib/site';
 
 export async function getStaticPaths() {
   const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(projectOrder);
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry, others } = Astro.props;
 const { Content } = await render(entry);
-const { title, summary, date, tags, links, award, contest } = entry.data;
+const { title, summary, date, tags, links, award, pins, contest } = entry.data;
 // Links without an address aren't live yet: one quiet line names them, and each becomes a button once it has one.
 const live = (links ?? []).filter((l) => l.href);
 const soon = (links ?? []).filter((l) => !l.href);
@@ -24,7 +24,15 @@ const soon = (links ?? []).filter((l) => !l.href);
 <Base title={title} description={summary}>
   <div class="page-head">
     <div class="kicker">
-      {award && <span class={/place/i.test(award) ? 'badge ok' : 'badge'}>{award}</span>}
+      {award && <span class={isPlaced(award) ? 'badge ok' : 'badge'}>{award}</span>}
+      {
+        pins?.map((pin) => (
+          <span class="badge ok pin">
+            <Icon name="medal" />
+            {pin}
+          </span>
+        ))
+      }
       <span class="meta">{formatDate(date)}</span>
     </div>
     <h1>{title}</h1>
