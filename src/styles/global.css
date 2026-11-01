@@ -43,6 +43,10 @@
   --focus: light-dark(#0e7299, #45acd1);
   --ok: light-dark(#257835, #69db7c);
   --ok-soft: light-dark(#e6f4ea, rgb(105 219 124 / 12%));
+  /* Contest results: a warm gold, so an award doesn't read as a status. Text 6:1 or more on its own background. */
+  --award: light-dark(#7a5000, #f2c86b);
+  --award-soft: light-dark(#fcf1d4, rgb(242 200 107 / 13%));
+  --award-edge: light-dark(#ecd08a, rgb(242 200 107 / 32%));
   --shadow: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
   --shadow-lift: 0 10px 24px rgb(16 24 40 / 12%), 0 2px 6px rgb(16 24 40 / 8%);
   /* Tints for tiles (tint-a, tint-b, tint-c); in Light and Dark all three are the plain card. */
@@ -83,6 +87,9 @@
   --focus: #6050b3;
   --ok: #257835;
   --ok-soft: #dff2e6;
+  --award: #77500a;
+  --award-soft: #fcefd2;
+  --award-edge: #e8cd8c;
   --shadow: 0 1px 2px rgb(40 36 66 / 6%), 0 1px 3px rgb(40 36 66 / 8%);
   --tint-a: #fcfbff;
   --edge-a: #c4b6ef;
@@ -498,17 +505,21 @@ pre {
   background: var(--accent-soft);
 }
 
-.badge.ok {
-  color: var(--ok);
-  background: var(--ok-soft);
+/* A placed contest result and its pins (a further honour beside it): gold, a fine edge and a medal, a step larger than
+   the other badges. */
+.badge.award {
+  gap: 0.3em;
+  font-size: 0.8125rem;
+  padding: 0.15rem 0.65rem 0.15rem 0.5rem;
+  color: var(--award);
+  background: var(--award-soft);
+  box-shadow: inset 0 0 0 1px var(--award-edge);
 }
 
-/* A pin: a further honour beside the award, with a small medal. */
-.badge.pin .icon {
-  width: 0.95em;
-  height: 0.95em;
-  margin-right: 0.3em;
-  vertical-align: 0;
+.badge.award .icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
 }
 
 .kicker {
