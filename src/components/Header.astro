@@ -22,7 +22,7 @@ const current = (item: { href: string; also?: string[] }) =>
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}><Icon name="mark" class="" />mxsalata</a>
+    <a class="mark" href="/" aria-current={path === '/' ? 'page' : undefined}><Icon name="mark" class="" />MxSalata</a>
     <nav class="nav-wide" aria-label="Main">
       <ul>{nav.map((item) => <li><a href={item.href} aria-current={current(item)}>{item.label}</a></li>)}</ul>
     </nav>
