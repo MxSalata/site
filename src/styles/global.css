@@ -114,8 +114,11 @@ body {
   flex-direction: column;
 }
 
+/* As wide as the page allows: in the body's flex column, the auto side margins of .wrap would otherwise shrink it to
+   its content and centre it, so each narrow page started at a different left edge. */
 main {
   flex: 1;
+  width: 100%;
 }
 
 /* Wider screens, and zooming out (which widens the viewport in CSS pixels), give the page more room instead of leaving
@@ -554,6 +557,7 @@ pre {
   margin: 0;
   font-size: clamp(2rem, 5vw, 3.1rem);
   letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .hero p:not(.eyebrow) {
@@ -642,6 +646,7 @@ pre {
   margin: 0;
   color: var(--muted);
   font-size: 0.9375rem;
+  text-wrap: pretty;
 }
 
 .tile .shot {
@@ -721,7 +726,7 @@ pre {
   height: 3.25rem;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 30%;
+  object-position: 50% 47%;
   border: 2px solid var(--edge-a);
 }
 
@@ -782,6 +787,7 @@ pre {
   margin: 0;
   font-size: clamp(1.9rem, 4vw, 2.6rem);
   letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .page-head .lead {
@@ -804,8 +810,10 @@ pre {
   overflow-wrap: anywhere;
 }
 
-/* A card that holds only text is as wide as the text, so wide screens don't show an empty band beside it. */
-.paper:has(> .prose:only-child) {
+/* A card that holds only text is as wide as the text, so wide screens don't show an empty band beside it; the contact
+   card takes the same width. */
+.paper:has(> .prose:only-child),
+.paper.contact-card {
   max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px);
 }
 
@@ -869,7 +877,7 @@ figcaption {
   height: 4.5rem;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 30%;
+  object-position: 50% 47%;
   border: 2px solid var(--line);
 }
 
@@ -890,6 +898,11 @@ td {
 th {
   font-weight: 600;
   color: var(--muted);
+}
+
+/* A first column of short values (the About page's years) stays on one line, so the rows keep one height. */
+.prose :is(th, td):first-child {
+  white-space: nowrap;
 }
 
 .meta {
@@ -1104,7 +1117,7 @@ dialog.booking .frame-wrap iframe {
 /* A project's contest, under its summary. */
 .page-head .contest {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.45rem;
   margin: 0.75rem 0 0;
   color: var(--muted);
@@ -1112,6 +1125,8 @@ dialog.booking .frame-wrap iframe {
 .page-head .contest svg {
   width: 1.1rem;
   height: 1.1rem;
+  margin-top: 0.25rem; /* on the first line when the link wraps */
+  margin-top: calc((1lh - 1.1rem) / 2);
   color: var(--accent-text);
   flex: none;
 }
@@ -1185,28 +1200,47 @@ picture.theme-light {
   }
 }
 
-/* Side-by-side project tiles: both pictures the same shape, from their top left. */
+/* Tiles of a heading and a line or two (Everything else, More projects) take their content's height. */
+.tile.fit {
+  min-height: 0;
+}
+
+/* A row with a single tile ("More projects" with one other project) is as wide as the text card above it. */
+.bento > .span-3:only-child {
+  grid-column: 1 / -1;
+}
+.bento:has(> .span-3:only-child) {
+  max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px);
+}
+
+/* Side-by-side project tiles: both pictures the same shape, from their top left, at the tiles' foot so they line up
+   whatever the text above them takes. */
 .bento .tile.span-3 .shot.under {
+  margin-top: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: top left;
 }
 
 /* Project links that aren't live yet: one quiet line under the live buttons. */
+/* The label and the list side by side, so a list that wraps keeps to its own column rather than running under the label. */
 .soon-line {
   margin: 0;
   color: var(--muted);
   font-size: 0.9375rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
 }
 
 .soon-line .soon-tag {
   font-size: 0.75rem;
   font-weight: 600;
   padding: 0.1rem 0.5rem;
-  margin-right: 0.35rem;
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent-text);
+  white-space: nowrap;
 }
 
 /* Motion: small and quick, on screens only, and none at all for visitors whose device asks for less. Keyframes give

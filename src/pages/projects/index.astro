@@ -18,7 +18,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
       <p class="muted">Projects are on their way.</p>
     ) : (
       <ul class="bento">
-        {projects.map((p, i) => <ProjectTile project={p} span={3} tint={(['a', 'b', 'c'] as const)[i % 3]} />)}
+        {projects.map((p, i) => <ProjectTile project={p} span={3} tint={(['c', 'b', 'a'] as const)[i % 3]} />)}
       </ul>
     )
   }
