@@ -27,3 +27,6 @@ export function formatDate(date: Date): string {
 }
 
 export const bookingHref = () => SITE.calLink && `https://cal.com/${SITE.calLink}`;
+
+// Where a Writing entry opens: an article published elsewhere links straight there; the others have their own page.
+export const writingHref = (entry: { id: string; data: { url?: string } }) => entry.data.url ?? `/writing/${entry.id}/`;
