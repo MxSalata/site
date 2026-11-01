@@ -1,0 +1,5 @@
+Contact: mailto:hello@mxsalata.com
+Contact: https://mxsalata.com/contact/
+Expires: 2027-10-31T23:59:00.000Z
+Preferred-Languages: en, pl
+Canonical: https://mxsalata.com/.well-known/security.txt
