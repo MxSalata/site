@@ -1,3 +1,5 @@
+# Cloudflare's managed robots.txt is on for this domain, so the live file starts with Cloudflare's rules, which ask AI
+# training crawlers (and some AI search crawlers) to stay away. That is intended (decided 1 Nov 2026).
 User-agent: *
 Allow: /
 Sitemap: https://mxsalata.com/sitemap-index.xml
