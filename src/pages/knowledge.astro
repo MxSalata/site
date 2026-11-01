@@ -51,10 +51,11 @@ const ICONS = [
 ];
 const ICON_CHART = '<path d="M3 3v18h18"/><path d="M7 16v-5"/><path d="M12 16V7"/><path d="M17 16v-3"/>';
 const ICON_INFO = '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>';
-// Where a row has no level, an icon takes the pill's place: a link for the systems, layers for the records.
-const ICON_LINK = '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
+// Where a row has no level, an icon takes the pill's place: two-way arrows for the systems (connected to; a chain would
+// read as a hyperlink, and these rows aren't links), layers for the records.
+const ICON_CONNECT = '<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>';
 const ICON_LAYERS = '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>';
-const MARKS = [ICON_LINK, ICON_LINK, ICON_LINK, ICON_LAYERS, ICON_LINK, ICON_LINK];
+const MARKS = [ICON_CONNECT, ICON_CONNECT, ICON_CONNECT, ICON_LAYERS, ICON_CONNECT, ICON_CONNECT];
 
 // Everything below is computed from the data, so the page is complete with scripts off.
 const allItems: Item[] = groups.flatMap((g) => g.items);
@@ -181,7 +182,7 @@ const summary = legend.map((l) => `${l.items.length} ${l.key === 'none' ? 'with 
                         </span>
                       ) : (
                         <span class="kb-mark" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={MARKS[i] ?? ICON_LINK} />
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={MARKS[i] ?? ICON_CONNECT} />
                         </span>
                       )}
                       {item.note && <span class="kb-itnote">{item.note}</span>}
