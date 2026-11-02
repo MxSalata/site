@@ -11,7 +11,7 @@ export const SITE = {
   games: '',
 };
 
-export const gamesHref = () => SITE.games || '/minecraft/';
+export const gamesHref = () => SITE.games || '/games/';
 
 /** Whether an award is a contest placing ("Second place", "2nd of 37 entries"): shown in the success colour. */
 export const isPlaced = (award?: string) => /\bplace\b|\b\d+(st|nd|rd|th)\b/i.test(award ?? '');
