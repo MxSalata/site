@@ -32,7 +32,7 @@ const shots = (themed ? ['light', 'pastel', 'dark'] : [undefined]).map((theme) =
   theme,
   image: load(theme ? variant(theme) : src),
 }));
-const widths = (image: ImageMetadata) => [480, 800, 1200, 1600].filter((w) => w < image.width).concat(image.width);
+const widths = (image: ImageMetadata) => [480, 800, 1200, 1600, 2000, 2400].filter((w) => w < image.width).concat(image.width);
 ---
 
 {

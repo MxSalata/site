@@ -48,5 +48,5 @@ const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.
     {compact && <p class="more-link">Read about {title} <span aria-hidden="true">→</span></p>}
     {!compact && (wide || span >= 3) && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
   </div>
-  {picture && <Shot class={picture.under ? 'shot under' : 'shot'} src={picture.src} alt={picture.alt} themed={picture.themed} sizes="(max-width: 52rem) 100vw, 40rem" />}
+  {picture && <Shot class={picture.under ? 'shot under' : 'shot'} src={picture.src} alt={picture.alt} themed={picture.themed} sizes="(max-width: 52rem) 100vw, 50vw" />}
 </li>
