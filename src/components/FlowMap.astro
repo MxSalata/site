@@ -1,0 +1,173 @@
+---
+// The About page's map of where the work sits: what starts a message, the integration engine, and the systems it
+// lands in. Drawn from the page's own text; colours come from the theme, so it follows light, pastel and dark.
+// It sits beside the introduction on wide screens, below it on medium ones, and is left out on phones, where its text
+// would be too small to read (everything it shows is in the page's text too).
+const sources = [
+  { y: 72, label: 'Referrals and', sub: 'GP orders', subIsLabel: true },
+  { y: 164, label: 'Patient administration', sub: 'admit · transfer · discharge' },
+  { y: 256, label: 'AI applications', sub: 'results for clinicians' },
+];
+const targets = [
+  { label: 'EPR and EMR' },
+  { label: 'PACS and RIS' },
+  { label: 'Laboratory systems' },
+  { label: 'GP practices', sub: 'over NHS MESH' },
+  { label: 'Shared care records', sub: 'in FHIR' },
+  { label: 'Patient portals', sub: 'booking and messages' },
+].map((t, i) => ({ ...t, y: 30 + i * 56 }));
+const HUB_Y = 195;
+---
+
+<div class="flowmap">
+  <svg viewBox="0 0 560 390" role="img" aria-labelledby="flowmap-title flowmap-desc">
+    <title id="flowmap-title">Where my work sits</title>
+    <desc id="flowmap-desc">
+      Referrals and GP orders, patient administration events and AI results go into an integration engine (InterSystems
+      IRIS, HealthShare or Ensemble), which looks patients up on NHS Spine, then transforms, routes and tracks each
+      message to EPR and EMR, PACS and RIS, laboratory systems, GP practices over NHS MESH, shared care records in FHIR
+      and patient portals.
+    </desc>
+    <defs>
+      <marker id="flowmap-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path class="head" d="M0,0 L8,4 L0,8 z" />
+      </marker>
+    </defs>
+
+    <text class="col" x="75" y="14">Where it starts</text>
+    <text class="col" x="280" y="14">Integration</text>
+    <text class="col" x="485" y="14">Where it lands</text>
+
+    {sources.map((s) => <path class="wire" d={`M150,${s.y + 28} C180,${s.y + 28} 175,${HUB_Y} 203,${HUB_Y}`} marker-end="url(#flowmap-arrow)" />)}
+    {targets.map((t) => <path class="wire" d={`M355,${HUB_Y} C385,${HUB_Y} 380,${t.y + 22} 408,${t.y + 22}`} marker-end="url(#flowmap-arrow)" />)}
+    <path class="lookup" d="M280,70 L280,108" />
+    <text class="note" x="288" y="93">lookups</text>
+
+    {sources.map((s) => (
+      <g>
+        <rect class="node" x="0" y={s.y} width="150" height="56" rx="8" />
+        <text class="label" x="75" y={s.y + 24}>{s.label}</text>
+        <text class={s.subIsLabel ? 'label' : 'sub'} x="75" y={s.y + 41}>{s.sub}</text>
+      </g>
+    ))}
+
+    <rect class="node" x="205" y="30" width="150" height="40" rx="8" />
+    <text class="label" x="280" y="55">NHS Spine</text>
+
+    <rect class="hub" x="205" y="110" width="150" height="170" rx="10" />
+    <text class="hub-title" x="280" y="160">Integration engine</text>
+    <text class="sub" x="280" y="182">InterSystems IRIS,</text>
+    <text class="sub" x="280" y="197">HealthShare, Ensemble</text>
+    <text class="verbs" x="280" y="230">transform · route</text>
+    <text class="verbs" x="280" y="248">validate · track</text>
+
+    {targets.map((t) => (
+      <g>
+        <rect class="node" x="410" y={t.y} width="150" height="44" rx="8" />
+        <text class="label" x="485" y={t.sub ? t.y + 19 : t.y + 26.5}>{t.label}</text>
+        {t.sub && <text class="sub" x="485" y={t.y + 35}>{t.sub}</text>}
+      </g>
+    ))}
+
+    <text class="foot" x="280" y="384">HL7 v2 · FHIR · DICOM · NHS MESH</text>
+  </svg>
+</div>
+
+<style>
+  .flowmap {
+    margin: 0;
+    padding: 1.25rem 1.25rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--surface);
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font);
+  }
+  text {
+    text-anchor: middle;
+    fill: var(--text);
+  }
+  .col {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--soft);
+  }
+  .node {
+    fill: var(--raised);
+    stroke: var(--line);
+  }
+  .hub {
+    fill: var(--accent-soft);
+    stroke: var(--accent-text);
+    stroke-width: 1.5;
+  }
+  .label {
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .hub-title {
+    font-family: var(--font-head);
+    font-size: 14.5px;
+    font-weight: 700;
+    fill: var(--accent-text);
+  }
+  .sub,
+  .note {
+    font-size: 11px;
+    fill: var(--muted);
+  }
+  .note {
+    text-anchor: start;
+    font-style: italic;
+  }
+  .verbs {
+    font-size: 11.5px;
+    font-weight: 600;
+    fill: var(--accent-text);
+  }
+  .foot {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    fill: var(--soft);
+  }
+  .wire,
+  .lookup {
+    fill: none;
+    stroke: var(--accent-text);
+    stroke-width: 1.4;
+    opacity: 0.75;
+  }
+  .wire {
+    stroke-dasharray: 5 4;
+    animation: flowmap-flow 1.6s linear infinite;
+  }
+  .lookup {
+    stroke: var(--soft);
+    stroke-dasharray: 2 3;
+  }
+  .head {
+    fill: var(--accent-text);
+  }
+  @keyframes flowmap-flow {
+    to {
+      stroke-dashoffset: -18;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wire {
+      animation: none;
+    }
+  }
+  @media (max-width: 40rem) {
+    .flowmap {
+      display: none;
+    }
+  }
+</style>
