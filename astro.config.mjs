@@ -22,6 +22,6 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'never' },
   integrations: [mdx(), sitemap({
       filter: (page) =>
-        !page.includes('/minecraft/') && (hasWriting || !page.includes('/writing/')) && (hasReviews || !page.includes('/reviews/')),
+        !page.includes('/games/') && (hasWriting || !page.includes('/writing/')) && (hasReviews || !page.includes('/reviews/')),
     }),],
 });

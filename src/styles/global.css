@@ -1846,3 +1846,43 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .kb-search input::placeholder { color: CanvasText; }
   .kb-seg button[aria-pressed="true"] { outline: 2px solid CanvasText; }
 }
+
+/* ---------- Games page: a tab per game. The tab list exists only with JavaScript; without it every game shows, stacked. ---------- */
+.gm-tabs { display: none; }
+.js .gm-tabs {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin: 0 0 1.25rem;
+  max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px); /* as wide as the game's card below (.paper with only prose) */
+}
+.gm-panel[hidden] { display: none; }
+@media (width >= 48rem) { .js .gm-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.gm-tab {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .35rem .5rem;
+  padding: .75rem .9rem; text-align: left; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--control); border-radius: 12px; cursor: pointer;
+}
+.gm-tab:hover:not([aria-selected="true"]) { background: var(--accent-soft); }
+/* The chosen tab: an edge with a bar along its foot, and its name underlined, so it never relies on colour alone.
+   --accent-text, not --accent: Dark's accent is under 3:1 against --raised. */
+.gm-tab[aria-selected="true"] { border-color: var(--accent-text); box-shadow: inset 0 -3px 0 var(--accent-text); background: var(--raised); }
+.gm-tab[aria-selected="true"] .gm-name { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .22em; }
+.gm-tab:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.gm-name { min-width: 0; font-family: var(--font-head); font-size: 1.0625rem; font-weight: 700; overflow-wrap: anywhere; }
+.gm-tab > .icon { width: 1.125rem; height: 1.125rem; color: var(--muted); }
+.gm-tab .gm-status { grid-column: 1 / -1; }
+/* Status: the words, with a dot in the same colour beside them. */
+.gm-status { display: inline-flex; align-items: center; gap: .45rem; font-size: .875rem; font-weight: 600; line-height: 1.3; }
+.gm-dot { flex: none; width: .6rem; height: .6rem; border-radius: 50%; background: currentColor; }
+.s-playing { color: var(--ok); }
+.s-request { color: var(--accent-text); }
+.s-off { color: var(--muted); }
+.s-off .gm-dot { background: transparent; border: 2px solid currentColor; }
+.gm-facts { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
+.gm-lock { display: inline-flex; align-items: center; gap: .4rem; font-size: .875rem; font-weight: 600; color: var(--muted); }
+.gm-lock .icon { width: 1rem; height: 1rem; }
+.gm-panel:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) { .gm-tab { transition: background-color .15s ease, border-color .15s ease; } }
+@media (forced-colors: active) {
+  .gm-tab[aria-selected="true"] { border: 2px solid Highlight; }
+  .gm-dot { forced-color-adjust: none; background: CanvasText; }
+  .s-off .gm-dot { background: Canvas; border-color: CanvasText; }
+}

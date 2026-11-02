@@ -3,11 +3,12 @@ set -e
 # One check per line: set -e ignores a failure inside an && chain, and `sh script` ignores a -e on the #! line.
 if grep -rlE '<(script|iframe|img|source|video|audio)[^>]*src="(https?:)?//' dist --include='*.html'; then echo "external resource found"; exit 1; fi
 if grep -rhoE '<link[^>]*>' dist --include='*.html' | grep -E 'rel="(stylesheet|preload|modulepreload|icon)"' | grep -qE 'href="(https?:)?//'; then echo "external stylesheet or icon found"; exit 1; fi
-# Scripts allowed: the JSON-LD block, which the CSP doesn't run, the theme switch (/theme.js), the booking link (/booking.js) and the Knowledge page's search (/knowledge.js).
-if grep -rhoE '<script[^>]*>' dist --include='*.html' | grep -v 'application/ld+json' | grep -vxF -e '<script src="/theme.js">' -e '<script src="/booking.js" defer>' -e '<script src="/knowledge.js" defer>' | grep -q .; then echo "inline or unexpected script found"; exit 1; fi
-if grep -rhE '<script src="/(theme|booking|knowledge).js"( defer)?>[^<]' dist --include='*.html' | grep -q .; then echo "a script tag has inline content"; exit 1; fi
+# Scripts allowed: the JSON-LD block, which the CSP doesn't run, the theme switch (/theme.js), the booking link (/booking.js), the Knowledge page's search (/knowledge.js) and the Games page's tabs (/games.js).
+if grep -rhoE '<script[^>]*>' dist --include='*.html' | grep -v 'application/ld+json' | grep -vxF -e '<script src="/theme.js">' -e '<script src="/booking.js" defer>' -e '<script src="/knowledge.js" defer>' -e '<script src="/games.js" defer>' | grep -q .; then echo "inline or unexpected script found"; exit 1; fi
+if grep -rhE '<script src="/(theme|booking|knowledge|games).js"( defer)?>[^<]' dist --include='*.html' | grep -q .; then echo "a script tag has inline content"; exit 1; fi
 test -f dist/theme.js
 test -f dist/knowledge.js
+test -f dist/games.js
 if grep -rlE ' style="' dist --include='*.html'; then echo "inline style attribute found (CSP has no unsafe-inline)"; exit 1; fi
 if grep -rl '<style' dist --include='*.html'; then echo "inline style element found (CSP has no unsafe-inline)"; exit 1; fi
 grep -q 'application/ld+json' dist/index.html
@@ -24,7 +25,10 @@ if [ -z "$exp" ] || [ "$(date -u -d "$exp" +%s)" -lt "$(( $(date -u +%s) + 60 * 
 if test -e dist/rss.xml; then echo "an RSS feed is built (the site has none since 1 Nov 2026)"; exit 1; fi
 test -f dist/sitemap-index.xml
 test -s dist/sitemap-0.xml
-if grep -q 'mxsalata.com/minecraft/' dist/sitemap-0.xml; then echo "the Minecraft page is in the sitemap"; exit 1; fi
+if grep -q 'mxsalata.com/games/' dist/sitemap-0.xml; then echo "the Games page is in the sitemap"; exit 1; fi
+# The Games page moved from /minecraft/ on 2 Nov 2026: the old address redirects and no longer builds a page.
+grep -qx '/minecraft/ /games/ 301' dist/_redirects || { echo "the /minecraft/ redirect is missing"; exit 1; }
+if test -e dist/minecraft; then echo "the old /minecraft/ page is still built"; exit 1; fi
 # The Writing page is in the sitemap exactly when it's indexable.
 if grep -q 'mxsalata.com/writing/<' dist/sitemap-0.xml; then w=listed; else w=unlisted; fi
 if grep -q '<meta name="robots" content="noindex"' dist/writing/index.html; then n=noindex; else n=indexable; fi
