@@ -821,9 +821,8 @@ pre {
   overflow-wrap: anywhere;
 }
 
-/* A card that holds only text is as wide as the text, so wide screens don't show an empty band beside it; the contact
-   card takes the same width. */
-.paper:has(> .prose:only-child),
+/* The contact card is as wide as a column of text. Text pages' cards take the page's width: see "Text pages on wide
+   screens". */
 .paper.contact-card {
   max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px);
 }
@@ -1219,9 +1218,6 @@ picture.theme-light {
 /* A row with a single tile ("More projects" with one other project) is as wide as the text card above it. */
 .bento > .span-3:only-child {
   grid-column: 1 / -1;
-}
-.bento:has(> .span-3:only-child) {
-  max-width: calc(46rem + 2 * clamp(1.25rem, 4vw, 2.5rem) + 2px);
 }
 
 /* Side-by-side project tiles: both pictures the same shape, from their top left, at the tiles' foot so they line up
@@ -1885,4 +1881,67 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .gm-tab[aria-selected="true"] { border: 2px solid Highlight; }
   .gm-dot { forced-color-adjust: none; background: CanvasText; }
   .s-off .gm-dot { background: Canvas; border-color: CanvasText; }
+}
+
+/* Text pages on wide screens (Mikolaj, 2 Nov 2026: the cards should resize with the window, as Knowledge does). The card
+   takes the page's width, and what's inside uses it while lines stay a readable length: paragraphs keep 46rem; lists
+   go into two columns; pictures grow to the card's width. On a page with no pictures (About, How this site is built),
+   the sections (a heading and what follows it, each in <section class="sect"> in the page's source) sit two side by
+   side. Measured
+   on the card, so a narrow window keeps the single column. */
+.paper:has(> .prose) {
+  container: paper / inline-size;
+}
+
+@container paper (min-width: 60rem) {
+  .prose {
+    max-width: none;
+  }
+
+  .prose > :not(.sect, figure, ul, ol),
+  .prose > .sect > :not(figure, ul, ol) {
+    max-width: 46rem;
+  }
+
+  .prose > :is(ul, ol),
+  .prose > .sect > :is(ul, ol) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+  }
+
+  .prose figure {
+    max-width: 100rem;
+  }
+}
+
+@container paper (min-width: 72rem) {
+  .prose:not(:has(figure)):has(> .sect) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.25rem 3.5rem;
+    align-items: start;
+  }
+
+  .prose:not(:has(figure)):has(> .sect) > :not(.sect) {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  /* Inside a half-width section, text and lists take the section's width, in one column. */
+  .prose:not(:has(figure)) > .sect > * {
+    max-width: none;
+  }
+
+  .prose:not(:has(figure)) > .sect > :is(ul, ol) {
+    display: block;
+  }
+
+  .prose:not(:has(figure)) > .sect > :first-child {
+    margin-top: 0;
+  }
+
+  .prose:not(:has(figure)) > .sect > :last-child {
+    margin-bottom: 0;
+  }
 }

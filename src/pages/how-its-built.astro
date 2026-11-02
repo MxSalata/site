@@ -11,12 +11,15 @@ import { SITE } from '../lib/site';
   </div>
   <article class="paper">
     <div class="prose">
+      <section class="sect">
       <h2>Static pages at the edge</h2>
       <p>
         The site is plain HTML and CSS, built with <a href="https://astro.build/">Astro</a> and served by Cloudflare.
         Its <a href={`${SITE.github}/site`}>source is on GitHub</a>; each change goes through a pull request, and the build
         and its checks run before anything is published.
       </p>
+      </section>
+      <section class="sect">
       <h2>Nothing extra in your browser</h2>
       <p>
         No trackers, no analytics and no cookies. Every page loads only from this site: no fonts, scripts or images from
@@ -24,11 +27,15 @@ import { SITE } from '../lib/site';
         "Book a meeting", which opens the Cal.com calendar in a window over the page. Cal.com loads only when you ask to
         book, and runs in its own frame under its own privacy policy.
       </p>
+      </section>
+      <section class="sect">
       <h2>Light, Pastel and Dark</h2>
       <p>
         The themes come from <a href="/projects/aperture/">Aperture</a>, so the two read as one family. Auto follows your
         device's setting.
       </p>
+      </section>
+      <section class="sect">
       <h2>How it protects itself, and you</h2>
       <p>
         Every page carries a strict content policy: the browser runs only this site's own script and loads nothing from
@@ -40,6 +47,7 @@ import { SITE } from '../lib/site';
         else gets in. Photos are stripped of their hidden details, such as where they were taken, before they're published.
       </p>
       <p>The servers that run at home take no connections from the internet; what friends need reaches them another way.</p>
+      </section>
     </div>
   </article>
 </Base>
