@@ -7,7 +7,7 @@ featured: true
 cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/approval-tile.webp, themed: true, alt: "Shutter's approval step: a person releases exactly this plan, or rejects it" }
 award: In development
 links:
-  - { label: Try the online demo }
+  - { label: Try the online demo, href: 'https://shutter.mxsalata.com/' }
   - { label: Source on GitHub }
   - { label: Open Exchange }
   - { label: The article }
@@ -46,5 +46,11 @@ The agents propose; the gate disposes.
 
 ## Try it
 
-Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest, and it's still in development.
-An online demo opens in November; the links above appear as each part is published.
+Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest. The
+[online demo](https://shutter.mxsalata.com/) is a live hospital where a story fails every 7 minutes and Shutter
+recovers it, with the board running live on the cases handed to it. Sign in as `demo` / `shutter`.
+
+- **The Visual Trace:** each case links to its trace in IRIS's Management Portal, read only. Cloudflare first emails you a
+  one-time code, then IRIS asks for `demo-trace` / `Shutter-Demo-IRIS-Portal`.
+- **The data:** every patient and message is made up, and the whole demo resets to a clean copy every hour.
+- **The other links above** appear as each part is published.
