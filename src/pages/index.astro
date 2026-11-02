@@ -15,7 +15,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 
 <Base title={`${SITE.name}: interoperability solutions for NHS hospitals, councils and clinics`} description={SITE.description}>
   <section class="hero">
-    <p class="eyebrow">Projects and writing on healthcare integration</p>
+    <p class="eyebrow">Projects and writing on healthcare interoperability</p>
     <h1>Interoperability solutions for NHS hospitals, councils and clinics.</h1>
     <p>Tools for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
@@ -52,7 +52,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 
   <section class="who" aria-label="Who made this site">
     <img src="/images/mikolaj-salata.jpg" alt="" width="120" height="120" />
-    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare integration engineer: HL7, FHIR and InterSystems IRIS for NHS hospitals, councils and clinics.</p>
+    <p class="text"><strong>Made by {SITE.name}</strong>Healthcare interoperability specialist: HL7, FHIR and InterSystems IRIS for NHS hospitals, councils and clinics.</p>
     <ul class="links">
       {SITE.calLink && <li><a href={bookingHref()} data-cal-link={SITE.calLink}>Book a meeting</a></li>}
       <li><a href="/cv.pdf">CV (PDF)</a></li>

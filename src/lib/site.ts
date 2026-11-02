@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'Mikolaj Salata',
   title: 'Mikolaj Salata',
-  description: 'Healthcare integration engineer: projects, writing and CV of Mikolaj Salata.',
+  description: 'Healthcare interoperability specialist: projects, writing and CV of Mikolaj Salata.',
   linkedin: 'https://www.linkedin.com/in/msalata/',
   github: 'https://github.com/MxSalata',
   email: 'hello@mxsalata.com',
