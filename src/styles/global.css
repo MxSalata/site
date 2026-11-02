@@ -1580,7 +1580,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 
 /* ---------- The map ---------- */
 .kb-map { --kb-gap: 2.25rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--kb-gap); }
-.kb-lane { display: none; }
+.kb-lane, .kb-drop { display: none; }
 
 .kb-zone {
   position: relative; min-width: 0; padding: 1.5rem;
@@ -1602,7 +1602,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .kb-hub .kb-name { font-size: 1rem; }
 
 /* ---------- Items: rounded rows, the level pill in the same place on every row ---------- */
-/* A tile taller than its own list (its neighbour has more) lets the rows grow, but never past 4.5rem, so a short list is not stretched into airy rows. */
+/* Each row is as tall as its own text: the tiles keep their own height in the map, so no list is stretched. */
 .kb-items {
   flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 1fr);
   gap: .5rem; align-content: stretch; margin: 0; padding: 0; list-style: none;
@@ -1640,7 +1640,6 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 }
 .kb-znote svg { flex: none; width: 1.05rem; height: 1.05rem; margin-top: .15rem; color: var(--accent-text); }
 
-@media (width >= 48rem) { .kb-items { grid-auto-rows: minmax(min-content, 4.5rem); } }
 
 /* ---------- The bands (standards, infrastructure): equal columns by the tile's own width, never a cell under about 18rem (the pill
    sits beside the name, so a narrower cell wraps long names to three lines); the heading sits beside the list once there is room ---------- */
@@ -1690,6 +1689,29 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 3; }
   .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 4; }
   .kb-map:not(.is-filtering) .kb-z1::after, .kb-map:not(.is-filtering) .kb-z2::after { display: none; }
+  /* Each tile is as tall as its own content, so no tile ends in empty space beside a taller neighbour. A tile's stub is then
+     only its dot, and the line down to the standards is a drop behind the tile, from the top of its column to the band. The
+     drops sit above the bands (hence their lower z-index here) and below the tiles. */
+  .kb-map:not(.is-filtering) .kb-zone { align-self: start; }
+  .kb-map:not(.is-filtering) .kb-z3::after, .kb-map:not(.is-filtering) .kb-z4::after { height: 8px; }
+  .kb-map:not(.is-filtering) .kb-z5 { z-index: 1; }
+  .kb-map:not(.is-filtering) .kb-z6 { z-index: 0; }
+  .kb-map:not(.is-filtering) .kb-drop {
+    --kb-drop: var(--kb-gap);
+    display: block; position: relative; z-index: 2; justify-self: center; width: 8px;
+  }
+  .kb-map:not(.is-filtering) .kb-drop::before {
+    content: ""; position: absolute; inset: 0 0 calc(-1 * var(--kb-drop) - 4px);
+    background-image:
+      linear-gradient(var(--control), var(--control)),
+      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
+    background-size: 2px calc(100% - 4px), 8px 8px;
+    background-position: center top, center bottom;
+    background-repeat: no-repeat;
+  }
+  .kb-map:not(.is-filtering) .kb-d1 { grid-column: 1; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-d2 { grid-column: 3; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-d3 { display: none; }
   .kb-map:not(.is-filtering) .kb-l1 {
     display: block; position: relative; z-index: 8; grid-column: 2; grid-row: 1;
   }
@@ -1741,12 +1763,23 @@ main.kb { width: 100%; padding-bottom: 3rem; }
     background-position: center, left center, right center;
     background-repeat: no-repeat;
   }
+  /* The hub keeps its own height, so it can end above the middle of the care records' row: that lane meets the care records
+     near their heading instead, where the hub always reaches. */
+  .kb-map:not(.is-filtering) .kb-l3::before { top: calc(6rem - 4px); }
   /* three stubs from the columns into the standards (the national services sit above the care records, so they have none) */
   .kb-map:not(.is-filtering) .kb-z1::after,
   .kb-map:not(.is-filtering) .kb-z2::after,
   .kb-map:not(.is-filtering) .kb-z4::after,
   .kb-map:not(.is-filtering) .kb-z5::after { display: block; height: calc(var(--kb-gap) * 2 + 8px); }
+  .kb-map:not(.is-filtering) .kb-z1::after,
+  .kb-map:not(.is-filtering) .kb-z2::after,
+  .kb-map:not(.is-filtering) .kb-z4::after { height: 8px; }
   .kb-map:not(.is-filtering) .kb-z3::after { display: none; }
+  /* the drops: the two tall columns, and the care records below the national services (the band is a row gap and its own margin away) */
+  .kb-map:not(.is-filtering) .kb-drop { --kb-drop: calc(var(--kb-gap) * 2); }
+  .kb-map:not(.is-filtering) .kb-d1 { grid-column: 1; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-d2 { grid-column: 3; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-d3 { display: block; grid-column: 5; grid-row: 2; }
   /* wide tints */
   .kb-z5 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
   .kb-z6 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
@@ -1793,6 +1826,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .kb-z3, .kb-z4 { animation-delay: .3s; }
   .kb-z5 { animation-delay: .36s; }
   .kb-z6 { animation-delay: .42s; }
+  .kb-drop { animation: .55s cubic-bezier(.2, .7, .2, 1) .36s backwards rise; }
 }
 
 /* ---------- Forced colours: the system palette replaces ours, so the shapes and lines are redrawn in it ---------- */
