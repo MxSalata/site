@@ -1380,6 +1380,8 @@ picture.theme-light {
    /knowledge.js. Every class is prefixed kb- (apart from the strip's w-*), and the page's <main> carries .kb. */
 
 main.kb { width: 100%; padding-bottom: 3rem; }
+/* The Articles section after the map: the same 3rem a project page leaves above "More projects" (the map has no margin of its own). */
+.kb-map + section { margin-top: 3rem; }
 .kb-sr {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
