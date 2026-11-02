@@ -4,7 +4,7 @@ summary: Failed hospital messages put right safely. AI agents propose a fix, a d
 date: 2026-10-30
 tags: [InterSystems IRIS for Health, InterSystems AI Hub, HL7 v2, IRIS Interoperability, AI agents]
 featured: true
-cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/approval-tile.webp, themed: true, alt: "Shutter's approval step: a person releases exactly this plan, or rejects it" }
+cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/case-tile.webp, themed: true, alt: "A case in Shutter's online demo: every stage from evidence to verification, and the outcome, nothing resent because the patient had already moved on" }
 award: In development
 links:
   - { label: Try the online demo }
@@ -21,8 +21,8 @@ When an HL7 delivery fails in a hospital, the usual fix is a resend from the Mes
 since, that resend moves them back. Shutter turns each failed delivery into a case instead.
 
 <figure>
-  <Shot src="/images/shutter/approval.webp" alt="Shutter's approval step: the plan waits for an approver, who approves or rejects exactly this plan, and can first ask what a blind resend would do" width="1060" height="688" />
-  <figcaption>The approval step: a person releases exactly this plan, or rejects it.</figcaption>
+  <Shot src="/images/shutter/case.webp" alt="A case in Shutter's online demo: a transfer to WARD-B failed; evidence, investigation, plan and gate are done, rehearsal, approval and dispatch not needed, and verification done. The outcome: nothing sent, because the receiver's history shows a later transfer to WARD-C" width="1600" height="802" />
+  <figcaption>A case in the online demo: the patient had already moved on, so Shutter sent nothing and checked that at the receiver.</figcaption>
 </figure>
 
 ## How a case runs
