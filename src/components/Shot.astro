@@ -16,10 +16,10 @@ interface Props {
   class?: string;
   /** Off for a picture with no theme of its own, such as IRIS's visual trace. */
   themed?: boolean;
-  /** How wide the picture shows: a full-width figure in an article by default, or a tile. */
+  /** How wide the picture shows: a figure across the article's card by default (up to 100rem on wide screens), or a tile. */
   sizes?: string;
 }
-const { src, alt, class: extra, themed = true, sizes = '(max-width: 50rem) 100vw, 46rem' } = Astro.props;
+const { src, alt, class: extra, themed = true, sizes = '(max-width: 50rem) 100vw, min(80vw, 100rem)' } = Astro.props;
 
 const files = import.meta.glob<ImageMetadata>('../assets/images/**/*.{webp,png,jpg}', { eager: true, import: 'default' });
 const load = (path: string) => {
