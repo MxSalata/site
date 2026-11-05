@@ -1637,7 +1637,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .kb-znote svg { flex: none; width: 1.05rem; height: 1.05rem; margin-top: .15rem; color: var(--accent-text); }
 
 
-/* ---------- The bands (standards, infrastructure): equal columns by the tile's own width, never a cell under about 18rem (the pill
+/* ---------- The bands (specialisms, systems and care records, infrastructure): equal columns by the tile's own width, never a cell under about 18rem (the pill
    sits beside the name, so a narrower cell wraps long names to three lines); the heading sits beside the list once there is room ---------- */
 @container kz (min-width: 34rem) { .kb-band .kb-items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @container kz (min-width: 56rem) { .kb-band .kb-items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -1670,85 +1670,54 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 }
 .kb-z6::after { display: none; }
 
-/* Tablet: two columns, so the width is used. Systems beside the platforms, then the national services beside the care records,
-   with lanes only where they follow the reading order: across the first row, and down into the standards and the tools. */
+/* Tablet and wider: Specialisms is a full-width lead band, because its ten rows carry long notes and would stand far taller than
+   anything beside them. Under it the platforms hub sits beside the national services and the standards, then the two bands. */
 @media (width >= 48rem) {
   .kb-map:not(.is-filtering) {
-    grid-template-columns: minmax(0, 1fr) 2.25rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) 2.25rem minmax(0, 1fr);
     column-gap: 0;
     row-gap: var(--kb-gap);
   }
-  .kb-map:not(.is-filtering) .kb-z1 { grid-column: 1; grid-row: 1; }
-  .kb-map:not(.is-filtering) .kb-z2 { grid-column: 3; grid-row: 1; }
-  .kb-map:not(.is-filtering) .kb-z3 { grid-column: 1; grid-row: 2; }
-  .kb-map:not(.is-filtering) .kb-z4 { grid-column: 3; grid-row: 2; }
-  .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 3; }
-  .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 4; }
-  .kb-map:not(.is-filtering) .kb-z1::after, .kb-map:not(.is-filtering) .kb-z2::after { display: none; }
+  .kb-map:not(.is-filtering) .kb-z1 { grid-column: 1 / -1; grid-row: 1; z-index: 1; }
+  .kb-map:not(.is-filtering) .kb-z2 { grid-column: 1; grid-row: 2 / 4; }
+  .kb-map:not(.is-filtering) .kb-z3 { grid-column: 3; grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-z4 { grid-column: 3; grid-row: 3; }
+  .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 4; }
+  .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 5; }
+  .kb-map:not(.is-filtering) .kb-z1::after { display: none; }
   /* Each tile is as tall as its own content, so no tile ends in empty space beside a taller neighbour. A tile's stub is then
-     only its dot, and the line down to the standards is a drop behind the tile, from the top of its column to the band. The
-     drops sit above the bands (hence their lower z-index here) and below the tiles. */
+     only its dot, and each column's line is a drop behind its tiles, from the foot of Specialisms to the band below. The
+     drops sit above the bands and Specialisms (hence their lower z-index here) and below the other tiles. */
   .kb-map:not(.is-filtering) .kb-zone { align-self: start; }
-  .kb-map:not(.is-filtering) .kb-z3::after, .kb-map:not(.is-filtering) .kb-z4::after { height: 8px; }
+  .kb-map:not(.is-filtering) .kb-z2::after,
+  .kb-map:not(.is-filtering) .kb-z3::after,
+  .kb-map:not(.is-filtering) .kb-z4::after { display: block; height: 8px; }
   .kb-map:not(.is-filtering) .kb-z5 { z-index: 1; }
   .kb-map:not(.is-filtering) .kb-z6 { z-index: 0; }
   .kb-map:not(.is-filtering) .kb-drop {
     --kb-drop: var(--kb-gap);
+    --kb-rise: var(--kb-gap);
     display: block; position: relative; z-index: 2; justify-self: center; width: 8px;
   }
   .kb-map:not(.is-filtering) .kb-drop::before {
-    content: ""; position: absolute; inset: 0 0 calc(-1 * var(--kb-drop) - 4px);
-    background-image:
-      linear-gradient(var(--control), var(--control)),
-      radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
-    background-size: 2px calc(100% - 4px), 8px 8px;
-    background-position: center top, center bottom;
-    background-repeat: no-repeat;
-  }
-  .kb-map:not(.is-filtering) .kb-d1 { grid-column: 1; grid-row: 2; }
-  .kb-map:not(.is-filtering) .kb-d2 { grid-column: 3; grid-row: 2; }
-  .kb-map:not(.is-filtering) .kb-d3 { display: none; }
-  .kb-map:not(.is-filtering) .kb-l1 {
-    display: block; position: relative; z-index: 8; grid-column: 2; grid-row: 1;
-  }
-  .kb-map:not(.is-filtering) .kb-l1::before {
-    content: ""; position: absolute; left: -4px; right: -4px; top: calc(50% - 4px); height: 8px;
+    content: ""; position: absolute; inset: calc(-1 * var(--kb-rise) - 4px) 0 calc(-1 * var(--kb-drop) - 4px);
     background-image:
       linear-gradient(var(--control), var(--control)),
       radial-gradient(circle, var(--control) 0 3.5px, transparent 4px),
       radial-gradient(circle, var(--control) 0 3.5px, transparent 4px);
-    background-size: calc(100% - 8px) 2px, 8px 8px, 8px 8px;
-    background-position: center, left center, right center;
+    background-size: 2px calc(100% - 8px), 8px 8px, 8px 8px;
+    background-position: center, center top, center bottom;
     background-repeat: no-repeat;
   }
-  /* tablet tints: the tile below a tile, and beside it, never share one */
-  .kb-z5 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
-  .kb-z6 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
-  .kb-z1 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
-  .kb-z2 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
-  .kb-z3 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
-  .kb-z4 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
-}
-
-/* Laptop and wider: the map. Systems left, the platforms hub in the middle, national services above care records on the right. */
-@media (width >= 72rem) {
-  .kb-map:not(.is-filtering) {
-    --kb-gap: 1.5rem;
-    grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1.3fr) 3rem minmax(0, 1fr);
-    row-gap: var(--kb-gap);
-  }
-  .kb-map:not(.is-filtering) .kb-z1 { grid-column: 1; grid-row: 1 / 3; }
-  .kb-map:not(.is-filtering) .kb-z2 { grid-column: 3; grid-row: 1 / 3; }
-  .kb-map:not(.is-filtering) .kb-z3 { grid-column: 5; grid-row: 1; }
-  .kb-map:not(.is-filtering) .kb-z4 { grid-column: 5; grid-row: 2; }
-  .kb-map:not(.is-filtering) .kb-z5 { grid-column: 1 / -1; grid-row: 3; margin-top: var(--kb-gap); }
-  .kb-map:not(.is-filtering) .kb-z6 { grid-column: 1 / -1; grid-row: 4; margin-top: var(--kb-gap); }
-  .kb-map:not(.is-filtering) .kb-l1 { grid-column: 2; grid-row: 1 / 3; }
+  .kb-map:not(.is-filtering) .kb-d1 { grid-column: 1; grid-row: 2 / 4; }
+  .kb-map:not(.is-filtering) .kb-d2 { grid-column: 3; grid-row: 2 / 4; }
+  .kb-map:not(.is-filtering) .kb-d3 { display: none; }
+  /* The lanes: from the hub across to the national services and to the standards. */
   .kb-map:not(.is-filtering) .kb-l2, .kb-map:not(.is-filtering) .kb-l3 {
-    display: block; position: relative; z-index: 8; grid-column: 4;
+    display: block; position: relative; z-index: 8; grid-column: 2;
   }
-  .kb-map:not(.is-filtering) .kb-l2 { grid-row: 1; }
-  .kb-map:not(.is-filtering) .kb-l3 { grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-l2 { grid-row: 2; }
+  .kb-map:not(.is-filtering) .kb-l3 { grid-row: 3; }
   .kb-map:not(.is-filtering) .kb-l2::before, .kb-map:not(.is-filtering) .kb-l3::before {
     content: ""; position: absolute; left: -4px; right: -4px; top: calc(50% - 4px); height: 8px;
     background-image:
@@ -1759,23 +1728,32 @@ main.kb { width: 100%; padding-bottom: 3rem; }
     background-position: center, left center, right center;
     background-repeat: no-repeat;
   }
-  /* The hub keeps its own height, so it can end above the middle of the care records' row: that lane meets the care records
-     near their heading instead, where the hub always reaches. */
+  /* The hub keeps its own height, so it can end above the middle of the standards' row: that lane meets the standards near
+     their heading instead, where the hub always reaches. */
   .kb-map:not(.is-filtering) .kb-l3::before { top: calc(6rem - 4px); }
-  /* three stubs from the columns into the standards (the national services sit above the care records, so they have none) */
-  .kb-map:not(.is-filtering) .kb-z1::after,
-  .kb-map:not(.is-filtering) .kb-z2::after,
-  .kb-map:not(.is-filtering) .kb-z4::after,
-  .kb-map:not(.is-filtering) .kb-z5::after { display: block; height: calc(var(--kb-gap) * 2 + 8px); }
-  .kb-map:not(.is-filtering) .kb-z1::after,
-  .kb-map:not(.is-filtering) .kb-z2::after,
-  .kb-map:not(.is-filtering) .kb-z4::after { height: 8px; }
-  .kb-map:not(.is-filtering) .kb-z3::after { display: none; }
-  /* the drops: the two tall columns, and the care records below the national services (the band is a row gap and its own margin away) */
-  .kb-map:not(.is-filtering) .kb-drop { --kb-drop: calc(var(--kb-gap) * 2); }
-  .kb-map:not(.is-filtering) .kb-d1 { grid-column: 1; grid-row: 1 / 3; }
-  .kb-map:not(.is-filtering) .kb-d2 { grid-column: 3; grid-row: 1 / 3; }
-  .kb-map:not(.is-filtering) .kb-d3 { display: block; grid-column: 5; grid-row: 2; }
+  /* tablet tints: the tile below a tile, and beside it, never share one */
+  .kb-z5 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+  .kb-z6 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+  .kb-z1 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+  .kb-z2 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
+  .kb-z3 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
+  .kb-z4 { --tint: var(--tint-c); --tint-edge: var(--edge-c); }
+}
+
+/* Laptop and wider: the same map with more room, and a wider gap above the two lower bands. */
+@media (width >= 72rem) {
+  .kb-map:not(.is-filtering) {
+    --kb-gap: 1.5rem;
+    grid-template-columns: minmax(0, 1.15fr) 3rem minmax(0, 1fr);
+    row-gap: var(--kb-gap);
+  }
+  .kb-map:not(.is-filtering) .kb-z2 { margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-z3 { margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-z5 { margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-z6 { margin-top: var(--kb-gap); }
+  .kb-map:not(.is-filtering) .kb-z5::after { height: calc(var(--kb-gap) * 2 + 8px); }
+  /* the drops: each band is a row gap and its own margin away */
+  .kb-map:not(.is-filtering) .kb-drop { --kb-drop: calc(var(--kb-gap) * 2); --kb-rise: var(--kb-gap); }
   /* wide tints */
   .kb-z5 { --tint: var(--tint-b); --tint-edge: var(--edge-b); }
   .kb-z6 { --tint: var(--tint-a); --tint-edge: var(--edge-a); }
@@ -1783,7 +1761,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 
 /* Zoomed out: more air */
 @media (width >= 100rem) {
-  .kb-map:not(.is-filtering) { --kb-gap: 1.75rem; grid-template-columns: minmax(0, 1fr) 3.5rem minmax(0, 1.3fr) 3.5rem minmax(0, 1fr); }
+  .kb-map:not(.is-filtering) { --kb-gap: 1.75rem; grid-template-columns: minmax(0, 1.15fr) 3.5rem minmax(0, 1fr); }
   .kb-zone { padding: 1.75rem; }
   .kb-hub .kb-zh { margin: -1.75rem -1.75rem 0; padding: 1.75rem 1.75rem 1.1rem; }
   .kb-glance { padding: 1.75rem; }
@@ -1798,7 +1776,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .kb-map.is-filtering .kb-zone::after, .kb-map.is-filtering .kb-lane { display: none; }
 .kb-map.is-filtering .kb-lvs { display: none; }
 .kb-map.is-filtering .kb-items { grid-auto-rows: auto; }
-.kb-map.is-filtering .kb-z5, .kb-map.is-filtering .kb-z6 { z-index: auto; }
+.kb-map.is-filtering .kb-z1, .kb-map.is-filtering .kb-z5, .kb-map.is-filtering .kb-z6 { z-index: auto; }
 .kb-zone { scroll-margin-top: 6rem; }
 
 /* ---------- Phones: one vertical flow, same order, short connectors ---------- */
