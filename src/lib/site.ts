@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Mikolaj Salata',
   title: 'Mikolaj Salata',
   description: 'Healthcare interoperability specialist: projects, writing and CV of Mikolaj Salata.',
-  linkedin: 'https://www.linkedin.com/in/msalata/',
+  linkedin: 'https://www.linkedin.com/in/mxsalata/',
   github: 'https://github.com/MxSalata',
   email: 'hello@mxsalata.com',
   // The "Book a meeting" link (Cal.com), as user/event. Empty hides every booking link. /booking.js opens it over the page.
