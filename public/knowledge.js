@@ -19,11 +19,11 @@
 
   function squash(t) { return t.replace(/[^a-z0-9]+/g, ''); }
   function plural(n) { return n === 1 ? ' item' : ' items'; }
-  // The search index: the item's name, its note, its level (or "no level") and its group's title, joined with spaces.
+  // The search index: the item's name, its note, its level (or "integrated") and its group's title, joined with spaces.
   var hay = items.map(function (el) {
     var n = el.querySelector('.kb-itnote');
     var g = el.closest('[data-group]');
-    return [el.getAttribute('data-item'), n ? n.textContent : '', el.getAttribute('data-level') || 'no level',
+    return [el.getAttribute('data-item'), n ? n.textContent : '', el.getAttribute('data-level') || 'integrated',
       g ? g.getAttribute('data-group') : '']
       .join(' ').toLowerCase().replace(/\s+/g, ' ');
   });
@@ -116,7 +116,7 @@
 
     var shown = matches.length;
     if (empty) empty.hidden = shown > 0;
-    var where = level === 'none' ? ' with no level' : ' at ' + level;
+    var where = level === 'none' ? ' marked Integrated' : ' at ' + level;
     var msg;
     if (!active) msg = total + ' items';
     else if (!shown) msg = 'No items match' + (hasQ ? ' “' + raw + '”' : '') + (hasLevel ? where : '') + '.';
@@ -126,7 +126,7 @@
       // Names help a screen reader, but a long run would wrap the status line to many rows.
       if (names && (msg + ': ' + names + '.').length <= 90) msg += ': ' + names;
       msg += '.';
-      if (hasLevel && level !== 'none') msg += ' The ' + noLevel + ' items with no level are hidden.';
+      if (hasLevel && level !== 'none') msg += ' The ' + noLevel + ' Integrated items are hidden.';
     }
     say(msg, now);
 
