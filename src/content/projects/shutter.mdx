@@ -1,6 +1,6 @@
 ---
 title: Shutter
-summary: Failed hospital messages put right safely. AI agents propose a fix, a deterministic gate checks it, a person approves it, and Shutter proves it landed.
+summary: Help for the hospital messages that fail every day. AI agents propose a fix, a deterministic gate checks it, and a person or the site's written policy releases it. Nothing is written unless every check passes.
 date: 2026-10-30
 tags: [InterSystems IRIS for Health, InterSystems AI Hub, HL7 v2, IRIS Interoperability, AI agents]
 featured: true
@@ -8,17 +8,25 @@ cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/case-t
 award: Contest entry
 links:
   - { label: Try the online demo, href: 'https://shutter.mxsalata.com/' }
+  - { label: Try the trial, href: 'https://mxsalata.github.io/shutter/' }
+  - { label: Watch the video, href: 'https://youtu.be/oGW7u9RKf9M' }
   - { label: Source on GitHub, href: 'https://github.com/MxSalata/shutter' }
   - { label: Open Exchange, href: 'https://openexchange.intersystems.com/package/Shutter' }
-  - { label: The article, href: 'https://community.intersystems.com/post/building-shutter-iris-ai-hub-what-worked-what-was-hard-and-what-it-cost' }
-  - { label: The video }
+  - { label: Building on AI Hub, href: 'https://community.intersystems.com/post/building-shutter-iris-ai-hub-what-worked-what-was-hard-and-what-it-cost' }
 contest: { name: 'InterSystems Programming Contest: AI Agents in Interoperability Workflows', href: 'https://openexchange.intersystems.com/contest/49' }
 ---
 
 import Shot from '../../components/Shot.astro';
 
-When an HL7 delivery fails in a hospital, the usual fix is a resend from the Message Viewer. If the patient has moved
-since, that resend moves them back. Shutter turns each failed delivery into a case instead.
+On an ordinary day a hospital's integration engine can see hundreds of failed messages. Engineers put right what they
+can by hand, and the rest can go unactioned. Shutter won't fix them all, but it helps with most: in my work on
+interoperability with 28 NHS hospitals, most failures were of the kinds it knows. It resends the failed patient movements
+that pass its checks, closes those the receiver already has, and for the rest stops, writes nothing, and identifies the
+patient for a person to review.
+
+The usual fix for a failed HL7 delivery is a resend from the Message Viewer. If the patient has moved since, that resend
+moves them back, and it can also repeat something the receiver already holds or revive a cancelled movement. Shutter
+turns each failed delivery into a case instead.
 
 <figure>
   <Shot src="/images/shutter/case.webp" alt="A case in Shutter's online demo: a transfer to WARD-B failed; evidence, investigation, plan and gate are done, rehearsal, approval and dispatch not needed, and verification done. The outcome: nothing sent, because the receiver's history shows a later transfer to WARD-C" width="1600" height="802" />
@@ -31,13 +39,21 @@ since, that resend moves them back. Shutter turns each failed delivery into a ca
    other operation for the encounter. Patient identifiers become per-case tokens before anything reaches a model.
 2. **A board of agents proposes.** Three specialists (conformance, encounter, impact) review the evidence in parallel
    on IRIS AI Hub, and a coordinator writes one plan, recording every specialist it overruled and why.
-3. **A deterministic gate checks.** Identity, ordering, state transition, authorisation, concurrency, freshness of the
-   evidence and the receiver's capabilities. An unknown blocks a write as surely as a failed check.
+3. **A deterministic gate checks.** Identity, conformance, intent, ordering, state transition, effect, authorisation,
+   rehearsal, concurrency, freshness of the evidence, the receiver's capabilities and the catalogue. An unknown blocks a
+   write as surely as a failed check.
 4. **A person releases it,** bound to the exact plan, or the site's written policy does for the cases it settles.
 5. **One conditional write, then verification** in the receiver's own history. "Acknowledged" and "Verified" are never
    the same label.
 
-The agents propose; the gate disposes.
+The agents propose; the gate disposes. They have no write tool.
+
+## Pathology results and outages
+
+Orders and results have their own handling. A failed ORU^R01 result becomes a case with the receiver's own response
+and findings, and goes to a person: the case itself does not resend. When a receiver is set up for it, Shutter lists an
+outage's results that never arrived, holds back any that can't safely be resent, such as one with a newer amendment or
+cancellation on the same order, and after one approval resends the rest through the engine, one at a time and in order.
 
 <figure>
   <Shot src="/images/shutter/s8-visual-trace.webp" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" themed={false} />
@@ -46,6 +62,19 @@ The agents propose; the gate disposes.
 
 ## Try it
 
-Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest. The online demo runs it against
-a demo hospital whose feeds fail on their own, so new cases keep arriving, and it goes back to a clean state every hour.
-The source is on GitHub, and the links above lead to the listing and the article.
+Shutter is an entry to InterSystems' "AI Agents in Interoperability Workflows" contest, at release 1.4.4. There are
+three ways to see it:
+
+- **The trial** runs in your browser with nothing to install and no sign-in. It plays recorded agent runs, so it shows
+  the workflow and the gate rather than new model calls. S2, S3 and S8 on its Scenarios page are a good start.
+- **The online demo** is a fictional hospital on real IRIS for Health with AI Hub, whose feeds fail on their own, so new
+  cases keep arriving. Sign in as `demo` with the password `shutter` to read cases, ask questions, approve waiting cases
+  and run the scenarios from their recordings. The contest's judges have their own account, which calls the agents live
+  under a spending cap. The demo goes back to its starting state every hour.
+- **The 13-minute video** follows a live run on the online demo, from an escalated case to an approved resend.
+
+To run it yourself, the source on GitHub starts with `docker compose up`, and the package installs on an AI Hub image
+with `zpm "install iris-shutter"`. Three articles on the Developer Community cover
+[building on AI Hub](https://community.intersystems.com/post/building-shutter-iris-ai-hub-what-worked-what-was-hard-and-what-it-cost),
+[testing the recovery gate](https://community.intersystems.com/post/what-failed-when-i-tested-my-hl7-recovery-gate) and
+[integrating Shutter at a site](https://community.intersystems.com/post/integrating-shutter-your-organisation-one-namespace-time).
