@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
 ---
 
-<Base title="How this website is built" description="How mxsalata.com is built: static pages, no trackers or cookies, nothing at home open to the internet.">
+<Base title="How this website is built" description="How mxsalata.com is built: static pages, no trackers or cookies, and no inbound connections to the home network.">
   <div class="page-head">
     <p class="eyebrow">Colophon</p>
     <h1>How this website is built</h1>
@@ -22,8 +22,8 @@ import { SITE } from '../lib/site';
       <section class="sect">
       <h2>Nothing extra in your browser</h2>
       <p>
-        No trackers, no analytics and no cookies. Every page loads only from this site: no fonts, scripts or images from
-        elsewhere. The site's two small scripts are the theme switch, which remembers your choice on your own device, and
+        No trackers, no analytics and no cookies. When a page first loads, everything comes from this site: no fonts,
+        scripts or images from elsewhere. The site's two small scripts are the theme switch, which remembers your choice on your own device, and
         "Book a meeting", which opens the Cal.com calendar in a window over the page. Cal.com loads only when you ask to
         book, and runs in its own frame under its own privacy policy.
       </p>
@@ -38,15 +38,19 @@ import { SITE } from '../lib/site';
       <section class="sect">
       <h2>How it protects itself, and you</h2>
       <p>
-        Every page carries a strict content policy: the browser runs only this site's own script and loads nothing from
-        anywhere else, so an injected script or a borrowed image has nowhere to come from. Pages are served only over HTTPS.
+        Every page carries a restrictive content security policy: the browser may run only this site's own scripts and
+        load its own styles and images, and the only outside frame it allows is Cal.com's, for booking. That limits what an
+        injected script or a borrowed image could do. Pages are served only over HTTPS.
       </p>
       <p>
         Nothing private lives in the site. Its source is public, so the members' area for friends is a separate,
-        private service behind Cloudflare Access: a friend signs in with a one-time code sent to their email, and nobody
-        else gets in. Photos are stripped of their hidden details, such as where they were taken, before they're published.
+        private service behind Cloudflare Access: a friend signs in with a one-time code sent to their email, and only
+        the addresses on the friends' list can sign in. Photos are stripped of their hidden details, such as where they were taken, before they're published.
       </p>
-      <p>The servers that run at home take no connections from the internet; what friends need reaches them another way.</p>
+      <p>
+        The home network accepts no inbound connections from the internet. What friends need, and the public Shutter
+        demo, are reached through connections that start from home.
+      </p>
       </section>
     </div>
   </article>

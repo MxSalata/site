@@ -23,9 +23,6 @@ const Content = entry ? (await render(entry)).Content : null;
   <article class="paper">
     <div class="prose">
       {Content ? <Content /> : <p>More about me soon.</p>}
-      <p class="more">
-        More on <a href={SITE.linkedin} rel="me">LinkedIn</a>, or <a href="/contact/">get in touch</a>.
-      </p>
     </div>
   </article>
 </Base>

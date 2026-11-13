@@ -4,6 +4,8 @@ summary: Help for the hospital messages that fail every day. AI agents propose a
 date: 2026-10-30
 tags: [InterSystems IRIS for Health, InterSystems AI Hub, HL7 v2, IRIS Interoperability, AI agents]
 featured: true
+seoTitle: 'Shutter: HL7 recovery workflow with AI agents'
+ogImage: /images/shutter/og.png
 cover: { src: /images/shutter/s8-visual-trace.webp, tile: /images/shutter/case-tile.webp, themed: true, alt: "A case in Shutter's online demo: every stage from evidence to verification, and the outcome, nothing resent because the patient had already moved on" }
 award: Contest entry
 links:
@@ -25,8 +27,11 @@ that pass its checks, closes those the receiver already has, and for the rest st
 patient for a person to review.
 
 The usual fix for a failed HL7 delivery is a resend from the Message Viewer. If the patient has moved since, that resend
-moves them back, and it can also repeat something the receiver already holds or revive a cancelled movement. Shutter
+can move them back in the downstream system, and it can also repeat something the receiver already holds or revive a cancelled movement. Shutter
 turns each failed delivery into a case instead.
+
+**Status:** an open-source contest project, shown on synthetic hospital scenarios. Recovery has been demonstrated
+against test receivers; using it with a hospital's own receiver needs integration and validation for that receiver.
 
 <figure>
   <Shot src="/images/shutter/case.webp" alt="A case in Shutter's online demo: a transfer to WARD-B failed; evidence, investigation, plan and gate are done, rehearsal, approval and dispatch not needed, and verification done. The outcome: nothing sent, because the receiver's history shows a later transfer to WARD-C" width="1600" height="802" />
@@ -47,6 +52,16 @@ turns each failed delivery into a case instead.
    the same label.
 
 The agents propose; the gate disposes. They have no write tool.
+
+## What the agents add
+
+The gate doesn't judge a case; it checks a plan. The agents read the whole encounter, the receiver's history and every
+other operation, and turn it into a plan with its reasons, or an escalation that tells a person what they need to look
+at. In scenario S8 two systems moved the same patient at the same recorded time: the board escalates it to a person,
+with nothing written. A recorded run in Rules only, with one gate check lifted on purpose, shows what a plain resend
+would do there: write WARD-B over the newer WARD-C. On a real case the full gate holds that resend whoever proposes it,
+so the agents' part is the reading and the plan, not the safety net. The project's fair test reports how the board
+compares with a single investigator, including where it did no better.
 
 ## Pathology results and outages
 

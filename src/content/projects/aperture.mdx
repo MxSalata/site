@@ -1,15 +1,17 @@
 ---
 title: Aperture
-summary: A management portal for InterSystems IRIS with no separate application server. It came 2nd of 37 entries in the Experts nomination of InterSystems’ “Build Your Own Management Portal” contest, and 1st in its Freshmen nomination.
+summary: A management portal for InterSystems IRIS 2026.2 and later, served by IRIS itself with no separate application server. You sign in as yourself, and IRIS checks your privileges on every call.
+seoTitle: 'Aperture: InterSystems IRIS management portal'
+ogImage: /images/aperture/og.png
 date: 2026-10-20
 tags: [InterSystems IRIS, React, Typescript, IRIS REST API, IRIS Vector Search]
 featured: true
 cover: { src: /images/aperture/dashboard.webp, tile: /images/aperture/dashboard-tile.webp, alt: "Aperture's dashboard", themed: true }
-award: 2nd of 37 entries
+award: 2nd of 37 in Experts
 pins: ['1st in Freshmen']
 contest: { name: 'InterSystems Programming Contest: Build Your Own Management Portal', href: 'https://openexchange.intersystems.com/contest/48' }
 links:
-  - { label: Try the online demo, href: 'https://aperture.mxsalata.com/' }
+  - { label: Try the online demo (simulated IRIS), href: 'https://aperture.mxsalata.com/' }
   - { label: Source on GitHub, href: 'https://github.com/MxSalata/aperture' }
   - { label: Open Exchange, href: 'https://openexchange.intersystems.com/package/Aperture' }
   - { label: The article, href: 'https://community.intersystems.com/post/aperture-management-portal-intersystems-iris-no-separate-application-server' }
@@ -19,7 +21,8 @@ links:
 import Shot from '../../components/Shot.astro';
 
 Aperture is a set of static files that IRIS serves itself. The browser calls IRIS's own SysAdmin REST API directly,
-signed in as you, so IRIS checks your privileges on every call and audits your changes under your name. It also runs
+signed in as you, so IRIS checks your privileges on every call and audits the changes you make through the SysAdmin API
+under your name. SQL statements are audited too once IRIS's SQL audit events are switched on, which IRIS ships off. It also runs
 interoperability productions, SQL and the FHIR servers of IRIS for Health, through the APIs IRIS's own tools use.
 
 <figure>
@@ -51,8 +54,11 @@ interoperability productions, SQL and the FHIR servers of IRIS for Health, throu
 ## Try it
 
 The [online demo](https://aperture.mxsalata.com/) runs a simulated IRIS inside the page, so you can change
-whatever you like. On real IRIS it's one Docker command or one IPM package; the
+whatever you like. On real IRIS 2026.2 or later it's one Docker command or one IPM package; the
 [README](https://github.com/MxSalata/aperture#readme) has both.
+
+Aperture came 2nd of 37 entries in the Experts nomination of InterSystems' [“Build Your Own Management Portal”
+contest](https://openexchange.intersystems.com/contest/48), and 1st in its Freshmen nomination.
 
 While building it I wrote up
 [20 places where the SysAdmin API specification and IRIS disagree](https://community.intersystems.com/post/20-places-where-sysadmin-api-specification-and-iris-disagree).

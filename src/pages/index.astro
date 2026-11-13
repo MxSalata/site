@@ -15,7 +15,7 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
 
 <Base title={`${SITE.name}: interoperability solutions for NHS hospitals, councils and clinics`} description={SITE.description}>
   <section class="hero">
-    <p class="eyebrow">Projects and writing on healthcare interoperability</p>
+    <p class="eyebrow">{SITE.name}, healthcare interoperability specialist</p>
     <h1>Interoperability solutions for NHS hospitals, councils and clinics.</h1>
     <p>Tools for InterSystems IRIS, and the notes behind them.</p>
     <ul class="actions">
@@ -30,6 +30,16 @@ const reviews = (await getCollection('reviews', ({ data }) => !data.draft)).sort
       <li class="text-link"><a href="/about/">About me</a></li>
       <li class="text-link"><a href="/cv.pdf">CV (PDF)</a></li>
     </ul>
+  </section>
+
+  <section class="delivery" aria-labelledby="delivery-h">
+    <h2 id="delivery-h">Selected delivery experience</h2>
+    <ul>
+      <li>Seven deployments of Blackford's clinical AI platform and its applications as sole engineer, in Italy, Germany, Norway and Poland.</li>
+      <li>DocAssure, the document management framework I built on IRIS for Health, live at Sheffield Children's Hospital since April 2026.</li>
+      <li>ePhlebotomy interfaces at Warrington and Halton: nearly 7,000 appointments booked in just over four months of the pilot.</li>
+    </ul>
+    <p><a href="/about/">More about my work <span aria-hidden="true">→</span></a></p>
   </section>
 
   <ul class="bento">
