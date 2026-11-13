@@ -38,7 +38,7 @@ export const KNOWLEDGE: Group[] = [
     items: [
       { name: 'InterSystems IRIS and IRIS for Health', level: 'Deep', note: 'sole developer and architect of DocAssure, live at Sheffield Children’s; Aperture, 2nd of 37; Shutter' },
       { name: 'InterSystems HealthShare and Ensemble', level: 'Deep', note: 'HealthShare 2017.2 at Luton and Bedfordshire, Ensemble before it; led projects, wrote TIE procedures' },
-      { name: 'Objectscript and InterSystems Workflow', level: 'Deep', note: 'six years of NHS interfaces; DocAssure’s framework' },
+      { name: 'ObjectScript and InterSystems Workflow', level: 'Deep', note: 'six years of NHS interfaces; DocAssure’s framework' },
       { name: 'Interweave Connect', level: 'Deep', note: 'two Interweave data provision projects, one a Liquidlogic ETL pipeline into FHIR; JWT authentication for Yorkshire Ambulance Service’s PAS' },
       { name: 'Blackford Platform (Philips AI Manager)', level: 'Deep', note: 'sole engineer on seven deployments; decompiled .dll plugins, coded study XML around a filtering fault' },
       { name: 'BART (Blackford Accept Reject Tool)', level: 'Working', note: 'deployed with the Platform; doctors review AI results before they return to PACS' },
@@ -81,7 +81,7 @@ export const KNOWLEDGE: Group[] = [
       { name: 'MOLIS', note: 'built Warrington and Halton’s paperless ePhlebotomy interfaces, MOLIS to WASP booking' },
       { name: 'WASP', note: 'online blood test booking: nearly 7,000 appointments in just over four months of the pilot' },
       { name: 'BigHand and Xerox', note: 'dictated letters in from BigHand; DocAssure routed them out, Xerox being print and post' },
-      { name: 'Liquidlogic', note: 'social care; a NodeJS ETL pipeline to FHIR, deletions included' },
+      { name: 'Liquidlogic', note: 'social care; a Node.js ETL pipeline to FHIR, deletions included' },
       { name: 'ICE, WinPath and Rhapsody CIM', note: 'pathology order comms and results' },
       {
         name: 'Interweave (Yorkshire & Humber Care Record)',
@@ -97,7 +97,7 @@ export const KNOWLEDGE: Group[] = [
       { name: 'Docker and Docker Compose', level: 'Deep', note: 'complex clinical AI apps, many files to amend per deployment; scripted Docker installs' },
       { name: 'JSON, XML, HTTP, TCP and TLS', level: 'Deep' },
       { name: 'Transact-SQL', level: 'Deep', note: 'designed and deployed a NACS snapshot transformed to custom HL7 for the EPR' },
-      { name: 'Git and BitBucket', level: 'Deep', note: 'version control strategies at Synanetics; taught it at Luton; set up repositories at Blackford' },
+      { name: 'Git and Bitbucket', level: 'Deep', note: 'version control strategies at Synanetics; taught it at Luton; set up repositories at Blackford' },
       { name: 'Jira and Confluence', level: 'Deep' },
       { name: 'Linux (Ubuntu)', level: 'Working', note: 'day to day on deployments; scripted service accounts, Docker set-up, permissions' },
       { name: 'SSH and certificates', level: 'Working', note: 'clinical AI deployments on Ubuntu and Google Cloud' },
@@ -110,7 +110,7 @@ export const KNOWLEDGE: Group[] = [
       { name: 'Windows Server', level: 'Working' },
       { name: 'nginx and Cloudflare Workers', level: 'Working' },
       { name: 'PostgreSQL', level: 'Working' },
-      { name: 'NodeJS, Typescript, Python and HTML', level: 'Working' },
+      { name: 'Node.js, TypeScript, Python and HTML', level: 'Working' },
     ],
   },
 ];
