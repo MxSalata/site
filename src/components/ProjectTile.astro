@@ -45,7 +45,7 @@ const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.
     }
     {compact ? <h3><a href={href}>{title}</a></h3> : <h2><a href={href}>{title}</a></h2>}
     <p>{summary}</p>
-    {compact && <p class="more-link">Read about {title} <span aria-hidden="true">→</span></p>}
+    {compact ? <p class="more-link">Read about {title} <span aria-hidden="true">→</span></p> : <a class="more-link" href={href}>View {title} <span aria-hidden="true">→</span></a>}
     {!compact && (wide || span >= 3) && <ul class="tags">{tags.slice(0, 4).map((t) => <li>{t}</li>)}</ul>}
   </div>
   {picture && <Shot class={picture.under ? 'shot under' : 'shot'} src={picture.src} alt={picture.alt} themed={picture.themed} sizes="(max-width: 52rem) 100vw, 50vw" />}

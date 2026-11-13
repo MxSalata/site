@@ -21,7 +21,7 @@ const live = (links ?? []).filter((l) => l.href);
 const soon = (links ?? []).filter((l) => !l.href);
 ---
 
-<Base title={title} description={summary}>
+<Base title={entry.data.seoTitle ?? title} description={summary} ogImage={entry.data.ogImage}>
   <div class="page-head">
     <div class="kicker">
       {

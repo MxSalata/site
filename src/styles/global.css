@@ -1923,3 +1923,24 @@ main.kb { width: 100%; padding-bottom: 3rem; }
     margin-bottom: 0;
   }
 }
+
+/* Home: selected delivery experience, three lines under the hero */
+.delivery {
+  margin: 0 0 2rem;
+}
+.delivery h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+.delivery ul {
+  margin: 0 0 0.5rem;
+  padding-left: 1.2rem;
+}
+.delivery li {
+  margin: 0.25rem 0;
+}
+.tile a.more-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}

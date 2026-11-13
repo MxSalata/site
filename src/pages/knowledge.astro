@@ -89,6 +89,7 @@ const summary = legend.map((l) => `${l.items.length} ${l.label}`).join(', ').rep
       </div>
       <div class="kb-glance-body">
         <div class="kb-total">
+          <p class="kb-deepest">Deepest in patient administration workflows, HL7 failure recovery, integration architecture, clinical document routing and clinical AI deployment.</p>
           <p class="kb-big"><span class="kb-num">{byLevel('Deep').length}</span> <span class="kb-big-label">Deep, of {total} items in {groups.length} areas</span></p>
           <div class="kb-waffle" aria-hidden="true">
             {legend.map((l) => l.items.map(() => <i class={WAFFLE[l.key]} />))}
@@ -213,6 +214,7 @@ const summary = legend.map((l) => `${l.items.length} ${l.label}`).join(', ').rep
     posts.length > 0 && (
       <section>
         <h2 class="section-title">Articles</h2>
+        <p><a href="/writing/">All writing <span aria-hidden="true">→</span></a></p>
         <ul class="bento">
           {posts.map((w, i) => (
             <li class={`tile tint-${tints[i % 3]} span-3`}>
