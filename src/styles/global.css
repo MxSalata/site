@@ -1944,3 +1944,114 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   margin-top: 0.25rem;
   font-weight: 600;
 }
+
+/* A project page's lead, key facts, outcomes and wide diagrams (Shutter). Colours come from the theme. */
+.lead-box {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 0.9rem 1.1rem;
+  margin: 0 0 1.5rem;
+}
+.lead-box p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+}
+.facts > div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--raised);
+  padding: 0.7rem 0.9rem;
+}
+.facts dt {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--soft);
+}
+.facts dd {
+  margin: 0.2rem 0 0;
+}
+.story {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  margin: 1.25rem 0;
+  background: var(--raised);
+}
+.story summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.story[open] summary {
+  margin-bottom: 0.5rem;
+}
+.outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 0.5rem;
+}
+.outcome {
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--ok);
+  border-radius: 8px;
+  background: var(--raised);
+  padding: 0.7rem 0.9rem;
+}
+.outcome.close {
+  border-top-color: var(--accent);
+}
+.outcome.stop {
+  border-top-color: var(--award);
+}
+.outcome strong {
+  display: block;
+  font-size: 1.05rem;
+}
+.outcome span {
+  font-size: 0.85rem;
+  color: var(--soft);
+}
+.outcome p {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+}
+@media (max-width: 44rem) {
+  .facts,
+  .outcomes {
+    grid-template-columns: 1fr;
+  }
+  /* A wide diagram keeps a readable size on a phone and scrolls sideways inside its own box. */
+  .diagram {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .diagram figure {
+    width: 52rem;
+    margin-bottom: 0.5rem;
+  }
+  .diagram figure img {
+    width: 100%;
+    max-width: none;
+  }
+  .diagram figcaption {
+    position: sticky;
+    left: 0;
+    max-width: calc(100vw - 6rem);
+  }
+  .diagram::before {
+    content: 'Scroll sideways to read the diagram';
+    display: block;
+    font-size: 0.85rem;
+    color: var(--soft);
+    margin: 0 0 0.35rem;
+  }
+}
