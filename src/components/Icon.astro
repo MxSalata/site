@@ -7,7 +7,7 @@ interface Props {
 }
 const { name, label, class: className = 'icon' } = Astro.props;
 const paths: Record<Props['name'], string> = {
-  // The mark: two stems with an X between them (Mikolaj's choice, 1 Nov 2026). favicon.svg and the touch icon match.
+  // The mark: two stems with an X between them. favicon.svg and the touch icon match.
   mark: '<path stroke-width="2.6" d="M4 20V4l16 16V4M4 20L20 4"/>',
   theme: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
   // lock and lock-open are lucide's, so the pair matches (the Games page: locked needs an invite or a password).

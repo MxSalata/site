@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname;
-// Reviews joins the navigation with its first published review (Mikolaj, 1 Nov 2026: an empty section waits).
+// Reviews joins the navigation with its first published review, so an empty section stays hidden.
 const hasReviews = (await getCollection('reviews', ({ data }) => !data.draft)).length > 0;
 const nav = [
   { href: '/projects/', label: 'Projects' },
