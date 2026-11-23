@@ -1961,6 +1961,12 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   }
 }
 
+/* Project pages keep the laptop layout on wide screens: the page stops at 72rem and sits in the middle, so the text
+   column, the lists and the pictures stay together instead of spreading across a 2,000 px window. */
+main.project-page {
+  max-width: 72rem;
+}
+
 /* Home: selected delivery experience, three lines under the hero */
 .delivery {
   margin: 0 0 2rem;
