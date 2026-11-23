@@ -1,5 +1,12 @@
 # Cloudflare's managed robots.txt is on for this domain, so the live file starts with Cloudflare's rules, which ask AI
-# training crawlers (and some AI search crawlers) to stay away. That is intended.
+# training crawlers (and some AI search crawlers) to stay away. That is intended for the AI training crawlers.
+# The search crawlers below are welcome: these groups combine with Cloudflare's groups for the same crawlers, and where
+# Allow and Disallow match equally the less restrictive rule wins (RFC 9309, 2.2.2).
+User-agent: Applebot
+User-agent: Bravebot
+User-agent: Baiduspider
+Allow: /
+
 User-agent: *
 Allow: /
 Sitemap: https://mxsalata.com/sitemap-index.xml
