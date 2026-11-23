@@ -35,7 +35,7 @@
   --control: light-dark(#7b838c, #6b7686);
   /* Filled buttons and the pressed switch carry white text: 5.4:1 or more in both. */
   --accent: #0e7299;
-  --accent-hover: light-dark(#095c7c, #095c7c);
+  --accent-hover: light-dark(#095c7c, #127ea8);
   --accent-text: light-dark(#095c7c, #6fc0dc);
   --accent-soft: light-dark(#e7f5fa, rgb(69 172 209 / 14%));
   --on-accent: #ffffff;
@@ -47,8 +47,9 @@
   --award: light-dark(#7a5000, #f2c86b);
   --award-soft: light-dark(#fcf1d4, rgb(242 200 107 / 13%));
   --award-edge: light-dark(#ecd08a, rgb(242 200 107 / 32%));
-  --shadow: 0 1px 2px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 10%);
-  --shadow-lift: 0 10px 24px rgb(16 24 40 / 12%), 0 2px 6px rgb(16 24 40 / 8%);
+  /* light-dark() takes colours only, so it sits inside each shadow: navy on light pages, black on slate. */
+  --shadow: 0 1px 2px light-dark(rgb(16 24 40 / 8%), rgb(0 0 0 / 30%)), 0 1px 3px light-dark(rgb(16 24 40 / 10%), rgb(0 0 0 / 24%));
+  --shadow-lift: 0 10px 24px light-dark(rgb(16 24 40 / 12%), rgb(0 0 0 / 42%)), 0 2px 6px light-dark(rgb(16 24 40 / 8%), rgb(0 0 0 / 30%));
   /* Tints for tiles (tint-a, tint-b, tint-c); in Light and Dark all three are the plain card. */
   --tint-a: var(--raised);
   --edge-a: var(--line);
@@ -212,7 +213,7 @@ pre {
 .mark {
   font-family: var(--font-head);
   font-weight: 750;
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   letter-spacing: -0.02em;
   color: var(--text);
   text-decoration: none;
@@ -331,6 +332,7 @@ pre {
 }
 
 .theme-menu summary {
+  min-height: 2.75rem;
   list-style: none;
   cursor: pointer;
   display: inline-flex;
@@ -379,6 +381,7 @@ pre {
 }
 
 .menu summary {
+  min-height: 2.75rem;
   list-style: none;
   cursor: pointer;
   display: inline-flex;
@@ -453,6 +456,8 @@ pre {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  justify-content: center;
+  min-height: 2.75rem;
   padding: 0.55rem 1rem;
   border-radius: 8px;
   font-weight: 600;
@@ -465,6 +470,7 @@ pre {
 .btn.primary {
   background: var(--accent);
   color: var(--on-accent);
+  border-color: var(--focus);
 }
 
 .btn.primary:hover {
@@ -539,11 +545,12 @@ pre {
 }
 
 .tags li {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
   color: var(--muted);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.05rem 0.5rem;
+  padding: 0.15rem 0.55rem;
   background: var(--surface);
 }
 
@@ -656,7 +663,8 @@ pre {
 .tile p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.9375rem;
+  font-size: 1rem;
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
@@ -791,7 +799,19 @@ pre {
   padding: 3rem 0 1.5rem;
   display: grid;
   gap: 0.75rem;
+}
+/* The text keeps a readable width; the row of links may use the page's. */
+.page-head > :is(.eyebrow, .kicker, .person, h1, .lead, .contest, .tags, .soon-line) {
   max-width: 50rem;
+}
+/* Three tiers of link: the first filled, the second outlined, the rest as text links. */
+.page-head .actions li:nth-child(n + 3) .btn.ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent-text);
+  padding-inline: 0.4rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .page-head h1 {
@@ -812,7 +832,7 @@ pre {
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: var(--shadow);
-  padding: clamp(1.25rem, 4vw, 2.5rem);
+  padding: clamp(1rem, 4vw, 2.5rem);
   margin-bottom: 3rem;
 }
 
@@ -841,7 +861,7 @@ pre {
 }
 
 .prose h3 {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   margin: 1.75rem 0 0.5rem;
 }
 
@@ -872,7 +892,7 @@ figure img {
 
 figcaption {
   margin-top: 0.4rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
@@ -894,7 +914,7 @@ figcaption {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
 }
 
 th,
@@ -916,7 +936,7 @@ th {
 }
 
 .meta {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--soft);
 }
 
@@ -1099,7 +1119,10 @@ dialog.booking iframe {
 
 /* Secondary hero links: text beside the two buttons. */
 .actions .text-link a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.9375rem;
   padding: 0.55rem 0.4rem;
   color: var(--accent-text);
   font-weight: 600;
@@ -1206,7 +1229,7 @@ picture.theme-light {
 }
 .contact .best {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--soft);
 }
 
@@ -1409,7 +1432,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 }
 .kb-glyph svg { width: 1.25rem; height: 1.25rem; }
 .kb-zh { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .2rem .85rem; align-items: start; }
-.kb-zh h2 { margin: 0; font-size: 1.3rem; line-height: 1.2; }
+.kb-zh h2 { margin: 0; font-size: 1.25rem; line-height: 1.2; }
 .kb-zt { min-width: 0; }
 .kb-intro { margin: .2rem 0 0; color: var(--muted); font-size: .9375rem; line-height: 1.4; }
 .kb-tally { display: flex; flex-wrap: wrap; gap: 0 .85rem; margin: .45rem 0 0; color: var(--muted); font-size: .875rem; font-weight: 600; line-height: 1.6; }
@@ -1458,13 +1481,13 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .kb-legend { margin: 0; padding: 0; list-style: none; }
 .kb-leg {
   display: grid; grid-template-columns: minmax(0, 1fr); gap: .3rem;
-  padding: .7rem 0; border-top: 1px solid var(--tint-edge);
+  padding: .9rem 0; border-top: 1px solid var(--tint-edge);
 }
 .kb-leg-row { display: flex; align-items: flex-start; gap: .65rem; min-width: 0; }
 .kb-leg-row .kb-sw { margin-top: .2rem; }
 .kb-leg-text { font-size: .9375rem; line-height: 1.4; color: var(--muted); }
 .kb-leg-text strong { color: var(--text); font-size: 1rem; margin-right: .3rem; }
-.kb-names { margin: 0; padding: 0 0 0 1.75rem; list-style: none; font-size: .9375rem; line-height: 1.6; color: var(--text); word-spacing: .85em; }
+.kb-names { margin: 0; padding: 0 0 0 1.75rem; list-style: none; font-size: .9375rem; line-height: 1.75; color: var(--text); word-spacing: .85em; }
 .kb-leg:first-child .kb-names { font-weight: 600; }
 /* Each name wraps whole (an inline-block moves to the next line rather than breaking), and its separator dot follows the name's
    last line: it is the name's own ::after, joined to the last word, so it cannot start a line or hang at the end of a line the
@@ -1481,19 +1504,23 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   font-size: .8em; font-weight: 400; color: var(--control);
 }
 
-/* A little wider: the total sits on one row (number, label, strip). */
+/* The sentence takes a row of its own; below it, the number captions the strip. */
+.kb-deepest { grid-column: 1 / -1; margin: 0; }
+/* A little wider: the number and the strip share a row under the sentence. */
 @container kg (min-width: 36rem) {
-  .kb-total { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; }
-  .kb-big-label { white-space: nowrap; }
+  .kb-total { grid-template-columns: minmax(0, 1fr) min(22rem, 50%); align-items: center; gap: 1.25rem; }
   .kb-names { padding-left: 1.75rem; }
 }
 /* Wide enough for the heading and the total to share the first row, and for each level to be a row with its names beside it. */
 @container kg (min-width: 56rem) {
   .kb-gl { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
   .kb-glance .kb-zh { grid-column: 1; grid-row: 1; }
-  .kb-total { grid-column: 2; grid-row: 1; justify-self: end; }
+  .kb-gl { column-gap: 2rem; }
+  .kb-total { grid-column: 2; grid-row: 1; justify-self: stretch; grid-template-columns: minmax(0, 1fr) 22rem; column-gap: 2.5rem; row-gap: 0.5rem; }
+  .kb-deepest { grid-column: 1; grid-row: 1 / span 2; align-self: center; max-width: 34rem; }
+  .kb-big { grid-column: 2; grid-row: 1; }
+  .kb-waffle { grid-column: 2; grid-row: 2; width: 22rem; }
   .kb-legend { grid-column: 1 / -1; grid-row: 2; }
-  .kb-waffle { width: 22rem; }
   .kb-leg { grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr); column-gap: 1.5rem; align-items: start; }
   .kb-names { padding: 0; }
 }
@@ -1504,11 +1531,11 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .kb-num { font-size: 2.25rem; }
   .kb-big { gap: .5rem; }
   .kb-waffle i { height: .85rem; }
-  .kb-leg { padding: .4rem 0 .1rem; gap: .05rem; }
+  .kb-leg { padding: .65rem 0; gap: .25rem; }
   .kb-leg:last-child { padding-bottom: 0; }
   .kb-leg-text { font-size: .875rem; line-height: 1.35; }
   .kb-leg-text strong { font-size: .9375rem; }
-  .kb-names { font-size: .875rem; line-height: 1.4; }
+  .kb-names { font-size: .9375rem; line-height: 1.6; }
 }
 
 /* ---------- Search and level filter (they exist only with JavaScript) ---------- */
@@ -1566,6 +1593,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .kb-link:hover { text-decoration-thickness: 2px; }
 .kb-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
+@media (width < 34rem) { .kb-seg button { padding-inline: .25rem; font-size: .8125rem; } }
 @media (width >= 34rem) { .kb-status { min-height: 2.8em; } }
 @media (width >= 48rem) {
   .js .kb-tools {
@@ -1622,7 +1650,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   border: 1px solid color-mix(in srgb, var(--tint-edge) 80%, transparent);
 }
 .kb-name { grid-area: n; font-weight: 600; font-size: .9375rem; line-height: 1.4; color: var(--text); overflow-wrap: anywhere; }
-.kb-itnote { grid-area: d; color: var(--muted); font-size: .875rem; line-height: 1.45; }
+.kb-itnote { grid-area: d; color: var(--muted); font-size: .9375rem; line-height: 1.5; }
 .kb-level, .kb-mark { grid-area: l; align-self: start; }
 .kb-level {
   display: inline-flex; align-items: center; gap: .4rem; padding: .12rem .65rem .12rem .5rem; margin-top: -.12rem;
@@ -1795,7 +1823,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .kb-glance { padding: 1rem 1.1rem; }
   .kb-map { --kb-gap: 1.5rem; }
   .kb-zh { gap: .2rem .7rem; }
-  .kb-zh h2 { font-size: 1.2rem; }
+  .kb-zh h2 { font-size: 1.25rem; }
   .kb-item { padding: .55rem .75rem; }
   .kb-items { gap: .4rem; }
   .kb .page-head { padding-top: 2rem; }
@@ -1938,7 +1966,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   margin: 0 0 2rem;
 }
 .delivery h2 {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   margin: 0 0 0.5rem;
 }
 .delivery ul {
@@ -1951,7 +1979,46 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 .tile a.more-link {
   display: inline-block;
   margin-top: 0.25rem;
+  padding-block: 0.2rem;
   font-weight: 600;
+  font-size: 0.9375rem;
+}
+/* Laptops and wider: the headline and the delivery list side by side, so the project tiles start on the first screen. */
+@media (min-width: 70rem) {
+  main:has(> .hero) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    column-gap: 3.5rem;
+    align-items: end;
+    align-content: start;
+  }
+  main > .hero { grid-column: 1; }
+  main > .delivery { grid-column: 2; border-left: 1px solid var(--line); padding-left: 1.75rem; font-size: 0.9375rem; }
+  main > :not(.hero, .delivery) { grid-column: 1 / -1; }
+}
+
+/* Lists in text: the home page's indent, and air between items. */
+.prose :is(ul, ol):not([class]) { padding-left: 1.25rem; }
+.prose :is(ul, ol):not([class]) > li + li { margin-top: 0.4rem; }
+
+/* Phones: the portrait anchors the name, and the links read as their own group, each easy to tap. */
+@media (max-width: 44rem) {
+  .who {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.75rem 1rem;
+  }
+  .who .links {
+    grid-column: 1 / -1;
+    gap: 0.5rem 1.25rem;
+  }
+  .who .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .hero .actions { column-gap: 1rem; row-gap: 0.5rem; }
 }
 
 /* A project page's lead, key facts, outcomes and wide diagrams (Shutter). Colours come from the theme. */
@@ -1964,7 +2031,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 }
 .lead-box p {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.0625rem;
 }
 .facts {
   display: grid;
@@ -1979,7 +2046,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   padding: 0.7rem 0.9rem;
 }
 .facts dt {
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -2023,15 +2090,15 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 }
 .outcome strong {
   display: block;
-  font-size: 1.05rem;
+  font-size: 1.0625rem;
 }
 .outcome span {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--soft);
 }
 .outcome p {
   margin: 0.4rem 0 0;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
 }
 @media (max-width: 44rem) {
   .facts,
@@ -2059,7 +2126,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .diagram::before {
     content: 'Scroll sideways to read the diagram';
     display: block;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
     color: var(--soft);
     margin: 0 0 0.35rem;
   }
