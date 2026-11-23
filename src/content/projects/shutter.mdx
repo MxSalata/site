@@ -39,7 +39,7 @@ can do their projects instead of firefighting failures every day.**
 
 On an ordinary day a hospital's integration engine can see hundreds of failed messages. Engineers put right what they
 can by hand, and the rest can go unactioned. Shutter won't fix them all, but it helps with most: in my work on
-interoperability with 28 NHS hospitals, most failures were of the kinds it knows. It resends the failed patient movements
+interoperability with 28 NHS trusts (two in-house at Luton and Bedfordshire, 26 supported at Synanetics), most failures were of the kinds it knows. It resends the failed patient movements
 that pass its checks, closes those the receiver already has, and for the rest stops, writes nothing, and identifies the
 patient for a person to review.
 
@@ -50,7 +50,7 @@ deterministic gate decides whether anything is written.
 <details class="story">
 <summary>Why I built it</summary>
 
-These are the failures I met in my interoperability work with 28 NHS hospitals. At one trust we checked every interface
+These are the failures I met in my interoperability work with 28 NHS trusts. At one trust we checked every interface
 daily for failed messages, and I wrote a 30-page guide to handling them. Not every clinical system checks what it
 receives. When a bed transfer from I.PM failed to reach NerveCentre and clinicians corrected the history there by hand,
 resending the failures in order could displace several patients, because NerveCentre won't put two patients in one bed
@@ -62,7 +62,7 @@ leaving two active spells. That is why Shutter reads the receiver before it writ
 
 ## A product with a strong core, with or without the AI
 
-I built Shutter as a production-ready product, not a demonstration of a model. Its core logic stands on its own, and
+I built Shutter to production standards, as a product rather than a demonstration of a model; it has not yet run at a hospital. Its core logic stands on its own, and
 the agents add judgement on top of it:
 
 - **The core calls no model.** It installs on IRIS for Health 2026.2 without AI Hub.

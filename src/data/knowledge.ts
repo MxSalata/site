@@ -40,7 +40,7 @@ export const KNOWLEDGE: Group[] = [
       { name: 'InterSystems HealthShare and Ensemble', level: 'Deep', note: 'HealthShare 2017.2 at Luton and Bedfordshire, Ensemble before it; led projects, wrote TIE procedures' },
       { name: 'ObjectScript and InterSystems Workflow', level: 'Deep', note: 'six years of NHS interfaces; DocAssure’s framework' },
       { name: 'Interweave Connect', level: 'Deep', note: 'two Interweave data provision projects, one a Liquidlogic ETL pipeline into FHIR; JWT authentication for Yorkshire Ambulance Service’s PAS' },
-      { name: 'Blackford Platform (Philips AI Manager)', level: 'Deep', note: 'sole engineer on seven deployments; decompiled .dll plugins, coded study XML around a filtering fault' },
+      { name: 'Blackford Platform (Philips AI Manager)', level: 'Deep', note: 'sole engineer on seven deployments; traced a relevancy-rule fault in the platform’s plugins and worked around it in study XML' },
       { name: 'BART (Blackford Accept Reject Tool)', level: 'Working', note: 'deployed with the Platform; doctors review AI results before they return to PACS' },
       { name: 'Blackford Dashboard', level: 'Working', note: 'monitoring deployed platforms: system health, jobs, study throughput' },
       { name: 'Mirth Connect', level: 'Working' },
