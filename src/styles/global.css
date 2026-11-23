@@ -33,7 +33,7 @@
   --line: light-dark(#d5dbe2, #363f4c);
   /* Borders that are the only outline of a control: 3:1 or more on --surface and --raised. */
   --control: light-dark(#7b838c, #6b7686);
-  /* Filled buttons and the pressed switch carry white text: 5.4:1 or more in both. */
+  /* Filled buttons and the pressed switch carry white text: 5.4:1 or more in both, and 4.6:1 on Dark's hover. */
   --accent: #0e7299;
   --accent-hover: light-dark(#095c7c, #127ea8);
   --accent-text: light-dark(#095c7c, #6fc0dc);
@@ -804,8 +804,8 @@ pre {
 .page-head > :is(.eyebrow, .kicker, .person, h1, .lead, .contest, .tags, .soon-line) {
   max-width: 50rem;
 }
-/* Three tiers of link: the first filled, the second outlined, the rest as text links. */
-.page-head .actions li:nth-child(n + 3) .btn.ghost {
+/* Project pages: three tiers of link, the first filled, the second outlined, the rest as text links. */
+.page-head .actions.tiered li:nth-child(n + 3) .btn.ghost {
   border-color: transparent;
   background: transparent;
   color: var(--accent-text);
@@ -1992,9 +1992,9 @@ main.kb { width: 100%; padding-bottom: 3rem; }
     align-items: end;
     align-content: start;
   }
-  main > .hero { grid-column: 1; }
-  main > .delivery { grid-column: 2; border-left: 1px solid var(--line); padding-left: 1.75rem; font-size: 0.9375rem; }
-  main > :not(.hero, .delivery) { grid-column: 1 / -1; }
+  main:has(> .hero) > .hero { grid-column: 1; }
+  main:has(> .hero) > .delivery { grid-column: 2; border-left: 1px solid var(--line); padding-left: 1.75rem; font-size: 0.9375rem; }
+  main:has(> .hero) > :not(.hero, .delivery) { grid-column: 1 / -1; }
 }
 
 /* Lists in text: the home page's indent, and air between items. */
