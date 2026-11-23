@@ -57,7 +57,7 @@ const soon = (links ?? []).filter((l) => !l.href);
     <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>
     {
       live.length > 0 && (
-        <ul class="actions">
+        <ul class="actions tiered">
           {live.map((l, i) => (
             <li>
               <a class={i === 0 ? 'btn primary' : 'btn ghost'} href={l.href}>
