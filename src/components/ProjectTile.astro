@@ -29,7 +29,7 @@ const picture = !compact && cover && { src: cover.tile ?? cover.src, alt: cover.
           {isPlaced(award) ? (
             <span class="badge award">
               <Icon name="medal" />
-              {award}
+              InterSystems contest: {award}
             </span>
           ) : (
             <span class="badge">{award}</span>

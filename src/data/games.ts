@@ -7,7 +7,7 @@ export type Access = 'invite' | 'password' | 'open';
 
 // What each status is called on the page. A coloured dot sits beside the words, never instead of them.
 export const STATUS: Record<Status, string> = {
-  playing: 'Playing now',
+  playing: 'Server running',
   request: 'On request',
   off: 'Not running',
 };
