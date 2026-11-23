@@ -24,7 +24,7 @@ export interface Game {
   name: string;
   short: string; // the tab's label
   status: Status;
-  access?: Access; // every game has one today (Mikolaj, 2 Nov: each needs a password or an invite)
+  access?: Access; // every game has one today (each needs a password or an invite)
   description: string;
   join: string;
 }
