@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
 
+// /writing/ repeats the list on Knowledge, so only Knowledge is in the sitemap.
 // A collection's index stays out of the sitemap until it has a published entry, the same test as its page's noindex: a
 // Markdown file in the folder (where the collection's loader looks) whose front matter doesn't say `draft: true`.
 const isDraft = (text) => /^draft:\s*true\s*$/m.test(text.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '');
@@ -22,6 +23,6 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'never' },
   integrations: [mdx(), sitemap({
       filter: (page) =>
-        !page.includes('/games/') && (hasWriting || !page.includes('/writing/')) && (hasReviews || !page.includes('/reviews/')),
+        !page.includes('/games/') && !page.endsWith('/writing/') && (hasWriting || !page.includes('/writing/')) && (hasReviews || !page.includes('/reviews/')),
     }),],
 });

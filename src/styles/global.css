@@ -974,6 +974,14 @@ th {
   margin: 0;
 }
 
+/* Phones: footer links at least 24 px tall, so each is easy to tap. */
+@media (max-width: 52rem) {
+  .site-footer a {
+    display: inline-block;
+    padding-block: 0.2rem;
+  }
+}
+
 @media (max-width: 52rem) {
   .tile.wide {
     grid-template-columns: minmax(0, 1fr);
@@ -1475,7 +1483,8 @@ main.kb { width: 100%; padding-bottom: 3rem; }
 
 /* A little wider: the total sits on one row (number, label, strip). */
 @container kg (min-width: 36rem) {
-  .kb-total { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 1.25rem; }
+  .kb-total { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; }
+  .kb-big-label { white-space: nowrap; }
   .kb-names { padding-left: 1.75rem; }
 }
 /* Wide enough for the heading and the total to share the first row, and for each level to be a row with its names beside it. */

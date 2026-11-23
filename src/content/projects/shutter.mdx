@@ -29,7 +29,7 @@ can do their projects instead of firefighting failures every day.**
 </div>
 
 <dl class="facts">
-  <div><dt>Release</dt><dd>1.5.0, open source (MIT)</dd></div>
+  <div><dt>Release</dt><dd>1.5.2, open source (MIT)</dd></div>
   <div><dt>Contest result</dt><dd>7th of 44 in the Experts nomination</dd></div>
   <div><dt>Runs on</dt><dd>IRIS for Health with Interoperability: 2026.3 with AI Hub for the agents, or 2026.2 for the core alone</dd></div>
   <div><dt>Writes</dt><dd>Only after a deterministic gate of twelve checks, and verified at the receiver</dd></div>
@@ -83,9 +83,9 @@ clinical safety case and no outcome study, so a site proves its own receivers be
   <div class="outcome stop"><strong>Stop</strong><span>S8, 0 writes</span><p>The evidence can't settle it: the board escalates and the case waits for a person.</p></div>
 </div>
 
-<div class="diagram">
+<div class="diagram" tabindex="0" role="region" aria-label="Diagram: One failed delivery, and the three ways a case can end.">
 <figure>
-  <Shot src="/images/shutter/one-failed-delivery.png" alt="One failed delivery in four steps, in Board mode on three recorded scenarios: a watched production reports the failure, the evidence is sealed in one snapshot with a SHA-256 digest, four agents on IRIS AI Hub propose with no write tool, and a gate of twelve checks decides, at the proposal and again at dispatch. Then three recorded outcomes. Resend it (S2, 1 write): a dry run at the receiver, a person's approval in a Workflow task, the gate again after a fresh read, one conditional write, verified from the receiver's receipt and history. Close it (S3, 0 writes): only the ACK was lost and the receiver's own receipt says so. Stop (S8, 0 writes): the evidence cannot settle it, the board escalates and the case waits for a person" width="2200" height="1516" />
+  <Shot src="/images/shutter/one-failed-delivery.png" sizes="(max-width: 52rem) 52rem, min(80vw, 100rem)" alt="One failed delivery in four steps, in Board mode on three recorded scenarios: a watched production reports the failure, the evidence is sealed in one snapshot with a SHA-256 digest, four agents on IRIS AI Hub propose with no write tool, and a gate of twelve checks decides, at the proposal and again at dispatch. Then three recorded outcomes. Resend it (S2, 1 write): a dry run at the receiver, a person's approval in a Workflow task, the gate again after a fresh read, one conditional write, verified from the receiver's receipt and history. Close it (S3, 0 writes): only the ACK was lost and the receiver's own receipt says so. Stop (S8, 0 writes): the evidence cannot settle it, the board escalates and the case waits for a person" width="2200" height="1516" />
   <figcaption>One failed delivery, and the three ways a case can end.</figcaption>
 </figure>
 </div>
@@ -106,9 +106,9 @@ clinical safety case and no outcome study, so a site proves its own receivers be
 
 The agents propose; the gate disposes. They have no write tool.
 
-<div class="diagram">
+<div class="diagram" tabindex="0" role="region" aria-label="Diagram: What each kind of receiver gets.">
 <figure>
-  <Shot src="/images/shutter/what-each-receiver-gets.png" alt="What Shutter may do depends on the receiver, in four columns. A receiver with the recovery API (S2): one mapped operation is sent, released by a person or by site policy, an agent's plan always by a person, and verified at the receiver from its receipt and history. A FHIR R4 receiver, IRIS for Health's own server: one ward move as one PUT with If-Match to an in-progress Encounter, released by a person every time, verified in the Encounter's history, with no dry run and no receipt. An engine outage at a receiver set to engine_resend (P2): the stored HL7 messages that never arrived, unchanged and in order, under one approval bound to the offered set, completed in the engine and not verified at the receiver. Any other receiver, for recovery from a case, plain MLLP included: nothing is sent from the case; a person sends the drafted email, because an ACK says a message arrived, not what the receiver holds" width="2200" height="1152" />
+  <Shot src="/images/shutter/what-each-receiver-gets.png" sizes="(max-width: 52rem) 52rem, min(80vw, 100rem)" alt="What Shutter may do depends on the receiver, in four columns. A receiver with the recovery API (S2): one mapped operation is sent, released by a person or by site policy, an agent's plan always by a person, and verified at the receiver from its receipt and history. A FHIR R4 receiver, IRIS for Health's own server: one ward move as one PUT with If-Match to an in-progress Encounter, released by a person every time, verified in the Encounter's history, with no dry run and no receipt. An engine outage at a receiver set to engine_resend (P2): the stored HL7 messages that never arrived, unchanged and in order, under one approval bound to the offered set, completed in the engine and not verified at the receiver. Any other receiver, for recovery from a case, plain MLLP included: nothing is sent from the case; a person sends the drafted email, because an ACK says a message arrived, not what the receiver holds" width="2200" height="1152" />
   <figcaption>What each kind of receiver gets.</figcaption>
 </figure>
 </div>
@@ -120,9 +120,9 @@ attached to its logs: Agent Conformance, Agent Encounter, Agent Impact and Agent
 sealed evidence and search interface knowledge, and each run ends with a submit tool that returns a finding or a plan;
 no tool writes to a receiver. Every tool call is audited in the production's Visual Trace.
 
-<div class="diagram">
+<div class="diagram" tabindex="0" role="region" aria-label="Diagram: The board is the only part that calls a model.">
 <figure>
-  <Shot src="/images/shutter/where-the-agents-sit.png" alt="Where the agents sit, in Board mode for a case recovered through the receiver's API: in the hospital's production a delivery fails and the Shutter Forwarder posts it to Shutter's production on IRIS for Health with AI Hub. Case Workflow runs one instance per case: Case Intake, the Evidence Collector, which reads the receiver before any plan, the board, the Gate with its twelve checks run twice, the Shutter Approvers Workflow task, Downstream Out with one conditional write, and the Verifier. The board is the only part that calls a model, and none of its agents has a write tool" width="2200" height="1316" />
+  <Shot src="/images/shutter/where-the-agents-sit.png" sizes="(max-width: 52rem) 52rem, min(80vw, 100rem)" alt="Where the agents sit, in Board mode for a case recovered through the receiver's API: in the hospital's production a delivery fails and the Shutter Forwarder posts it to Shutter's production on IRIS for Health with AI Hub. Case Workflow runs one instance per case: Case Intake, the Evidence Collector, which reads the receiver before any plan, the board, the Gate with its twelve checks run twice, the Shutter Approvers Workflow task, Downstream Out with one conditional write, and the Verifier. The board is the only part that calls a model, and none of its agents has a write tool" width="2200" height="1316" />
   <figcaption>The board is the only part that calls a model.</figcaption>
 </figure>
 </div>
@@ -136,9 +136,9 @@ with nothing written. A recorded run in Rules only, with one gate check lifted o
 would do there: write WARD-B over the newer WARD-C. On a real case the full gate holds that resend whoever proposes it,
 so the agents' part is the reading and the plan, not the safety net.
 
-<div class="diagram">
+<div class="diagram" tabindex="0" role="region" aria-label="Diagram: S8: a plain resend, or Shutter.">
 <figure>
-  <Shot src="/images/shutter/s8-plain-resend-or-shutter.png" alt="Scenario S8 as a diagram: the PAS transfer to WARD-B fails with HTTP 503 while the bed manager's own move to WARD-C, at the same recorded time, is applied, so the receiver holds WARD-C at version 2. A plain Resend, shown by the recorded Rules only case C-000021, sends the failed transfer again and the receiver ends with WARD-B over WARD-C, version 2 to 3. On a real case the gate's catalogue check blocks that resend; it is lifted on purpose for this recording. Shutter, in case C-000008, reads the receiver first, the board escalates to a person with the Conformance specialist's dissent kept, and the receiver still holds WARD-C at version 2, with 0 writes. It is a demonstration of a plain resend's consequence, not evidence that AI alone prevents it" width="2200" height="1060" />
+  <Shot src="/images/shutter/s8-plain-resend-or-shutter.png" sizes="(max-width: 52rem) 52rem, min(80vw, 100rem)" alt="Scenario S8 as a diagram: the PAS transfer to WARD-B fails with HTTP 503 while the bed manager's own move to WARD-C, at the same recorded time, is applied, so the receiver holds WARD-C at version 2. A plain Resend, shown by the recorded Rules only case C-000021, sends the failed transfer again and the receiver ends with WARD-B over WARD-C, version 2 to 3. On a real case the gate's catalogue check blocks that resend; it is lifted on purpose for this recording. Shutter, in case C-000008, reads the receiver first, the board escalates to a person with the Conformance specialist's dissent kept, and the receiver still holds WARD-C at version 2, with 0 writes. It is a demonstration of a plain resend's consequence, not evidence that AI alone prevents it" width="2200" height="1060" />
   <figcaption>S8: a plain resend, or Shutter.</figcaption>
 </figure>
 </div>
@@ -147,7 +147,7 @@ Both agent modes ship. In the release 1.4.3 rerun the board equalled a single in
 so its measured advantage is not better decisions than one agent: it supplies separate review perspectives, kept
 dissent and reasoning a person can review. The single investigator is the economical choice.
 
-## New in 1.5.0
+## New in 1.5
 
 - **A trust's own scenarios.** A site can add entries of its own (a ward, a receiver, a sending system) that send a
   matching case to a person with the trust's instructions. An entry can stop a case and never release one: it has no
@@ -163,9 +163,9 @@ and findings, and goes to a person: the case itself does not resend. When a rece
 outage's results that never arrived, holds back any that can't safely be resent, such as one with a newer amendment or
 cancellation on the same order, and after one approval resends the rest through the engine, one at a time and in order.
 
-<div class="diagram">
+<div class="diagram" tabindex="0" role="region" aria-label="Diagram: One case's trace in IRIS: every step in its own lane.">
 <figure>
-  <Shot src="/images/shutter/s8-visual-trace.webp" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" themed={false} />
+  <Shot src="/images/shutter/s8-visual-trace.webp" sizes="(max-width: 52rem) 52rem, min(80vw, 100rem)" alt="The visual trace of one case: the failed delivery, the case workflow, the evidence collector, the three specialists, the coordinator and the gate, each in its own lane" width="1872" height="1000" themed={false} />
   <figcaption>One case's trace in IRIS: every step in its own lane.</figcaption>
 </figure>
 </div>

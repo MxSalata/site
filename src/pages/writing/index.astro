@@ -8,7 +8,7 @@ const posts = (await getCollection('writing', ({ data }) => !data.draft)).sort(
 );
 ---
 
-<Base title="Writing" description="Articles by Mikolaj Salata." noindex={posts.length === 0}>
+<Base title="Writing" description="Articles by Mikolaj Salata." noindex>
   <div class="page-head">
     <p class="eyebrow">Writing</p>
     <h1>Notes and articles</h1>

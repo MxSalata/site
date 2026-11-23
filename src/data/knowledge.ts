@@ -101,7 +101,7 @@ export const KNOWLEDGE: Group[] = [
       { name: 'Jira and Confluence', level: 'Deep' },
       { name: 'Linux (Ubuntu)', level: 'Working', note: 'day to day on deployments; scripted service accounts, Docker set-up, permissions' },
       { name: 'SSH and certificates', level: 'Working', note: 'clinical AI deployments on Ubuntu and Google Cloud' },
-      { name: 'Google Cloud', level: 'Working', note: 'day to day: IAP, buckets, firewalls, permissions; one deployment air-gapped in Norway' },
+      { name: 'Google Cloud', level: 'Working', note: 'day to day: IAP, buckets, firewalls, permissions. Separately, one air-gapped deployment in Norway' },
       { name: 'Keycloak, OIDC, LDAP and JWT', level: 'Working', note: 'BART’s sign-in; JWT authentication to Interweave for Yorkshire Ambulance Service’s PAS' },
       { name: 'NVIDIA toolkit and CUDA', level: 'Working', note: 'GPU hosts for clinical AI' },
       { name: 'MicroDICOM and DCMTK', level: 'Working', note: 'DICOM troubleshooting' },
