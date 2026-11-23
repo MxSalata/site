@@ -1870,7 +1870,7 @@ main.kb { width: 100%; padding-bottom: 3rem; }
   .s-off .gm-dot { background: Canvas; border-color: CanvasText; }
 }
 
-/* Text pages on wide screens (Mikolaj, 2 Nov 2026: the cards should resize with the window, as Knowledge does). The card
+/* Text pages on wide screens: the cards resize with the window, as Knowledge does. The card
    takes the page's width, and what's inside uses it while lines stay a readable length: paragraphs keep 46rem; lists
    go into two columns; pictures grow to the card's width. On a page with no pictures (About, How this site is built),
    the sections (a heading and what follows it, each in <section class="sect"> in the page's source) sit two side by
